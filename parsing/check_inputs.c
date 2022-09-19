@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 16:23:36 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/19 17:55:52 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/19 18:42:49 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	check_extension(char *haystack, char *needle)
 		put_error("Error\nPath map file should be like : exemple.cub\n");
 }
 
-void	open_file(char *file, t_elm_map map)
+void	open_file(char *file, t_elm_map *map)
 {
 	int		fd;
 	char	*line;
@@ -40,7 +40,7 @@ void	open_file(char *file, t_elm_map map)
 	}
 }
 
-void	check_inputs(int ac, char **av, t_elm_map map)
+void	check_inputs(int ac, char **av, t_elm_map *map)
 {
 	if (ac != 2)
 		put_error("Error\nusage: ./cub3d [exemple.cub]\n");
