@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 17:54:55 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/19 19:10:05 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/19 19:11:48 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ void	our_open(char *line, t_elm_map *map, int index)
 		put_error("error\nDeplucate type\n");
 	file = get_file_path(line + 2);
 	map->texture_fd[index] = open(file, O_RDONLY);
-	free(file);
 	i = 0;
 	if (map->texture_fd[index] == -1)
 	{
 		write(2, "error: '", 9);
-		write(2, &line[i], ft_strlen(&line[i]) - 1);
+		write(2, file, ft_strlen(file) - 1);
 		write(2, "'", 1);
 		perror(" ");
+		free(file);
 		free(line);
 		while (i < 4)
 		{
@@ -54,6 +54,7 @@ void	our_open(char *line, t_elm_map *map, int index)
 		}
 		while (1);
 	}
+	free(file);
 }
 
 int	ft_strstart(char *haystack, char *needle)
