@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:50:36 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/19 16:39:12 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/19 17:05:17 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@ int	put_error(char *str)
 	exit(1);
 }
 
-int	ft_strlen(char *str)
+size_t	ft_strlen(const char	*s)
 {
-	int	i;
+	size_t	i;
 
+	if (!s)
+		return (0);
 	i = 0;
-	while (str && str[i])
+	while (s[i])
 		i++;
 	return (i);
 }

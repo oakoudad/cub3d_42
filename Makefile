@@ -6,7 +6,10 @@ CC = cc -Wall -Wextra -Werror
 
 SRC = 	./cub3d.c\
 		./src/utils.c\
-		./parsing/check_inputs.c
+		./parsing/check_inputs.c\
+		./parsing/check_map.c\
+		./gnl/get_next_line.c\
+		./gnl/get_next_line_utils.c\
 
 OBJ = $(SRC:.c=.o)
 
