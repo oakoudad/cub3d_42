@@ -5,7 +5,10 @@ INC = cub3d.h
 CC = cc -Wall -Wextra -Werror
 
 SRC = 	./cub3d.c\
+		./src/numbers.c\
+		./src/string.c\
 		./src/utils.c\
+		./src/ft_split.c\
 		./parsing/check_inputs.c\
 		./parsing/check_map.c\
 		./gnl/get_next_line.c\

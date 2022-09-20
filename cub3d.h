@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 12:49:12 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/20 13:14:35 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char *s1, char const *s2);
 char	**ft_split(char const *s, char c);
 int		ft_isdigit(int c);
+int		ft_arrlen(void **arr);
+int		ft_atoi(const char *str);
 
 //GET NEXT LINE
 char	*get_line(char *r, int fd);
@@ -57,7 +59,7 @@ char	*ft_re(char *r);
 char	*ft_affiche_line(char *r);
 char	*get_next_line(int fd);
 
-// PARSSING
+// PARSING
 void	check_inputs(int ac, char **av, t_elm_map *map);
 void	check_extension(char *haystack, char *needle);
 void	check_map(char *line, t_elm_map *map);

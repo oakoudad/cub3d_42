@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:50:36 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 12:50:59 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/20 13:11:51 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,14 @@ int	put_error(char *str)
 	exit(1);
 }
 
+int	ft_arrlen(void **arr)
+{
+	int	i;
 
-
-
-
-
+	if (arr == NULL)
+		return (0);
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
+}

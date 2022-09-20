@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 17:54:55 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 12:41:57 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/20 13:17:23 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,19 +85,37 @@ int	ft_strstart(char *haystack, char *needle)
 	return (0);
 }
 
-int	check_digits(char	**rgb, t_elm_map *map, char *line)
+void	check_digits(char	**rgb, t_elm_map *map, char *line)
 {
 	int	i;
 	int	j;
 
-	if (!rgb)
-		put_error("RGB FORMAT NOT VALID\n");
+	if (!rgb || ft_arrlen((void **)rgb) != 3)
+	{
+		free(line);
+		close(map->texture_fd[0]);
+		put_error("error\nRGB FORMAT NOT VALID\n");
+	}
 	i = 0;
 	while (rgb[i])
 	{
 		j = 0;
-		while (rgb[i][j] && )
+		while (rgb[i][j] && ft_isdigit(rgb[i][j]))
+			j++;
+		if (rgb[i][j] != 0)
+		{
+			free(line);
+			put_error("error\nRGB FORMAT NOT VALID\n");
+		}
+		i++;
 	}
+}
+
+void	set_colors(char *line, t_color	*color, char **rgb)
+{
+	color->r = ft_atoi(rgb[0]);
+	color->g = ft_atoi(rgb[1]);
+	color->b = ft_atoi(rgb[2]);
 }
 
 void	check_color(char *line, t_elm_map *map)
@@ -118,8 +136,9 @@ void	check_color(char *line, t_elm_map *map)
 	s = get_informations(newline + 1);
 	rgb = ft_split(s, ',');
 	check_digits(rgb, map, line);
-	color->b = 1;
-	printf("%s\n", rgb);
+	color->r = ft_atoi(rgb[0]);
+	color->g = ft_atoi(rgb[1]);
+	color->b = ft_atoi(rgb[2]);
 }
 
 int	check_empty_line(char *line)
