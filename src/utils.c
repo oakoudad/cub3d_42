@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:50:36 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/19 18:13:49 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/20 10:54:58 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,13 @@ size_t	ft_strlen(const char	*s)
 	while (s[i])
 		i++;
 	return (i);
+}
+
+int	ft_isspace(char c)
+{
+	if ((c >= 9 && c <= 13) || c == 32)
+		return (1);
+	return (0);
 }
 
 int	ft_strcmp(const char *s1, const char *s2)
