@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 17:54:55 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 12:20:17 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/20 12:41:57 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,24 +85,39 @@ int	ft_strstart(char *haystack, char *needle)
 	return (0);
 }
 
-void
+int	check_digits(char	**rgb, t_elm_map *map, char *line)
+{
+	int	i;
+	int	j;
+
+	if (!rgb)
+		put_error("RGB FORMAT NOT VALID\n");
+	i = 0;
+	while (rgb[i])
+	{
+		j = 0;
+		while (rgb[i][j] && )
+	}
+}
 
 void	check_color(char *line, t_elm_map *map)
 {
-	char	*rgb;
+	char	*s;
+	char	**rgb;
 	t_color	*color;
+	char	*newline;
 
-	line = ignore_space(line);
-	if ((line[0] == 'F' && map->floor.r != -1)
-		|| (line[0] == 'C' && map->ceiling.r != -1))
+	newline = ignore_space(line);
+	if ((newline[0] == 'F' && map->floor.r != -1)
+		|| (newline[0] == 'C' && map->ceiling.r != -1))
 		put_error("error\nDeplucate type\n");
-	if (line[0] == 'F')
+	if (newline[0] == 'F')
 		color = &map->floor;
 	else
 		color = &map->ceiling;
-	rgb = get_informations(line + 1);
-	ft_split(rgb, ',');
-	check_digits(rgb);
+	s = get_informations(newline + 1);
+	rgb = ft_split(s, ',');
+	check_digits(rgb, map, line);
 	color->b = 1;
 	printf("%s\n", rgb);
 }

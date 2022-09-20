@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 16:22:13 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 12:13:40 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/20 12:35:27 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,5 @@ int	main(int ac, char **av)
 	printf("file F RGB = %d, %d, %d\n", map.floor.r, map.floor.g, map.floor.b);
 	printf("file C RGB = %d, %d, %d\n"
 		, map.ceiling.r, map.ceiling.g, map.ceiling.b);
+	while (1);
 }
