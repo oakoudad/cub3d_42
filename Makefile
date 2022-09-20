@@ -11,6 +11,7 @@ SRC = 	./cub3d.c\
 		./src/ft_split.c\
 		./parsing/check_inputs.c\
 		./parsing/check_map.c\
+		./parsing/map.c\
 		./parsing/check_map_utils.c\
 		./gnl/get_next_line.c\
 		./gnl/get_next_line_utils.c\

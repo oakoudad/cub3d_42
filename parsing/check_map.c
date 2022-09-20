@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 17:54:55 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 18:05:39 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/20 18:58:27 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	count_map(char *line, t_elm_map *map)
 		map->longer_line = len;
 }
 
-void	check_map(char *line, t_elm_map *map)
+void	check_map_format(char *line, t_elm_map *map)
 {
 	if (check_empty_line(line))
 		return ;

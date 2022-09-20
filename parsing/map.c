@@ -1,50 +1,58 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_inputs.c                                     :+:      :+:    :+:   */
+/*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/19 16:23:36 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 18:58:27 by oakoudad         ###   ########.fr       */
+/*   Created: 2022/09/20 18:46:21 by oakoudad          #+#    #+#             */
+/*   Updated: 2022/09/20 18:55:38 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-void	check_extension(char *haystack, char *needle)
+void	full_row(t_elm_map	*map, char *line, int i)
 {
-	int	len_s;
-	int	len_n;
+	int	j;
 
-	len_s = ft_strlen(haystack);
-	len_n = ft_strlen(needle);
-	if (len_s < len_n || ft_strcmp(&haystack[len_s - len_n], ".cub") != 0)
-		put_error("Error\nPath map file should be like : exemple.cub\n");
+	j = 0;
+	while (j < map->longer_line)
+	{
+		map->map[i][j] = ' ';
+		j++;
+	}
+	map->map[i][j] = '\0';
+	j = 0;
+	while (line[j] && line[j] != '\n')
+	{
+		map->map[i][j] = line[j];
+		j++;
+	}
 }
 
-void	read_file(char *path, t_elm_map *map)
+int	init_map(char *path, t_elm_map	*map)
 {
+	int		i;
 	int		fd;
 	char	*line;
 
+	map->map = malloc(sizeof(char *) * map->line_nbr + 1);
 	fd = open(path, O_RDONLY);
-	if (fd == -1)
-		perror("Error\n");
+	i = 0;
 	while (1)
 	{
 		line = get_next_line(fd);
 		if (line == NULL)
 			break ;
-		check_map_format(line, map);
+		if (ft_strstart(line, "1"))
+		{
+			map->map[i] = malloc(sizeof(char *) * map->longer_line + 1);
+			full_row(map, line, i);
+			i++;
+		}
 		free(line);
 	}
-	close(fd);
-}
-
-void	check_inputs(int ac, char **av)
-{
-	if (ac != 2)
-		put_error("Error\nusage: ./cub3d [exemple.cub]\n");
-	check_extension(av[1], ".cub");
+	map->map[i] = NULL;
+	return (1);
 }
