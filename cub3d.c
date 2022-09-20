@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 16:22:13 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 18:59:00 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/20 19:39:18 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	init_struct(t_elm_map	*map)
 	map->ceiling.b = -1;
 	map->line_nbr = 0;
 	map->longer_line = 0;
+	map->player = 0;
 }
 
 int	main(int ac, char **av)
@@ -47,8 +48,8 @@ int	main(int ac, char **av)
 		map.ceiling.r, map.ceiling.g, map.ceiling.b);
 	printf("MAP line = %d\n", map.line_nbr);
 	printf("MAP longer line = %d\n", map.longer_line);
-	while (1)
-	{
-		(void)map;
-	}
+	//while (1)
+	//{
+	//	(void)map;
+	//}
 }

@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 18:58:27 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/20 19:18:02 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ typedef struct elmmap
 	int			texture_fd[4];
 	t_texture	texture;
 	int			line_nbr;
+	int			player;
+	int			p_x;
+	int			p_y;
 	int			longer_line;
 	char		**map;
 	t_color		floor;
@@ -83,6 +86,7 @@ void	read_file(char *path, t_elm_map *map);
 char	*get_informations(char *line);
 void	set_colors(char *line, t_color	*color, char **rgb);
 int		init_map(char *path, t_elm_map	*map);
+int		check_map(t_elm_map	*map);
 
 // ERROR PRINT & FREE & DESTROY
 int		put_error(char *str);
