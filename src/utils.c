@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:50:36 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 13:11:51 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/20 16:03:11 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,11 @@ int	ft_arrlen(void **arr)
 	while (arr[i])
 		i++;
 	return (i);
+}
+
+char	*ignore_space(char *haystack)
+{
+	while (haystack && ft_isspace(*haystack) && *haystack != '\n')
+		haystack++;
+	return (haystack);
 }

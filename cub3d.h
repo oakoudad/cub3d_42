@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 13:14:35 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/20 16:03:22 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,10 @@ char	**ft_split(char const *s, char c);
 int		ft_isdigit(int c);
 int		ft_arrlen(void **arr);
 int		ft_atoi(const char *str);
+void	check_digits(char	**rgb, t_elm_map *map, char *line);
+void	check_color(char *line, t_elm_map *map);
+int		check_empty_line(char *line);
+char	*ignore_space(char *haystack);
 
 //GET NEXT LINE
 char	*get_line(char *r, int fd);
@@ -60,10 +64,13 @@ char	*ft_affiche_line(char *r);
 char	*get_next_line(int fd);
 
 // PARSING
-void	check_inputs(int ac, char **av, t_elm_map *map);
+void	check_inputs(int ac, char **av);
 void	check_extension(char *haystack, char *needle);
 void	check_map(char *line, t_elm_map *map);
 int		ft_strstart(char *haystack, char *needle);
+void	read_file(char *file, t_elm_map *map);
+char	*get_informations(char *line);
+void	set_colors(char *line, t_color	*color, char **rgb);
 
 // ERROR PRINT & FREE & DESTROY
 int		put_error(char *str);

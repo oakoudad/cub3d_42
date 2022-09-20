@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 16:22:13 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 12:35:27 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/20 14:02:24 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int	main(int ac, char **av)
 	t_elm_map	map;
 
 	init_struct(&map);
-	check_inputs(ac, av, &map);
+	check_inputs(ac, av);
+	read_file(av[1], &map);
 	printf("file NO = %d\n", map.texture_fd[NO]);
 	printf("file SO = %d\n", map.texture_fd[SO]);
 	printf("file WE = %d\n", map.texture_fd[WE]);
