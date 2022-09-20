@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 16:03:22 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/20 18:24:23 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,23 @@ typedef struct tcolor
 	int		b;
 }	t_color;
 
+typedef struct texture
+{
+	char	*no;
+	char	*so;
+	char	*we;
+	char	*ea;
+}	t_texture;
+
 typedef struct elmmap
 {
-	int		texture_fd[4];
-	int		total_elm;
-	t_color	floor;
-	t_color	ceiling;
+	int			texture_fd[4];
+	t_texture	texture;
+	int			line_nbr;
+	int			longer_line;
+	char		**map;
+	t_color		floor;
+	t_color		ceiling;
 }	t_elm_map;
 
 # define NO 0
@@ -68,7 +79,7 @@ void	check_inputs(int ac, char **av);
 void	check_extension(char *haystack, char *needle);
 void	check_map(char *line, t_elm_map *map);
 int		ft_strstart(char *haystack, char *needle);
-void	read_file(char *file, t_elm_map *map);
+void	read_file(char *path, t_elm_map *map);
 char	*get_informations(char *line);
 void	set_colors(char *line, t_color	*color, char **rgb);
 

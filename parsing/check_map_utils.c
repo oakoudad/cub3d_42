@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 15:59:52 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 16:01:53 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/20 16:06:57 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,23 @@ void	set_colors(char *line, t_color	*color, char **rgb)
 		free(line);
 		put_error("Error\nRGB format not valid\n");
 	}
+}
+
+char	*get_informations(char *line)
+{
+	int		len;
+	char	*dup;
+
+	while (line && *line != 0 && ft_isspace(*line))
+		line++;
+	dup = ft_strdup(line);
+	len = ft_strlen(dup) - 1;
+	while (dup && (dup[len] == '\n' || dup[len] == ' '))
+	{
+		dup[len] = 0;
+		len--;
+	}
+	return (dup);
 }
 
 void	check_color(char *line, t_elm_map *map)
