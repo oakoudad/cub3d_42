@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 16:23:36 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 11:49:00 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/20 13:54:12 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	open_file(char *file, t_elm_map *map)
 	char	*line;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		perror("Error\nerrno");
+		perror("Error\n");
 	while (1)
 	{
 		line = get_next_line(fd);

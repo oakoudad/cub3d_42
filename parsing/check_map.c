@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 17:54:55 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 13:17:23 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/20 13:55:06 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	check_files(char *line, t_elm_map *map, int index)
 	if (map->texture_fd[index] != -1)
 	{
 		printf("error {%s}\n", line);
-		put_error("error\nDeplucate type\n");
+		put_error("Error\nDeplucate type\n");
 	}
 	i = 0;
 	while (ft_isspace(line[i]))
@@ -94,7 +94,7 @@ void	check_digits(char	**rgb, t_elm_map *map, char *line)
 	{
 		free(line);
 		close(map->texture_fd[0]);
-		put_error("error\nRGB FORMAT NOT VALID\n");
+		put_error("Error\nRGB format not valid\n");
 	}
 	i = 0;
 	while (rgb[i])
@@ -105,7 +105,7 @@ void	check_digits(char	**rgb, t_elm_map *map, char *line)
 		if (rgb[i][j] != 0)
 		{
 			free(line);
-			put_error("error\nRGB FORMAT NOT VALID\n");
+			put_error("Error\nRGB format not valid\n");
 		}
 		i++;
 	}
@@ -116,6 +116,11 @@ void	set_colors(char *line, t_color	*color, char **rgb)
 	color->r = ft_atoi(rgb[0]);
 	color->g = ft_atoi(rgb[1]);
 	color->b = ft_atoi(rgb[2]);
+	if (color->r > 255 || color->g > 255 || color->b > 255)
+	{
+		free(line);
+		put_error("Error\nRGB format not valid\n");
+	}
 }
 
 void	check_color(char *line, t_elm_map *map)
@@ -128,7 +133,7 @@ void	check_color(char *line, t_elm_map *map)
 	newline = ignore_space(line);
 	if ((newline[0] == 'F' && map->floor.r != -1)
 		|| (newline[0] == 'C' && map->ceiling.r != -1))
-		put_error("error\nDeplucate type\n");
+		put_error("Error\nDeplucate type\n");
 	if (newline[0] == 'F')
 		color = &map->floor;
 	else
@@ -136,9 +141,7 @@ void	check_color(char *line, t_elm_map *map)
 	s = get_informations(newline + 1);
 	rgb = ft_split(s, ',');
 	check_digits(rgb, map, line);
-	color->r = ft_atoi(rgb[0]);
-	color->g = ft_atoi(rgb[1]);
-	color->b = ft_atoi(rgb[2]);
+	set_colors(line, color, rgb);
 }
 
 int	check_empty_line(char *line)
@@ -169,6 +172,8 @@ void	check_map(char *line, t_elm_map *map)
 		check_color(line, map);
 	else if (ft_strstart(line, "C "))
 		check_color(line, map);
-	else
+	else if (ft_strstart(line, "1"))
 		return ;
+	else
+		put_error("Error\nInvalid type\n");
 }
