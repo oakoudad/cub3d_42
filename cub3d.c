@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/19 16:22:13 by oakoudad          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/09/21 14:09:00 by oakoudad         ###   ########.fr       */
-=======
-/*   Updated: 2022/09/21 14:03:00 by eelmoham         ###   ########.fr       */
->>>>>>> 2905e78d582fae1b0550eea1bb89c394fa6a262e
+/*   Created: 2022/09/21 14:31:05 by oakoudad          #+#    #+#             */
+/*   Updated: 2022/09/21 14:48:58 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./cub3d.h"
-#include <mlx.h>
-
-typedef struct	s_data {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}t_img;
 
 void	init_struct(t_elm_map	*map)
 {
@@ -67,37 +54,64 @@ int	main(int ac, char **av)
 	t_img	img;
 	int i = 0 , j = 0;
 	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, map.longer_line*10, (map.line_nbr + 2) * 10, "Hello world!");
-	img.img = mlx_new_image(mlx, map.longer_line*10, (map.line_nbr + 2) * 10);
+	mlx_win = mlx_new_window(mlx, map.longer_line*30, (map.line_nbr + 2) * 30
+		, "Hello world!");
+	img.img = mlx_new_image(mlx, map.longer_line*30, (map.line_nbr + 2) * 30);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
-								&img.endian);
+		&img.endian);
 	int y = 1;
 	int x = 0;
-	
+
 	while (map.map[y])
 	{
 		x = 0;
 		while (map.map[y][x])
 		{
 			if (map.map[y][x] == '1')
-			{
-				j = y * 10;
-				while (j < (y * 10) + 10)
-				{
-					i = x * 10;
-					while (i < (x * 10) + 10)
-					{
-						my_mlx_pixel_put(&img, i, j, 0x00FF0000);
-						i++;
-					}
-					j++;
-				}
-			}
+				put_block(y, x, &img, 0xFF0000);
+			else if (map.map[y][x] == '0')
+				put_block(y, x, &img, 0xFFFFFF);
 			x++;
 		}
 		y++;
-		
 	}
+	put_player_block(map.p_y, map.p_x, &img, 0x0000FF);
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 	mlx_loop(mlx);
+}
+
+void	put_block(int y, int x, t_img	*img, int color)
+{
+	int	j;
+	int	i;
+
+	j = y * 30;
+	while (j < (y * 30) + 30)
+	{
+		i = x * 30;
+		while (i < (x * 30) + 30)
+		{
+			my_mlx_pixel_put(img, i, j, color);
+			i++;
+		}
+		j++;
+	}
+}
+
+void	put_player_block(int y, int x, t_img	*img, int color)
+{
+	int	j;
+	int	i;
+
+	j = y * 30;
+	while (j < (y * 30) + 5)
+	{
+		i = x * 30;
+		while (i < (x * 30) + 5)
+		{
+			my_mlx_pixel_put(img, i, j, color);
+			i++;
+		}
+		j++;
+	}
 }

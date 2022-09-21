@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/21 13:08:05 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/09/21 14:46:36 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <string.h>
 # include <errno.h>
+# include <mlx.h>
 
 typedef struct tcolor
 {
@@ -49,6 +50,15 @@ typedef struct elmmap
 	t_color		floor;
 	t_color		ceiling;
 }	t_elm_map;
+
+typedef struct s_data
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_img;
 
 # define NO 0
 # define SO 1
@@ -87,6 +97,10 @@ char	*get_informations(char *line);
 void	set_colors(char *line, t_color	*color, char **rgb);
 int		init_map(char *path, t_elm_map	*map);
 int		check_map(t_elm_map	*map);
+
+//RAYCASTING
+void	put_block(int y, int x, t_img	*img, int color);
+void	put_player_block(int y, int x, t_img	*img, int color);
 
 // ERROR PRINT & FREE & DESTROY
 int		put_error(char *str);

@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/20 18:46:21 by oakoudad          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/09/21 14:21:43 by oakoudad         ###   ########.fr       */
-=======
-/*   Updated: 2022/09/21 13:50:13 by eelmoham         ###   ########.fr       */
->>>>>>> 2905e78d582fae1b0550eea1bb89c394fa6a262e
+/*   Created: 2022/09/21 14:29:04 by oakoudad          #+#    #+#             */
+/*   Updated: 2022/09/21 14:49:32 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +16,9 @@ void	full_row(t_elm_map	*map, char *line, int y)
 {
 	int	x;
 
-<<<<<<< HEAD
 	map->map[y] = malloc(sizeof(char) * map->longer_line + 1);
 	x = 0;
 	while (x < map->longer_line)
-=======
-	map->map[i] = malloc(sizeof(char) * map->longer_line + 10);
-	j = 0;
-	while (j < map->longer_line)
->>>>>>> 2905e78d582fae1b0550eea1bb89c394fa6a262e
 	{
 		map->map[y][x] = ' ';
 		x++;
@@ -51,6 +41,7 @@ void	map_char(t_elm_map *map, int y, int x)
 		return ;
 	else if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 	{
+		map->map[y][x] = '0';
 		if (map->player > 0)
 			put_error("Error: You can't enter more than one player\n");
 		map->player++;
