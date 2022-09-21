@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 16:22:13 by oakoudad          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/09/21 14:09:00 by oakoudad         ###   ########.fr       */
+=======
+/*   Updated: 2022/09/21 14:03:00 by eelmoham         ###   ########.fr       */
+>>>>>>> 2905e78d582fae1b0550eea1bb89c394fa6a262e
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./cub3d.h"
+#include <mlx.h>
+
+typedef struct	s_data {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}t_img;
 
 void	init_struct(t_elm_map	*map)
 {
@@ -29,6 +42,14 @@ void	init_struct(t_elm_map	*map)
 	map->player = 0;
 }
 
+void	my_mlx_pixel_put(t_img *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
+
 int	main(int ac, char **av)
 {
 	t_elm_map	map;
@@ -38,27 +59,45 @@ int	main(int ac, char **av)
 	read_file(av[1], &map);
 	if (!init_map(av[1], &map))
 		return (0);
-	check_prepare_map(&map);
-	//printf("\nfile NO = %d => %s\n", map.texture_fd[NO], map.texture.no);
-	//printf("file SO = %d => %s\n", map.texture_fd[SO], map.texture.so);
-	//printf("file WE = %d => %s\n", map.texture_fd[WE], map.texture.we);
-	//printf("file EA = %d => %s\n", map.texture_fd[EA], map.texture.ea);
-	//printf("Color F RGB = %d, %d, %d\n", map.floor.r, map.floor.g, map.floor.b);
-	//printf("Color C RGB = %d, %d, %d\n",
-	//	map.ceiling.r, map.ceiling.g, map.ceiling.b);
-	//printf("MAP line = %d\n", map.line_nbr);
-	//printf("MAP longer line = %d\n", map.longer_line);
-	int x, y = 0;
+	check_map(&map);
+	
+	// raycasting >>
+	void	*mlx;
+	void	*mlx_win;
+	t_img	img;
+	int i = 0 , j = 0;
+	mlx = mlx_init();
+	mlx_win = mlx_new_window(mlx, map.longer_line*10, (map.line_nbr + 2) * 10, "Hello world!");
+	img.img = mlx_new_image(mlx, map.longer_line*10, (map.line_nbr + 2) * 10);
+	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
+								&img.endian);
+	int y = 1;
+	int x = 0;
+	
 	while (map.map[y])
 	{
 		x = 0;
-		printf("{");
 		while (map.map[y][x])
 		{
-			printf("%c", map.map[y][x]);
+			if (map.map[y][x] == '1')
+			{
+				j = y * 10;
+				while (j < (y * 10) + 10)
+				{
+					i = x * 10;
+					while (i < (x * 10) + 10)
+					{
+						my_mlx_pixel_put(&img, i, j, 0x00FF0000);
+						i++;
+					}
+					j++;
+				}
+			}
 			x++;
 		}
-		printf("}\n");
 		y++;
+		
 	}
+	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
+	mlx_loop(mlx);
 }

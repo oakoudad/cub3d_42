@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 18:46:21 by oakoudad          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/09/21 14:21:43 by oakoudad         ###   ########.fr       */
+=======
+/*   Updated: 2022/09/21 13:50:13 by eelmoham         ###   ########.fr       */
+>>>>>>> 2905e78d582fae1b0550eea1bb89c394fa6a262e
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +20,15 @@ void	full_row(t_elm_map	*map, char *line, int y)
 {
 	int	x;
 
+<<<<<<< HEAD
 	map->map[y] = malloc(sizeof(char) * map->longer_line + 1);
 	x = 0;
 	while (x < map->longer_line)
+=======
+	map->map[i] = malloc(sizeof(char) * map->longer_line + 10);
+	j = 0;
+	while (j < map->longer_line)
+>>>>>>> 2905e78d582fae1b0550eea1bb89c394fa6a262e
 	{
 		map->map[y][x] = ' ';
 		x++;
@@ -65,7 +75,7 @@ void	map_char(t_elm_map *map, int y, int x)
 		put_error("Error: Invalid map character\n");
 }
 
-int	check_prepare_map(t_elm_map	*map)
+int	check_map(t_elm_map	*map)
 {
 	int	x;
 	int	y;
