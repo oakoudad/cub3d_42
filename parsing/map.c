@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:29:04 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/21 14:49:32 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/21 22:55:59 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,33 @@ void	full_row(t_elm_map	*map, char *line, int y)
 	}
 }
 
+void	check_space(t_elm_map *map, int y, int x)
+{
+	if (!(map->map[y][x + 1] == ' ' || map->map[y][x + 1] == '1'
+		|| map->map[y][x + 1] == '\0'))
+		put_error("Error: The wall is not closed\n");
+	if (x > 0 && !(map->map[y][x - 1] == ' ' || map->map[y][x - 1] == '1'))
+		put_error("Error: The wall is not closed\n");
+	if (map->map[y + 1] && !(map->map[y + 1][x] == ' '
+		|| map->map[y + 1][x] == '1'))
+		put_error("Error: The wall is not closed\n");
+	if (y > 0 && !(map->map[y - 1][x] == ' '
+		|| map->map[y - 1][x] == '1'))
+		put_error("Error: The wall is not closed\n");
+}
+
+void	set_direction(t_elm_map *map, char c)
+{
+	if (c == 'N')
+		map->dir = 180;
+	if (c == 'E')
+		map->dir = 270;
+	if (c == 'S')
+		map->dir = 0;
+	if (c == 'W')
+		map->dir = 90;
+}
+
 void	map_char(t_elm_map *map, int y, int x)
 {
 	char	c;
@@ -45,23 +72,12 @@ void	map_char(t_elm_map *map, int y, int x)
 		if (map->player > 0)
 			put_error("Error: You can't enter more than one player\n");
 		map->player++;
-		map->p_x = x;
-		map->p_y = y;
+		map->p_x = (x * BSIZE) + (BSIZE - PSIZE) / 2;
+		map->p_y = ((y - 1) * BSIZE) + (BSIZE - PSIZE) / 2;
+		set_direction(map, c);
 	}
 	else if (c == ' ')
-	{
-		if (!(map->map[y][x + 1] == ' ' || map->map[y][x + 1] == '1'
-			|| map->map[y][x + 1] == '\0'))
-			put_error("Error: The wall is not closed\n");
-		if (x > 0 && !(map->map[y][x - 1] == ' ' || map->map[y][x - 1] == '1'))
-			put_error("Error: The wall is not closed\n");
-		if (map->map[y + 1] && !(map->map[y + 1][x] == ' '
-			|| map->map[y + 1][x] == '1'))
-			put_error("Error: The wall is not closed\n");
-		if (y > 0 && !(map->map[y - 1][x] == ' '
-			|| map->map[y - 1][x] == '1'))
-			put_error("Error: The wall is not closed\n");
-	}
+		check_space(map, y, x);
 	else
 		put_error("Error: Invalid map character\n");
 }

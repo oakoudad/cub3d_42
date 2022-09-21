@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/21 14:46:36 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/21 21:15:08 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,6 @@ typedef struct texture
 	char	*ea;
 }	t_texture;
 
-typedef struct elmmap
-{
-	int			texture_fd[4];
-	t_texture	texture;
-	int			line_nbr;
-	int			player;
-	int			p_x;
-	int			p_y;
-	int			longer_line;
-	char		**map;
-	t_color		floor;
-	t_color		ceiling;
-}	t_elm_map;
-
 typedef struct s_data
 {
 	void	*img;
@@ -60,10 +46,35 @@ typedef struct s_data
 	int		endian;
 }	t_img;
 
+typedef struct my_mlx
+{
+	void	*mlx;
+	void	*win;
+	t_img	img;
+}	t_mlx;
+
+typedef struct elmmap
+{
+	int			texture_fd[4];
+	t_texture	texture;
+	int			line_nbr;
+	int			player;
+	int			p_x;
+	int			p_y;
+	int			dir;
+	int			longer_line;
+	char		**map;
+	t_mlx		m_mlx;
+	t_color		floor;
+	t_color		ceiling;
+}	t_elm_map;
+
 # define NO 0
 # define SO 1
 # define WE 2
 # define EA 3
+# define BSIZE 40
+# define PSIZE 8
 
 //UTILS
 size_t	ft_strlen(const char	*s);
@@ -99,8 +110,12 @@ int		init_map(char *path, t_elm_map	*map);
 int		check_map(t_elm_map	*map);
 
 //RAYCASTING
-void	put_block(int y, int x, t_img	*img, int color);
-void	put_player_block(int y, int x, t_img	*img, int color);
+void	raycasting_main(t_elm_map	*map);
+void	put_block(int y, int x, t_elm_map *map, int color);
+void	put_player_block(int y, int x, t_elm_map *map, int color);
+
+// MATH
+double	deg2rad(double deg);
 
 // ERROR PRINT & FREE & DESTROY
 int		put_error(char *str);
