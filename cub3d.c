@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 16:22:13 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/21 12:39:08 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/21 14:09:00 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,26 @@ int	main(int ac, char **av)
 	if (!init_map(av[1], &map))
 		return (0);
 	check_prepare_map(&map);
-	printf("\nfile NO = %d => %s\n", map.texture_fd[NO], map.texture.no);
-	printf("file SO = %d => %s\n", map.texture_fd[SO], map.texture.so);
-	printf("file WE = %d => %s\n", map.texture_fd[WE], map.texture.we);
-	printf("file EA = %d => %s\n", map.texture_fd[EA], map.texture.ea);
-	printf("Color F RGB = %d, %d, %d\n", map.floor.r, map.floor.g, map.floor.b);
-	printf("Color C RGB = %d, %d, %d\n",
-		map.ceiling.r, map.ceiling.g, map.ceiling.b);
-	printf("MAP line = %d\n", map.line_nbr);
-	printf("MAP longer line = %d\n", map.longer_line);
-	//while (1)
-	//{
-	//	(void)map;
-	//}
+	//printf("\nfile NO = %d => %s\n", map.texture_fd[NO], map.texture.no);
+	//printf("file SO = %d => %s\n", map.texture_fd[SO], map.texture.so);
+	//printf("file WE = %d => %s\n", map.texture_fd[WE], map.texture.we);
+	//printf("file EA = %d => %s\n", map.texture_fd[EA], map.texture.ea);
+	//printf("Color F RGB = %d, %d, %d\n", map.floor.r, map.floor.g, map.floor.b);
+	//printf("Color C RGB = %d, %d, %d\n",
+	//	map.ceiling.r, map.ceiling.g, map.ceiling.b);
+	//printf("MAP line = %d\n", map.line_nbr);
+	//printf("MAP longer line = %d\n", map.longer_line);
+	int x, y = 0;
+	while (map.map[y])
+	{
+		x = 0;
+		printf("{");
+		while (map.map[y][x])
+		{
+			printf("%c", map.map[y][x]);
+			x++;
+		}
+		printf("}\n");
+		y++;
+	}
 }

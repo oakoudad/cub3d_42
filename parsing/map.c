@@ -6,29 +6,29 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 18:46:21 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/21 12:56:51 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/21 14:21:43 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-void	full_row(t_elm_map	*map, char *line, int i)
+void	full_row(t_elm_map	*map, char *line, int y)
 {
-	int	j;
+	int	x;
 
-	map->map[i] = malloc(sizeof(char) * map->longer_line + 1);
-	j = 0;
-	while (j < map->longer_line)
+	map->map[y] = malloc(sizeof(char) * map->longer_line + 1);
+	x = 0;
+	while (x < map->longer_line)
 	{
-		map->map[i][j] = ' ';
-		j++;
+		map->map[y][x] = ' ';
+		x++;
 	}
-	map->map[i][map->longer_line] = '\0';
-	j = 0;
-	while (line[j] && line[j] != '\n')
+	map->map[y][x] = '\0';
+	x = 0;
+	while (line[x] && line[x] != '\n')
 	{
-		map->map[i][j] = line[j];
-		j++;
+		map->map[y][x] = line[x];
+		x++;
 	}
 }
 
@@ -89,13 +89,13 @@ int	init_map(char *path, t_elm_map	*map)
 	int		i;
 	int		fd;
 	char	*line;
-	int		status;
+	int		is_map;
 
-	status = 0;
-	map->map = malloc(sizeof(char *) * map->line_nbr + 3);
+	is_map = 0;
+	map->map = malloc(sizeof(char *) * (map->line_nbr + 3));
 	fd = open(path, O_RDONLY);
-	full_row(map, " ", 0);
-	i = 1;
+	i = 0;
+	full_row(map, "", i++);
 	while (1)
 	{
 		line = get_next_line(fd);
@@ -103,14 +103,14 @@ int	init_map(char *path, t_elm_map	*map)
 			break ;
 		if (ft_strstart(line, "1"))
 		{
-			status = 1;
+			is_map = 1;
 			full_row(map, line, i++);
 		}
-		if (status == 1 && check_empty_line(line))
+		if (is_map == 1 && check_empty_line(line))
 			put_error("Error: Empty line inside the map\n");
 		free(line);
 	}
-	full_row(map, " ", i);
+	full_row(map, "", i);
 	map->map[i + 1] = NULL;
 	return (1);
 }
