@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 19:18:02 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/21 12:39:08 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	read_file(char *path, t_elm_map *map);
 char	*get_informations(char *line);
 void	set_colors(char *line, t_color	*color, char **rgb);
 int		init_map(char *path, t_elm_map	*map);
-int		check_map(t_elm_map	*map);
+int		check_prepare_map(t_elm_map	*map);
 
 // ERROR PRINT & FREE & DESTROY
 int		put_error(char *str);

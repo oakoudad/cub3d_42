@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 18:46:21 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 20:05:52 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/21 12:56:51 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	full_row(t_elm_map	*map, char *line, int i)
 {
 	int	j;
 
+	map->map[i] = malloc(sizeof(char) * map->longer_line + 1);
 	j = 0;
 	while (j < map->longer_line)
 	{
@@ -50,21 +51,21 @@ void	map_char(t_elm_map *map, int y, int x)
 	{
 		if (!(map->map[y][x + 1] == ' ' || map->map[y][x + 1] == '1'
 			|| map->map[y][x + 1] == '\0'))
-			put_error("Error: Wall not valid\n");
+			put_error("Error: The wall is not closed\n");
 		if (x > 0 && !(map->map[y][x - 1] == ' ' || map->map[y][x - 1] == '1'))
-			put_error("Error: Wall not valid\n");
+			put_error("Error: The wall is not closed\n");
 		if (map->map[y + 1] && !(map->map[y + 1][x] == ' '
 			|| map->map[y + 1][x] == '1'))
-			put_error("Error: Wall not valid\n");
+			put_error("Error: The wall is not closed\n");
 		if (y > 0 && !(map->map[y - 1][x] == ' '
 			|| map->map[y - 1][x] == '1'))
-			put_error("Error: Wall not valid\n");
+			put_error("Error: The wall is not closed\n");
 	}
 	else
 		put_error("Error: Invalid map character\n");
 }
 
-int	check_map(t_elm_map	*map)
+int	check_prepare_map(t_elm_map	*map)
 {
 	int	x;
 	int	y;
@@ -88,12 +89,13 @@ int	init_map(char *path, t_elm_map	*map)
 	int		i;
 	int		fd;
 	char	*line;
+	int		status;
 
+	status = 0;
 	map->map = malloc(sizeof(char *) * map->line_nbr + 3);
 	fd = open(path, O_RDONLY);
-	map->map[0] = malloc(sizeof(char) * map->longer_line + 10);
 	full_row(map, " ", 0);
-	i = 0;
+	i = 1;
 	while (1)
 	{
 		line = get_next_line(fd);
@@ -101,13 +103,13 @@ int	init_map(char *path, t_elm_map	*map)
 			break ;
 		if (ft_strstart(line, "1"))
 		{
-			map->map[i] = malloc(sizeof(char) * map->longer_line + 10);
-			full_row(map, line, i);
-			i++;
+			status = 1;
+			full_row(map, line, i++);
 		}
+		if (status == 1 && check_empty_line(line))
+			put_error("Error: Empty line inside the map\n");
 		free(line);
 	}
-	map->map[i] = malloc(sizeof(char *) * map->longer_line + 10);
 	full_row(map, " ", i);
 	map->map[i + 1] = NULL;
 	return (1);

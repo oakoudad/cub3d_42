@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 16:22:13 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 19:39:18 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/21 12:39:08 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(int ac, char **av)
 	read_file(av[1], &map);
 	if (!init_map(av[1], &map))
 		return (0);
-	check_map(&map);
+	check_prepare_map(&map);
 	printf("\nfile NO = %d => %s\n", map.texture_fd[NO], map.texture.no);
 	printf("file SO = %d => %s\n", map.texture_fd[SO], map.texture.so);
 	printf("file WE = %d => %s\n", map.texture_fd[WE], map.texture.we);
