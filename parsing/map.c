@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 18:46:21 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/21 12:56:51 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/21 13:50:13 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	full_row(t_elm_map	*map, char *line, int i)
 {
 	int	j;
 
-	map->map[i] = malloc(sizeof(char) * map->longer_line + 1);
+	map->map[i] = malloc(sizeof(char) * map->longer_line + 10);
 	j = 0;
 	while (j < map->longer_line)
 	{
@@ -65,7 +65,7 @@ void	map_char(t_elm_map *map, int y, int x)
 		put_error("Error: Invalid map character\n");
 }
 
-int	check_prepare_map(t_elm_map	*map)
+int	check_map(t_elm_map	*map)
 {
 	int	x;
 	int	y;
