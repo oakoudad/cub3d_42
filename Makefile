@@ -2,7 +2,7 @@ NAME = cub3d
 
 INC = cub3d.h
 
-CC = cc # -Wall -Wextra -Werror
+CC = cc -Wall -Wextra -Werror
 
 SRC = 	./cub3d.c\
 		./src/numbers.c\
@@ -32,8 +32,8 @@ COLOUR_END=\033[0m
 all : $(NAME)
 
 $(NAME) : $(INC)  $(OBJ)
-	@$(CC) $(OBJ) -o $(NAME) -L.. -lmlx -L%%%%/../lib -lXext -lX11 -lm -lbsd
-	# @$(CC) $(OBJ) -o $(NAME) -lmlx -framework OpenGL -framework AppKit
+	# @$(CC) $(OBJ) -o $(NAME) -L.. -lmlx -L%%%%/../lib -lXext -lX11 -lm -lbsd
+	@$(CC) $(OBJ) -o $(NAME) -lmlx -framework OpenGL -framework AppKit
 	@echo "$(COLOUR_GREEN)Executable created (./${NAME})$(COLOUR_END)"
 
 clean:

@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/21 23:23:32 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/23 13:34:47 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,6 @@ void	put_block(int y, int x, t_elm_map	*map, int color)
 void	put_player_block(int y, int x, t_elm_map *map, int color)
 {
 	int	j;
-	int	start;
-	int	inc;
-	int	sig;
 	int	i;
 
 	j = y;
@@ -83,7 +80,6 @@ void	draw_map_2d(t_elm_map	*map)
 int	draw_line(t_elm_map *map, int beginX, int beginY, int endX, int endY, int color)
 {
 	double deltaX = endX - beginX;
-	int	status;
 	double deltaY = endY - beginY;
 	int pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 
@@ -101,6 +97,7 @@ int	draw_line(t_elm_map *map, int beginX, int beginY, int endX, int endY, int co
 		pixelY += deltaY;
 		--pixels;
 	}
+	return (1);
 }
 
 void	draw_2d(t_elm_map *map)
@@ -153,26 +150,21 @@ void	move_player(t_elm_map *map, int move, char dir)
 	dilta = map->dir;
 	if (dir == 'y')
 	{
+		next_x = sin(deg2rad(map->dir)) * move + map->p_x;
+		next_y = cos(deg2rad(map->dir)) * move + map->p_y;
 		if (move < 0)
 		{
-			if (dilta <= 180)
-				dilta += 180;
-			else
-				dilta = (dilta + 180) - 360;
+			next_x = (sin(deg2rad(map->dir + 180)) * abs(move) + map->p_x + 1);
+			next_y = (cos(deg2rad(map->dir + 180)) * abs(move) + map->p_y + 1);
 		}
-		printf("dilta = %d\n", dilta);
-		next_x = round_base(sin(deg2rad(dilta)) * abs(move * 2) + map->p_x);
-		next_y = round_base(cos(deg2rad(dilta)) * abs(move * 2) + map->p_y);
-		
-		
 		if (map->map[(next_y / BSIZE)][next_x / BSIZE] == '0')
 		{
+			
 			map->p_x = next_x;
 			map->p_y = next_y;
 		}
-		
 	}
-	else if(dir == 'x')
+	else if (dir == 'x')
 	{
 		next_x = round_base(sin(deg2rad(map->dir + 90)) * move + map->p_x);
 		next_y = round_base(cos(deg2rad(map->dir + 90)) * move + map->p_y);
@@ -216,9 +208,9 @@ int	events(int key, t_elm_map	*map)
 		move_player(map, -PSIZE, 'x');
 	if (key == A)
 		move_player(map, PSIZE, 'x');
-	if (key == CAMERA_L)
-		change_dir(map, 'r', -5);
 	if (key == CAMERA_R)
+		change_dir(map, 'r', -5);
+	if (key == CAMERA_L)
 		change_dir(map, 'l', 5);
 	if (key == ESC)
 		exit(1);
@@ -227,9 +219,6 @@ int	events(int key, t_elm_map	*map)
 
 void	raycasting_main(t_elm_map	*map)
 {
-	int		i;
-	int		j;
-
 	map->m_mlx.mlx = mlx_init();
 	map->m_mlx.win = mlx_new_window(map->m_mlx.mlx,
 			map->longer_line * BSIZE,

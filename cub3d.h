@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/21 21:15:08 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/23 13:05:36 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,18 +77,21 @@ typedef struct elmmap
 # define BSIZE 40
 # define PSIZE 8
 
-# define W 119
-# define D 100
-# define S 115
-# define A 97
-# define ESC 65307
-# define CAMERA_R 65361
-# define CAMERA_L 65363
+//# define W 119
+//# define D 100
+//# define S 115
+//# define A 97
+//# define ESC 65307
+//# define CAMERA_R 65361
+//# define CAMERA_L 65363
 
-// # define W 119
-// # define D 100
-// # define S 115
-// # define A 97
+# define W 13
+# define D 2
+# define S 1
+# define A 0
+# define ESC 53
+# define CAMERA_R 124
+# define CAMERA_L 123
 
 //UTILS
 size_t	ft_strlen(const char	*s);
