@@ -16,34 +16,34 @@ void	full_row(t_elm_map	*map, char *line, int y)
 {
 	int	x;
 
-	map->map[y] = malloc(sizeof(char) * map->longer_line + 1);
+	map->check_map[y] = malloc(sizeof(char) * map->longer_line + 1);
 	x = 0;
 	while (x < map->longer_line)
 	{
-		map->map[y][x] = ' ';
+		map->check_map[y][x] = ' ';
 		x++;
 	}
-	map->map[y][x] = '\0';
+	map->check_map[y][x] = '\0';
 	x = 0;
 	while (line[x] && line[x] != '\n')
 	{
-		map->map[y][x] = line[x];
+		map->check_map[y][x] = line[x];
 		x++;
 	}
 }
 
 void	check_space(t_elm_map *map, int y, int x)
 {
-	if (!(map->map[y][x + 1] == ' ' || map->map[y][x + 1] == '1'
-		|| map->map[y][x + 1] == '\0'))
+	if (!(map->check_map[y][x + 1] == ' ' || map->check_map[y][x + 1] == '1'
+		|| map->check_map[y][x + 1] == '\0'))
 		put_error("Error: The wall is not closed\n");
-	if (x > 0 && !(map->map[y][x - 1] == ' ' || map->map[y][x - 1] == '1'))
+	if (x > 0 && !(map->check_map[y][x - 1] == ' ' || map->check_map[y][x - 1] == '1'))
 		put_error("Error: The wall is not closed\n");
-	if (map->map[y + 1] && !(map->map[y + 1][x] == ' '
-		|| map->map[y + 1][x] == '1'))
+	if (map->check_map[y + 1] && !(map->check_map[y + 1][x] == ' '
+		|| map->check_map[y + 1][x] == '1'))
 		put_error("Error: The wall is not closed\n");
-	if (y > 0 && !(map->map[y - 1][x] == ' '
-		|| map->map[y - 1][x] == '1'))
+	if (y > 0 && !(map->check_map[y - 1][x] == ' '
+		|| map->check_map[y - 1][x] == '1'))
 		put_error("Error: The wall is not closed\n");
 }
 
@@ -63,17 +63,18 @@ void	map_char(t_elm_map *map, int y, int x)
 {
 	char	c;
 
-	c = map->map[y][x];
+	c = map->check_map[y][x];
 	if (c == '0' || c == '1')
 		return ;
 	else if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 	{
-		map->map[y][x] = '0';
+		map->check_map[y][x] = '0';
 		if (map->player > 0)
 			put_error("Error: You can't enter more than one player\n");
 		map->player++;
 		map->p_x = (x * BSIZE) + (BSIZE - PSIZE) / 2;
 		map->p_y = ((y - 1) * BSIZE) + (BSIZE - PSIZE) / 2;
+		printf("%d, %d", map->p_x, map->p_x);
 		set_direction(map, c);
 	}
 	else if (c == ' ')
@@ -88,10 +89,10 @@ int	check_map(t_elm_map	*map)
 	int	y;
 
 	y = 0;
-	while (map->map[y])
+	while (map->check_map[y])
 	{
 		x = 0;
-		while (map->map[y][x])
+		while (map->check_map[y][x])
 		{
 			map_char(map, y, x);
 			x++;
@@ -109,7 +110,7 @@ int	init_map(char *path, t_elm_map	*map)
 	int		is_map;
 
 	is_map = 0;
-	map->map = malloc(sizeof(char *) * (map->line_nbr + 3));
+	map->check_map = malloc(sizeof(char *) * (map->line_nbr + 3));
 	fd = open(path, O_RDONLY);
 	i = 0;
 	full_row(map, "", i++);
@@ -128,6 +129,6 @@ int	init_map(char *path, t_elm_map	*map)
 		free(line);
 	}
 	full_row(map, "", i);
-	map->map[i + 1] = NULL;
+	map->check_map[i + 1] = NULL;
 	return (1);
 }

@@ -63,6 +63,7 @@ typedef struct elmmap
 	int			p_y;
 	int			dir;
 	int			longer_line;
+	char		**check_map;
 	char		**map;
 	t_mlx		m_mlx;
 	t_color		floor;
@@ -75,6 +76,19 @@ typedef struct elmmap
 # define EA 3
 # define BSIZE 40
 # define PSIZE 8
+
+# define W 119
+# define D 100
+# define S 115
+# define A 97
+# define ESC 65307
+# define CAMERA_R 65361
+# define CAMERA_L 65363
+
+// # define W 119
+// # define D 100
+// # define S 115
+// # define A 97
 
 //UTILS
 size_t	ft_strlen(const char	*s);

@@ -47,26 +47,15 @@ void	put_player_block(int y, int x, t_elm_map *map, int color)
 	int	i;
 
 	j = y;
-	sig = 1;
-	inc = 2;
-	start = PSIZE % 2;
-	if (start == 0)
-		start = 2;
 	while (j < (y) + PSIZE)
 	{
 		i = x;
 		while (i < (x) + PSIZE)
 		{
-			if (i - x >= (PSIZE - inc) / 2 && i - x < (PSIZE - inc) / 2 + inc)
-				my_mlx_pixel_put(&map->m_mlx.img, i, j, color);
+			my_mlx_pixel_put(&map->m_mlx.img, i, j, color);
 			i++;
 		}
-		printf("\n");
 		j++;
-		if (j - y == PSIZE / 2)
-			sig = -1;
-		else
-			inc += 2 * sig;
 	}
 }
 
@@ -75,16 +64,16 @@ void	draw_map_2d(t_elm_map	*map)
 	int	y;
 	int	x;
 
-	y = 1;
-	while (map->map[y] && y <= map->line_nbr)
+	y = 0;
+	while (map->map[y] && y < map->line_nbr)
 	{
 		x = 0;
 		while (map->map[y][x])
 		{
 			if (map->map[y][x] == '1')
-				put_block(y - 1, x, map, 0x333333);
+				put_block(y, x, map, 0x333333);
 			else if (map->map[y][x] == '0')
-				put_block(y - 1, x, map, 0x777777);
+				put_block(y, x, map, 0x777777);
 			x++;
 		}
 		y++;
@@ -94,6 +83,7 @@ void	draw_map_2d(t_elm_map	*map)
 int	draw_line(t_elm_map *map, int beginX, int beginY, int endX, int endY, int color)
 {
 	double deltaX = endX - beginX;
+	int	status;
 	double deltaY = endY - beginY;
 	int pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 
@@ -103,10 +93,10 @@ int	draw_line(t_elm_map *map, int beginX, int beginY, int endX, int endY, int co
 	double pixelY = beginY;
 	while (pixels)
 	{
-		if ((int)pixelY / BSIZE > 0 && (int)pixelY / BSIZE < map->line_nbr && map->map[((int)pixelY / BSIZE) + 1][(int)pixelX / BSIZE] == '0')
+		if ((int)pixelY / BSIZE > 0 && (int)pixelY / BSIZE < map->line_nbr && map->map[((int)pixelY / BSIZE)][(int)pixelX / BSIZE] == '0')
 			my_mlx_pixel_put(&map->m_mlx.img, pixelX, pixelY, color);
 		else
-			return 0;
+			my_mlx_pixel_put(&map->m_mlx.img, pixelX, pixelY, 0XFF0000);
 		pixelX += deltaX;
 		pixelY += deltaY;
 		--pixels;
@@ -124,34 +114,78 @@ void	draw_2d(t_elm_map *map)
 	draw_map_2d(map);
 	start_x = map->p_x + PSIZE / 2;
 	start_y = map->p_y + PSIZE / 2;
-	i = -30;
-	while(i >= -30 && i <= 30)
+	i = -1;
+	while(i >= -1 && i <= 1)
 	{
-		end_x = sin(deg2rad(map->dir + i)) * 5000 + start_x;
-		end_y = cos(deg2rad(map->dir + i)) * 5000 + start_y;
-		draw_line(map, start_x, start_y, end_x, end_y, 0x88FF88);
+		end_x = sin(deg2rad(map->dir + i)) * 40 + start_x;
+		end_y = cos(deg2rad(map->dir + i)) * 40 + start_y;
+		draw_line(map, start_x, start_y, end_x, end_y, 0xEEEEEE);
 		i += 1;
 	}
-	put_player_block(map->p_y, map->p_x, map, 0x0000FF);
+	put_player_block(map->p_y, map->p_x, map, 0xFFFFFF);
 	mlx_put_image_to_window(map->m_mlx.mlx, map->m_mlx.win,
 		map->m_mlx.img.img, 0, 0);
 }
 
+int		round_base(int nbr)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while ((nbr + i) % PSIZE != 0)
+		i++;
+	while ((nbr - j) % PSIZE != 0)
+		j++;
+	if (i < j)
+		return (nbr + i);
+	else
+		return (nbr - j);
+}
+
 void	move_player(t_elm_map *map, int move, char dir)
 {
-	int	next;
+	int	next_x;
+	int	next_y;
+	int	dilta;
 
+	dilta = map->dir;
 	if (dir == 'y')
 	{
-		next = map->p_y + move;
-		if (map->map[(next / BSIZE) + 1][map->p_x / BSIZE] == '0')
-			map->p_y = next;
+		if (move < 0)
+		{
+			if (dilta <= 180)
+				dilta += 180;
+			else
+				dilta = (dilta + 180) - 360;
+		}
+		printf("dilta = %d\n", dilta);
+		next_x = round_base(sin(deg2rad(dilta)) * abs(move * 2) + map->p_x);
+		next_y = round_base(cos(deg2rad(dilta)) * abs(move * 2) + map->p_y);
+		
+		
+		if (map->map[(next_y / BSIZE)][next_x / BSIZE] == '0')
+		{
+			map->p_x = next_x;
+			map->p_y = next_y;
+		}
+		
 	}
 	else if(dir == 'x')
 	{
-		next = map->p_x + move;
-		if (map->map[(map->p_y / BSIZE) + 1][next / BSIZE] == '0')
-			map->p_x = next;
+		next_x = round_base(sin(deg2rad(map->dir + 90)) * move + map->p_x);
+		next_y = round_base(cos(deg2rad(map->dir + 90)) * move + map->p_y);
+		if (move > 0)
+		{
+			next_x = round_base(sin(deg2rad(map->dir + 270)) * -move + map->p_x);
+			next_y = round_base(cos(deg2rad(map->dir + 270)) * -move + map->p_y);
+		}
+		if (map->map[(next_y / BSIZE)][next_x / BSIZE] == '0')
+		{
+			map->p_x = next_x;
+			map->p_y = next_y;
+		}
 	}
 	draw_2d(map);
 }
@@ -170,20 +204,24 @@ void    change_dir(t_elm_map	*map, char c, int move)
 
 int	events(int key, t_elm_map	*map)
 {
-	if (key == 13 || key == 0 || key == 5 || key == 1)
+	printf("%d\n", key);
+	if (key == S || key == A || key == W || key == D
+		|| key == CAMERA_L || key == CAMERA_R)
 		mlx_clear_window(map->m_mlx.mlx, map->m_mlx.win);
-	if (key == 13)
-		move_player(map, -PSIZE, 'y');
-	if (key == 1)
+	if (key == W)
 		move_player(map, PSIZE, 'y');
-	if (key == 2)
-		move_player(map, PSIZE, 'x');
-	if (key == 0)
+	if (key == S)
+		move_player(map, -PSIZE, 'y');
+	if (key == D)
 		move_player(map, -PSIZE, 'x');
-	if (key == 124)
+	if (key == A)
+		move_player(map, PSIZE, 'x');
+	if (key == CAMERA_L)
 		change_dir(map, 'r', -5);
-	if (key == 123)
+	if (key == CAMERA_R)
 		change_dir(map, 'l', 5);
+	if (key == ESC)
+		exit(1);
 	return (1);
 }
 
@@ -195,14 +233,13 @@ void	raycasting_main(t_elm_map	*map)
 	map->m_mlx.mlx = mlx_init();
 	map->m_mlx.win = mlx_new_window(map->m_mlx.mlx,
 			map->longer_line * BSIZE,
-			(map->line_nbr) * BSIZE, "Hello world!");
+			(map->line_nbr) * BSIZE, "CUB3D!");
 	map->m_mlx.img.img = mlx_new_image (map->m_mlx.mlx, map->longer_line * BSIZE,
 			(map->line_nbr) * BSIZE);
 	map->m_mlx.img.addr = mlx_get_data_addr (map->m_mlx.img.img,
 			&map->m_mlx.img.bits_per_pixel, &map->m_mlx.img.line_length,
 			&map->m_mlx.img.endian);
-	printf("{current dir = %d}\n", map->dir);
 	draw_2d(map);
-	mlx_hook(map->m_mlx.win, 2, (2L << 0), events, map);
+	mlx_hook(map->m_mlx.win, 2, (1L << 0), events, map);
 	mlx_loop(map->m_mlx.mlx);
 }

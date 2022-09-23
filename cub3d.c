@@ -39,5 +39,6 @@ int	main(int ac, char **av)
 	if (!init_map(av[1], &map))
 		return (0);
 	check_map(&map);
+	map.map = map.check_map + 1;
 	raycasting_main(&map);
 }
