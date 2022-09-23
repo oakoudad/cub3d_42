@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/23 13:05:36 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/23 18:16:12 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ typedef struct elmmap
 	t_texture	texture;
 	int			line_nbr;
 	int			player;
-	int			p_x;
-	int			p_y;
+	double		p_x;
+	double		p_y;
 	int			dir;
 	int			longer_line;
 	char		**check_map;
@@ -74,8 +74,8 @@ typedef struct elmmap
 # define SO 1
 # define WE 2
 # define EA 3
-# define BSIZE 40
-# define PSIZE 8
+# define BSIZE 10
+# define PSIZE 1
 
 //# define W 119
 //# define D 100

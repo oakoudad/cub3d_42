@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:29:04 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/21 22:55:59 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/23 14:44:05 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void	map_char(t_elm_map *map, int y, int x)
 		map->player++;
 		map->p_x = (x * BSIZE) + (BSIZE - PSIZE) / 2;
 		map->p_y = ((y - 1) * BSIZE) + (BSIZE - PSIZE) / 2;
-		printf("%d, %d", map->p_x, map->p_x);
 		set_direction(map, c);
 	}
 	else if (c == ' ')

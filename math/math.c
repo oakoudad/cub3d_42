@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 12:57:37 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/21 12:57:39 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/23 14:20:22 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ float	distance(int xa, int ya, int xb, int yb)
 
 double	deg2rad(double deg)
 {
-	return (deg * (3.14 / 180));
+	return (deg * (M_PI / 180));
 }
 
 double	rad2deg(double rad)
 {
-	return (rad * (180 / 3.14));
+	return (rad * (180 / M_PI));
 }
 
 // int main()

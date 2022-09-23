@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/23 13:34:47 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/23 18:34:09 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,7 @@ void	put_block(int y, int x, t_elm_map	*map, int color)
 
 void	put_player_block(int y, int x, t_elm_map *map, int color)
 {
-	int	j;
-	int	i;
-
-	j = y;
-	while (j < (y) + PSIZE)
-	{
-		i = x;
-		while (i < (x) + PSIZE)
-		{
-			my_mlx_pixel_put(&map->m_mlx.img, i, j, color);
-			i++;
-		}
-		j++;
-	}
+	my_mlx_pixel_put(&map->m_mlx.img, x, y, color);
 }
 
 void	draw_map_2d(t_elm_map	*map)
@@ -81,18 +68,20 @@ int	draw_line(t_elm_map *map, int beginX, int beginY, int endX, int endY, int co
 {
 	double deltaX = endX - beginX;
 	double deltaY = endY - beginY;
+	int status;
 	int pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 
-	deltaX /= pixels; // 1
-	deltaY /= pixels; // 0
+	deltaX /= pixels;
+	deltaY /= pixels;
+	status = 1;
 	double pixelX = beginX;
 	double pixelY = beginY;
-	while (pixels)
+	while (pixels && pixelY / BSIZE >= 0 && pixelX / BSIZE >= 0 && pixelX / BSIZE <= map->longer_line && pixelY / BSIZE <= map->line_nbr)
 	{
-		if ((int)pixelY / BSIZE > 0 && (int)pixelY / BSIZE < map->line_nbr && map->map[((int)pixelY / BSIZE)][(int)pixelX / BSIZE] == '0')
+		if (status && map->map[((int)pixelY / BSIZE)][(int)pixelX / BSIZE] == '0')
 			my_mlx_pixel_put(&map->m_mlx.img, pixelX, pixelY, color);
 		else
-			my_mlx_pixel_put(&map->m_mlx.img, pixelX, pixelY, 0XFF0000);
+			return 0;
 		pixelX += deltaX;
 		pixelY += deltaY;
 		--pixels;
@@ -106,25 +95,25 @@ void	draw_2d(t_elm_map *map)
 	int	start_y;
 	int	end_x;
 	int	end_y;
-	int i;
+	float i;
 
 	draw_map_2d(map);
-	start_x = map->p_x + PSIZE / 2;
-	start_y = map->p_y + PSIZE / 2;
-	i = -1;
-	while(i >= -1 && i <= 1)
+	start_x = map->p_x;
+	start_y = map->p_y;
+	i = -30;
+	while(i >= -30 && i <= 30)
 	{
-		end_x = sin(deg2rad(map->dir + i)) * 40 + start_x;
-		end_y = cos(deg2rad(map->dir + i)) * 40 + start_y;
+		end_x = sin(deg2rad(map->dir + i)) * 10000 + start_x;
+		end_y = cos(deg2rad(map->dir + i)) * 10000 + start_y;
 		draw_line(map, start_x, start_y, end_x, end_y, 0xEEEEEE);
-		i += 1;
+		i += 0.1;
 	}
 	put_player_block(map->p_y, map->p_x, map, 0xFFFFFF);
 	mlx_put_image_to_window(map->m_mlx.mlx, map->m_mlx.win,
 		map->m_mlx.img.img, 0, 0);
 }
 
-int		round_base(int nbr)
+int	round_base(int nbr)
 {
 	int i;
 	int j;
@@ -141,44 +130,77 @@ int		round_base(int nbr)
 		return (nbr - j);
 }
 
-void	move_player(t_elm_map *map, int move, char dir)
+void	correct_player(t_elm_map *map)
 {
-	int	next_x;
-	int	next_y;
-	int	dilta;
+	float	x;
+	float	y;
+	float	x1;
+	float	y1;
+	float	x2;
+	float	y2;
 
-	dilta = map->dir;
-	if (dir == 'y')
+	x1 = round_base(map->p_x);
+	x2 = round_base(map->p_x + PSIZE);
+	y1 = round_base(map->p_y);
+	y2 = round_base(map->p_y + PSIZE);
+	x = x1;
+	if (x1 > x2)
+		x = x2;
+	y = y1;
+	if (y1 > y2)
+		y = y2;
+	map->p_x = x;
+	map->p_y = y;
+}
+
+void	check_and_correct(t_elm_map *map, float x1, float y1)
+{
+	float	x2;
+	float	y2;
+	int		status;
+
+	status = 1;
+	x2 = x1 + PSIZE;
+	y2 = y1 + PSIZE;
+	if ((map->map[(int)y1 / BSIZE][(int)x1 / BSIZE]) == '1')
+		status = 0;
+	if ((map->map[(int)y1 / BSIZE][(int)x2 / BSIZE]) == '1')
+		status = 0;
+	if ((map->map[(int)y2 / BSIZE][(int)x1 / BSIZE]) == '1')
+		status = 0;
+	if ((map->map[(int)y2 / BSIZE][(int)x2 / BSIZE]) == '1')
+		status = 0;
+	if (status == 0)
+		correct_player(map);
+	else if (status == 1)
 	{
-		next_x = sin(deg2rad(map->dir)) * move + map->p_x;
-		next_y = cos(deg2rad(map->dir)) * move + map->p_y;
-		if (move < 0)
-		{
-			next_x = (sin(deg2rad(map->dir + 180)) * abs(move) + map->p_x + 1);
-			next_y = (cos(deg2rad(map->dir + 180)) * abs(move) + map->p_y + 1);
-		}
-		if (map->map[(next_y / BSIZE)][next_x / BSIZE] == '0')
-		{
-			
-			map->p_x = next_x;
-			map->p_y = next_y;
-		}
+		map->p_x = x1;
+		map->p_y = y1;
 	}
-	else if (dir == 'x')
-	{
-		next_x = round_base(sin(deg2rad(map->dir + 90)) * move + map->p_x);
-		next_y = round_base(cos(deg2rad(map->dir + 90)) * move + map->p_y);
-		if (move > 0)
-		{
-			next_x = round_base(sin(deg2rad(map->dir + 270)) * -move + map->p_x);
-			next_y = round_base(cos(deg2rad(map->dir + 270)) * -move + map->p_y);
-		}
-		if (map->map[(next_y / BSIZE)][next_x / BSIZE] == '0')
-		{
-			map->p_x = next_x;
-			map->p_y = next_y;
-		}
-	}
+}
+
+void	move_player(t_elm_map *map, char dir)
+{
+	float rads;
+	float x;
+	float y;
+	double degrees;
+	double offset;
+
+	degrees = 0;
+	if (dir == 'w')
+		degrees = map->dir;
+	else if (dir == 's')
+		degrees = map->dir + 180;
+	else if (dir == 'a')
+		degrees = map->dir + 90;
+	else if (dir == 'd')
+		degrees = map->dir + 270;
+	offset = ((PSIZE * 3) * sqrt(2)) / 2;
+	rads = deg2rad(degrees);
+	x = sin(rads) * offset + map->p_x;
+	y = cos(rads) * offset + map->p_y;
+	check_and_correct(map, x, y);
 	draw_2d(map);
 }
 
@@ -201,13 +223,13 @@ int	events(int key, t_elm_map	*map)
 		|| key == CAMERA_L || key == CAMERA_R)
 		mlx_clear_window(map->m_mlx.mlx, map->m_mlx.win);
 	if (key == W)
-		move_player(map, PSIZE, 'y');
+		move_player(map, 'w');
 	if (key == S)
-		move_player(map, -PSIZE, 'y');
+		move_player(map, 's');
 	if (key == D)
-		move_player(map, -PSIZE, 'x');
+		move_player(map, 'd');
 	if (key == A)
-		move_player(map, PSIZE, 'x');
+		move_player(map, 'a');
 	if (key == CAMERA_R)
 		change_dir(map, 'r', -5);
 	if (key == CAMERA_L)
