@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/23 18:16:12 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/23 20:44:30 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,13 @@ typedef struct my_mlx
 	t_img	img;
 }	t_mlx;
 
+typedef struct my_hook
+{
+	char	x;
+	char	y;
+	char	cam;
+}	t_hook;
+
 typedef struct elmmap
 {
 	int			texture_fd[4];
@@ -68,6 +75,7 @@ typedef struct elmmap
 	t_mlx		m_mlx;
 	t_color		floor;
 	t_color		ceiling;
+	t_hook		keys;
 }	t_elm_map;
 
 # define NO 0
@@ -130,7 +138,7 @@ int		check_map(t_elm_map	*map);
 void	raycasting_main(t_elm_map	*map);
 void	put_block(int y, int x, t_elm_map *map, int color);
 void	put_player_block(int y, int x, t_elm_map *map, int color);
-
+int		events(int key, t_elm_map	*map);
 // MATH
 double	deg2rad(double deg);
 

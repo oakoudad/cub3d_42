@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/23 18:34:09 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/23 20:40:31 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void	draw_2d(t_elm_map *map)
 		draw_line(map, start_x, start_y, end_x, end_y, 0xEEEEEE);
 		i += 0.1;
 	}
-	put_player_block(map->p_y, map->p_x, map, 0xFFFFFF);
 	mlx_put_image_to_window(map->m_mlx.mlx, map->m_mlx.win,
 		map->m_mlx.img.img, 0, 0);
 }
@@ -239,6 +238,9 @@ int	events(int key, t_elm_map	*map)
 	return (1);
 }
 
+
+
+
 void	raycasting_main(t_elm_map	*map)
 {
 	map->m_mlx.mlx = mlx_init();
@@ -251,6 +253,5 @@ void	raycasting_main(t_elm_map	*map)
 			&map->m_mlx.img.bits_per_pixel, &map->m_mlx.img.line_length,
 			&map->m_mlx.img.endian);
 	draw_2d(map);
-	mlx_hook(map->m_mlx.win, 2, (1L << 0), events, map);
-	mlx_loop(map->m_mlx.mlx);
+	//mlx_hook(map->m_mlx.win, 2, (1L << 0), events, map);
 }
