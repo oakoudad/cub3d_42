@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/23 20:40:31 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/24 21:04:17 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,26 +64,54 @@ void	draw_map_2d(t_elm_map	*map)
 	}
 }
 
-int	draw_line(t_elm_map *map, int beginX, int beginY, int endX, int endY, int color)
+void	rsaaam(t_elm_map *map, float wall_x, float wall_y, int i)
 {
-	double deltaX = endX - beginX;
-	double deltaY = endY - beginY;
-	int status;
-	int pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
+	float	h;
+	float	distance;
+	
+	float	deltaX = wall_x - map->p_x;
+	float	deltaY = wall_y - map->p_y;
+	distance = sqrt((deltaX * deltaX) + (deltaY * deltaY));
+	
+	h =  HSCREEN / distance;
+	//((distance * BSIZE) / map->line_nbr);
+	float	yy = 0;
+	//float	to = (HSCREEN - h)/2;
+	float	to = (HSCREEN - h) / 2;
+		while (yy >= 0 && yy < to)
+			my_mlx_pixel_put(&map->m_mlx.img3d, round(i), round(yy++), 0xAAAAFF);
+		while (yy >= to && yy < to + h)
+			my_mlx_pixel_put(&map->m_mlx.img3d, round(i), round(yy++), 0xcccccc);
+		while (yy < HSCREEN)
+			my_mlx_pixel_put(&map->m_mlx.img3d, round(i), round(yy++), 0xffaaaa);
+	
+}
 
+int	draw_line(t_elm_map *map, double endX, double endY, int i)
+{
+	double	deltaX;
+	double	deltaY;
+	double	pixels;
+
+	deltaX = endX - map->p_x;
+	deltaY = endY - map->p_y;
+	pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 	deltaX /= pixels;
 	deltaY /= pixels;
-	status = 1;
-	double pixelX = beginX;
-	double pixelY = beginY;
-	while (pixels && pixelY / BSIZE >= 0 && pixelX / BSIZE >= 0 && pixelX / BSIZE <= map->longer_line && pixelY / BSIZE <= map->line_nbr)
+	endX = map->p_x;
+	endY = map->p_y;
+	while (pixels && endY / BSIZE >= 0 && endX / BSIZE >= 0 && endX / BSIZE <= map->longer_line && endY / BSIZE <= map->line_nbr)
 	{
-		if (status && map->map[((int)pixelY / BSIZE)][(int)pixelX / BSIZE] == '0')
-			my_mlx_pixel_put(&map->m_mlx.img, pixelX, pixelY, color);
+		if (map->map[((int)endY / BSIZE)][(int)endX / BSIZE] == '0'){
+			my_mlx_pixel_put(&map->m_mlx.img, endX, endY, 0xffffff);
+		}
 		else
-			return 0;
-		pixelX += deltaX;
-		pixelY += deltaY;
+		{
+			rsaaam(map, endX, endY, i);
+			return (my_mlx_pixel_put(&map->m_mlx.img, endX, endY, 0xff0000), 0);
+		}
+		endX += deltaX;
+		endY += deltaY;
 		--pixels;
 	}
 	return (1);
@@ -91,25 +119,26 @@ int	draw_line(t_elm_map *map, int beginX, int beginY, int endX, int endY, int co
 
 void	draw_2d(t_elm_map *map)
 {
-	int	start_x;
-	int	start_y;
-	int	end_x;
-	int	end_y;
-	float i;
+	double	end_x;
+	double	end_y;
+	float	i;
+	float	j;
 
 	draw_map_2d(map);
-	start_x = map->p_x;
-	start_y = map->p_y;
-	i = -30;
-	while(i >= -30 && i <= 30)
+	i = 30;
+	j = 0;
+	while(i <= 30 && i >= -30)
 	{
-		end_x = sin(deg2rad(map->dir + i)) * 10000 + start_x;
-		end_y = cos(deg2rad(map->dir + i)) * 10000 + start_y;
-		draw_line(map, start_x, start_y, end_x, end_y, 0xEEEEEE);
-		i += 0.1;
+		end_x = sin(deg2rad(map->dir + i)) * 1000000 + map->p_x;
+		end_y = cos(deg2rad(map->dir + i)) * 1000000 + map->p_y;
+		draw_line(map, end_x, end_y, j);
+		i -= .05;
+		j = j + 1;
 	}
 	mlx_put_image_to_window(map->m_mlx.mlx, map->m_mlx.win,
 		map->m_mlx.img.img, 0, 0);
+	mlx_put_image_to_window(map->m_mlx.mlx, map->m_mlx.win3d,
+		map->m_mlx.img3d.img, 0, 0);
 }
 
 int	round_base(int nbr)
@@ -220,7 +249,10 @@ int	events(int key, t_elm_map	*map)
 	printf("%d\n", key);
 	if (key == S || key == A || key == W || key == D
 		|| key == CAMERA_L || key == CAMERA_R)
+	{
 		mlx_clear_window(map->m_mlx.mlx, map->m_mlx.win);
+		mlx_clear_window(map->m_mlx.mlx, map->m_mlx.win3d);
+	}
 	if (key == W)
 		move_player(map, 'w');
 	if (key == S)
@@ -244,14 +276,17 @@ int	events(int key, t_elm_map	*map)
 void	raycasting_main(t_elm_map	*map)
 {
 	map->m_mlx.mlx = mlx_init();
-	map->m_mlx.win = mlx_new_window(map->m_mlx.mlx,
-			map->longer_line * BSIZE,
-			(map->line_nbr) * BSIZE, "CUB3D!");
-	map->m_mlx.img.img = mlx_new_image (map->m_mlx.mlx, map->longer_line * BSIZE,
-			(map->line_nbr) * BSIZE);
-	map->m_mlx.img.addr = mlx_get_data_addr (map->m_mlx.img.img,
-			&map->m_mlx.img.bits_per_pixel, &map->m_mlx.img.line_length,
-			&map->m_mlx.img.endian);
+	
+	map->m_mlx.win3d = mlx_new_window(map->m_mlx.mlx, WSCREEN, HSCREEN, "CUB3D!");
+	map->m_mlx.img3d.img = mlx_new_image (map->m_mlx.mlx, WSCREEN, HSCREEN);
+	map->m_mlx.img3d.addr = mlx_get_data_addr (map->m_mlx.img3d.img, &map->m_mlx.img3d.bits_per_pixel, &map->m_mlx.img3d.line_length, &map->m_mlx.img3d.endian);
+
+	map->m_mlx.win = mlx_new_window(map->m_mlx.mlx, map->longer_line * BSIZE, (map->line_nbr) * BSIZE, "CUB3D!");
+	map->m_mlx.img.img = mlx_new_image(map->m_mlx.mlx, map->longer_line * BSIZE, (map->line_nbr) * BSIZE);
+	map->m_mlx.img.addr = mlx_get_data_addr(map->m_mlx.img.img, &map->m_mlx.img.bits_per_pixel, &map->m_mlx.img.line_length, &map->m_mlx.img.endian);
+
+	
+	
+
 	draw_2d(map);
-	//mlx_hook(map->m_mlx.win, 2, (1L << 0), events, map);
 }

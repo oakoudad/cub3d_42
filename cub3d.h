@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/23 20:44:30 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:35:57 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,14 @@ typedef struct s_data
 	int		endian;
 }	t_img;
 
+
 typedef struct my_mlx
 {
 	void	*mlx;
 	void	*win;
+	void	*win3d;
 	t_img	img;
+	t_img	img3d;
 }	t_mlx;
 
 typedef struct my_hook
@@ -84,6 +87,8 @@ typedef struct elmmap
 # define EA 3
 # define BSIZE 10
 # define PSIZE 1
+# define HSCREEN 1000
+# define WSCREEN 2000
 
 //# define W 119
 //# define D 100
