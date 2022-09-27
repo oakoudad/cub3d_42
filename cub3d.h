@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/24 20:35:57 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/26 17:21:35 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ typedef struct elmmap
 # define EA 3
 # define BSIZE 10
 # define PSIZE 1
-# define HSCREEN 1000
-# define WSCREEN 2000
+# define HSCREEN 1000.0
+# define WSCREEN 2000.0
 
 //# define W 119
 //# define D 100

@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/24 21:04:17 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/26 19:09:52 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,34 +64,39 @@ void	draw_map_2d(t_elm_map	*map)
 	}
 }
 
-void	rsaaam(t_elm_map *map, float wall_x, float wall_y, int i)
+void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
 {
 	float	h;
 	float	distance;
 	
-	float	deltaX = wall_x - map->p_x;
-	float	deltaY = wall_y - map->p_y;
+	float	deltaX;
+	deltaX = wall_x - map->p_x;
+	float	deltaY;
+	deltaY = wall_y - map->p_y;
+
 	distance = sqrt((deltaX * deltaX) + (deltaY * deltaY));
-	
-	h =  HSCREEN / distance;
+	//distance = fabs(cos(deg2rad(map->dir) - deg2rad(dilta))) * distance;
+	(void)dilta;
+	//distance = sqrt((distance * distance) - (a * a));
+	printf("%f => %f\n", dilta, (distance));
+	h =  HSCREEN * 5 / (distance);
 	//((distance * BSIZE) / map->line_nbr);
 	float	yy = 0;
 	//float	to = (HSCREEN - h)/2;
 	float	to = (HSCREEN - h) / 2;
-		while (yy >= 0 && yy < to)
-			my_mlx_pixel_put(&map->m_mlx.img3d, round(i), round(yy++), 0xAAAAFF);
-		while (yy >= to && yy < to + h)
-			my_mlx_pixel_put(&map->m_mlx.img3d, round(i), round(yy++), 0xcccccc);
-		while (yy < HSCREEN)
-			my_mlx_pixel_put(&map->m_mlx.img3d, round(i), round(yy++), 0xffaaaa);
-	
+	while (yy >= 0 && yy < to && yy < HSCREEN)
+		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0xAAAAFF);
+	while (yy >= to && yy < to + h && yy < HSCREEN)
+		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0xcccccc);
+	while (yy < HSCREEN)
+		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0xaaddaa);
 }
 
-int	draw_line(t_elm_map *map, double endX, double endY, int i)
+int	draw_line(t_elm_map *map, float endX, float endY, float i, float dilta)
 {
-	double	deltaX;
-	double	deltaY;
-	double	pixels;
+	float	deltaX;
+	float	deltaY;
+	float	pixels;
 
 	deltaX = endX - map->p_x;
 	deltaY = endY - map->p_y;
@@ -107,7 +112,7 @@ int	draw_line(t_elm_map *map, double endX, double endY, int i)
 		}
 		else
 		{
-			rsaaam(map, endX, endY, i);
+			rsaaam(map, endX, endY, i, dilta);
 			return (my_mlx_pixel_put(&map->m_mlx.img, endX, endY, 0xff0000), 0);
 		}
 		endX += deltaX;
@@ -117,10 +122,15 @@ int	draw_line(t_elm_map *map, double endX, double endY, int i)
 	return (1);
 }
 
+void	dda_algo(t_elm_map *map, float dilta)
+{
+	
+}
+
 void	draw_2d(t_elm_map *map)
 {
-	double	end_x;
-	double	end_y;
+	float	end_x;
+	float	end_y;
 	float	i;
 	float	j;
 
@@ -129,12 +139,13 @@ void	draw_2d(t_elm_map *map)
 	j = 0;
 	while(i <= 30 && i >= -30)
 	{
-		end_x = sin(deg2rad(map->dir + i)) * 1000000 + map->p_x;
+		end_x = sin(deg2rad(map->dir) + deg2rad(i)) * 1000000 + map->p_x;
 		end_y = cos(deg2rad(map->dir + i)) * 1000000 + map->p_y;
-		draw_line(map, end_x, end_y, j);
-		i -= .05;
+		draw_line(map, end_x, end_y, j, i);
+		i -= .03;
 		j = j + 1;
 	}
+	printf("%f\n", j);
 	mlx_put_image_to_window(map->m_mlx.mlx, map->m_mlx.win,
 		map->m_mlx.img.img, 0, 0);
 	mlx_put_image_to_window(map->m_mlx.mlx, map->m_mlx.win3d,
@@ -242,6 +253,18 @@ void    change_dir(t_elm_map	*map, char c, int move)
 		map->dir += move;
 	printf("{%d}\n", map->dir);
 	draw_2d(map);
+}
+
+void draw_rays(t_elm_map *map, int nr)//nr == number of rays
+{
+	int i = 0;
+	int ry;
+	if (map->dir > M_PI)
+	{
+		ry = 
+		
+	}
+	
 }
 
 int	events(int key, t_elm_map	*map)
