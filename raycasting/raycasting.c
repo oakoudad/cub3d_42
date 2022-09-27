@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/26 19:09:52 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/27 22:09:04 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	draw_map_2d(t_elm_map	*map)
 
 void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
 {
+	puts("fbdfbadb\n");
 	float	h;
 	float	distance;
 	
@@ -78,7 +79,7 @@ void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
 	//distance = fabs(cos(deg2rad(map->dir) - deg2rad(dilta))) * distance;
 	(void)dilta;
 	//distance = sqrt((distance * distance) - (a * a));
-	printf("%f => %f\n", dilta, (distance));
+	
 	h =  HSCREEN * 5 / (distance);
 	//((distance * BSIZE) / map->line_nbr);
 	float	yy = 0;
@@ -122,9 +123,85 @@ int	draw_line(t_elm_map *map, float endX, float endY, float i, float dilta)
 	return (1);
 }
 
-void	dda_algo(t_elm_map *map, float dilta)
+/*
+ay = [py/BSIZE]*BSIZE
+ax = px + (py - ay)/tan(angel)
+ystep = BSIZE
+xstep = ystep/tan(angel);
+	angel = 
+	
+	// ystep = BSIZE;
+	// xstep = BSIZE/tan(rad2deg(map->dir));
+*/
+
+float dist(t_elm_map *map, float endX, float endY)
+{
+	float	deltaX;
+	float	deltaY;
+	float	dst;
+	
+	deltaX = endX - map->p_x;
+	deltaY = endY - map->p_y;
+	dst = sqrt((deltaX * deltaX) + (deltaY * deltaY));
+	return (dst);
+}
+
+int is_wall(t_elm_map *map, float x, float y)
+{
+	puts("cc\n");
+	// printf("%f, %f\n", x, y);
+	if (map->map[(int)y/BSIZE][(int)x/BSIZE] == '1')
+	{
+		puts("vu\n");
+		return (1);
+	}
+	else
+	{
+		puts("vu\n");
+		return (0);
+	}
+}
+
+float	find_wall(t_elm_map *map, float angel, int i)
 {
 	
+	float hzfx;
+	float hzfy;
+	float vrfx;
+	float vrfy;
+	(void)i;
+	hzfy = floor(map->p_y /10) * 10;
+	hzfx = PX + ((PY - hzfy)/tan(map->dir + angel));
+	
+	vrfx =  floor(map->p_x /10) * 10;
+	vrfy = PX + ((PY - vrfx)/tan(map->dir + angel));
+	while (1)
+	{
+		// printf("is wall %d\n", is_wall(map, hzfy, hzfx));
+		// printf("%f, %f \n", hzfy, hzfx);
+		// printf("%f, %f \n", PY, PY);
+		if (is_wall(map, hzfy, hzfx) == 1 || is_wall(map, vrfy, vrfx) == 1) // || is_wall(map, vrfy, vrfx) == 1
+		{
+			if (dist(map, hzfy, hzfx) <= dist(map, vrfy, vrfx))
+			{
+				// rsaaam(map, hzfx, hzfy, i, 0);
+				return (dist(map, hzfy, hzfx));
+			}
+			else if (dist(map, hzfy, hzfx) >= dist(map, vrfy, vrfx))
+			{
+				// rsaaam(map, vrfx, vrfy, i, 0);
+				return (dist(map, vrfy, vrfx));
+			}
+		}
+		else
+		{
+			hzfx += tan(map->dir + angel) * BSIZE;
+			hzfy += BSIZE;
+			vrfx += BSIZE;
+			vrfy +=  tan(map->dir + angel) * BSIZE;
+		}
+	}
+	return (-1);
 }
 
 void	draw_2d(t_elm_map *map)
@@ -139,9 +216,12 @@ void	draw_2d(t_elm_map *map)
 	j = 0;
 	while(i <= 30 && i >= -30)
 	{
-		end_x = sin(deg2rad(map->dir) + deg2rad(i)) * 1000000 + map->p_x;
-		end_y = cos(deg2rad(map->dir + i)) * 1000000 + map->p_y;
-		draw_line(map, end_x, end_y, j, i);
+		find_wall(map , i, j);
+		(void)end_x;
+		(void)end_y;
+		// end_x = sin(deg2rad(map->dir) + deg2rad(i)) * 1000000 + map->p_x;
+		// end_y = cos(deg2rad(map->dir + i)) * 1000000 + map->p_y;
+		// draw_line(map, end_x, end_y, j, i);
 		i -= .03;
 		j = j + 1;
 	}
@@ -255,17 +335,6 @@ void    change_dir(t_elm_map	*map, char c, int move)
 	draw_2d(map);
 }
 
-void draw_rays(t_elm_map *map, int nr)//nr == number of rays
-{
-	int i = 0;
-	int ry;
-	if (map->dir > M_PI)
-	{
-		ry = 
-		
-	}
-	
-}
 
 int	events(int key, t_elm_map	*map)
 {

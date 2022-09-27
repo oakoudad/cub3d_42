@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/26 17:21:35 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/09/27 16:20:29 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ typedef struct elmmap
 # define PSIZE 1
 # define HSCREEN 1000.0
 # define WSCREEN 2000.0
+# define PX  map->p_x
+# define PY  map->p_y 
 
 //# define W 119
 //# define D 100
