@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/27 22:09:04 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/09/29 14:29:45 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,62 +146,184 @@ float dist(t_elm_map *map, float endX, float endY)
 	return (dst);
 }
 
-int is_wall(t_elm_map *map, float x, float y)
+
+// float normalaize_angel(float angel)
+// {
+// 	angel /= (2 * M_PI);
+
+// 	if (angel < 0)
+// 		return(angel + (2 * M_PI));
+// 	return (angel);
+// }
+
+// int up_down(float angel)
+// {
+// 	int face;
+// 	if (angel > 0 && angel < M_PI)
+// 		face = -1;//down
+// 	else
+// 		face = 1;//up
+// 	if ()
+// }
+
+// float	find_wall(t_elm_map *map, float angel, int i)
+// {
+	
+// 	float hzfx;
+// 	float hzfy;
+// 	float vrfx;
+// 	float vrfy;
+// 	(void)i;
+// 	printf("angel is %f\n", angel + map->dir);
+// 	// angel = normalaize_angel(deg2rad(angel + map->dir));
+// 	printf("angel is %f\n", angel);
+// 	//first horizontal intersection
+// 	hzfy = floor(map->p_y / BSIZE) * BSIZE; 
+// 	//printf("%f\n\n\n", hzfy);
+// 	if (angel > 0 && angel < M_PI)
+// 		hzfy+=BSIZE;
+// 	hzfx = PX + ((PY - hzfy)/tan(deg2rad(angel)));
+	
+// 	//first vertical intersection
+// 	vrfx =  floor(map->p_x /10) * 10;
+// 	vrfy = PX + ((PY - vrfx)/tan(deg2rad(angel)));
+	
+	
+// 	// printf("is wall %d\n", is_wall(map, hzfy, hzfx));
+// 	// printf("%f, %f \n", hzfy, hzfx);
+// 	// printf("%f, %f \n", PY, PY);
+// 	while(1)
+// 	{
+// 		if (is_wall(map, hzfy, hzfx) == 1 || is_wall(map, vrfy, vrfx) == 1) // || is_wall(map, vrfy, vrfx) == 1
+// 		{
+// 			if (dist(map, hzfy, hzfx) <= dist(map, vrfy, vrfx))
+// 			{
+// 				printf("%f %f %f\n", angel,hzfx,hzfy);
+// 				rsaaam(map, hzfx, hzfy, angel, 0);
+// 				exit(1);
+// 				return (dist(map, hzfy, hzfx));
+// 			}
+// 			else if (dist(map, hzfy, hzfx) > dist(map, vrfy, vrfx))
+// 			{
+// 				rsaaam(map, vrfx, vrfy, i, 0);
+// 				return (dist(map, vrfy, vrfx));
+// 			}
+// 		}
+// 		else
+// 		{
+// 			hzfy += BSIZE;
+// 			hzfx += hzfy / tan(deg2rad(map->dir + angel));
+// 			vrfx += BSIZE;
+// 			vrfy += vrfx / tan(deg2rad(map->dir + angel));
+// 		}
+// 	}
+// 	return (-1);
+// }
+
+int is_wall(t_elm_map *map, int x, int y)
 {
 	puts("cc\n");
-	// printf("%f, %f\n", x, y);
-	if (map->map[(int)y/BSIZE][(int)x/BSIZE] == '1')
+	printf("x >>>%d >>>>>%d\n", x, y);
+	if (y / BSIZE >= 0  && y / BSIZE < map->line_nbr && x / BSIZE >= 0 && x / BSIZE <= map->longer_line && map->map[y/BSIZE][x/BSIZE] == '1')
 	{
-		puts("vu\n");
+		puts("vu1\n");
 		return (1);
 	}
 	else
 	{
-		puts("vu\n");
+		puts("vu2\n");
 		return (0);
 	}
+	puts("read!\n");
+	return (-1);
 }
 
-float	find_wall(t_elm_map *map, float angel, int i)
+float	correct_angle(float angle)
 {
+	if (angle > 360)
+		return (angle - 360);
+	if (angle < 0)
+		return (360 + angle);
+	return (angle);
+}
+
+float	find_wall2(t_elm_map *map , float angle, float x)
+{
+	float	h_wall_x = 0;
+	float	h_wall_y = 0;
+	float	v_wall_x;
+	float	v_wall_y;
+	int		h = -1;
+	int		v = -1;
 	
-	float hzfx;
-	float hzfy;
-	float vrfx;
-	float vrfy;
-	(void)i;
-	hzfy = floor(map->p_y /10) * 10;
-	hzfx = PX + ((PY - hzfy)/tan(map->dir + angel));
+	(void)x;
+	angle = correct_angle(map->dir + angle);
+	if ((angle >= 270 && angle <= 360) || (angle >= 0 && angle < 90))
+		v = 1;
+	if (!(angle > 180 && angle < 360))
+		h = 1;
+	v_wall_y = floor(map->p_y / BSIZE) * BSIZE;
+	if (v == 1)
+		v_wall_y += BSIZE;
+	v_wall_x = map->p_x + v * (fabs(map->p_y - v_wall_y) * tan(deg2rad(angle)));
 	
-	vrfx =  floor(map->p_x /10) * 10;
-	vrfy = PX + ((PY - vrfx)/tan(map->dir + angel));
+
+	h_wall_x = floor(map->p_x / BSIZE) * BSIZE;
+	if (h == 1)
+		h_wall_x += BSIZE;
+	h_wall_y = map->p_y + h * (fabs(map->p_x - h_wall_x) * tan(deg2rad(90 - angle)));
+	if (h_wall_y / BSIZE >= 0  && h_wall_y / BSIZE < map->line_nbr && h_wall_x / BSIZE >= 0 && h_wall_x / BSIZE <= map->longer_line)
+		my_mlx_pixel_put(&map->m_mlx.img, h_wall_x, h_wall_y, 0xff0000);
+	if (v_wall_y / BSIZE >= 0  && v_wall_y / BSIZE < map->line_nbr && v_wall_x / BSIZE >= 0 && v_wall_x / BSIZE <= map->longer_line)
+		my_mlx_pixel_put(&map->m_mlx.img, v_wall_x, v_wall_y, 0x00ff00);// green, verticale
 	while (1)
 	{
-		// printf("is wall %d\n", is_wall(map, hzfy, hzfx));
-		// printf("%f, %f \n", hzfy, hzfx);
-		// printf("%f, %f \n", PY, PY);
-		if (is_wall(map, hzfy, hzfx) == 1 || is_wall(map, vrfy, vrfx) == 1) // || is_wall(map, vrfy, vrfx) == 1
+		if (is_wall(map, (int)h_wall_y, (int)h_wall_x) == 1 || is_wall(map, (int)v_wall_y, (int)v_wall_x) == 1)
 		{
-			if (dist(map, hzfy, hzfx) <= dist(map, vrfy, vrfx))
+			if (dist(map, h_wall_y, h_wall_x) <= dist(map, v_wall_y, v_wall_x))
 			{
-				// rsaaam(map, hzfx, hzfy, i, 0);
-				return (dist(map, hzfy, hzfx));
+				rsaaam(map, h_wall_x, h_wall_y, angle, 0);
+				return(dist(map, h_wall_y, h_wall_x));
 			}
-			else if (dist(map, hzfy, hzfx) >= dist(map, vrfy, vrfx))
+			else
 			{
-				// rsaaam(map, vrfx, vrfy, i, 0);
-				return (dist(map, vrfy, vrfx));
+				rsaaam(map, v_wall_x, v_wall_y, angle, 20);
+				return(dist(map, v_wall_y, v_wall_x));
 			}
 		}
 		else
 		{
-			hzfx += tan(map->dir + angel) * BSIZE;
-			hzfy += BSIZE;
-			vrfx += BSIZE;
-			vrfy +=  tan(map->dir + angel) * BSIZE;
+			if (angle >= 180 && angle <= 270)
+			{
+				v_wall_y -= BSIZE;
+				h_wall_x += BSIZE;
+				h_wall_y -= BSIZE;
+				v_wall_x += BSIZE;
+			}
+			else if (angle >= 90 && angle <= 180)
+			{
+				v_wall_y -= BSIZE;
+				h_wall_x -= BSIZE;
+				h_wall_y -= BSIZE;
+				v_wall_x -= BSIZE;
+			}
+			else if (angle >= 270 && angle <= 360)
+			{
+				v_wall_y += BSIZE;
+				h_wall_x += BSIZE;
+				h_wall_y += BSIZE;
+				v_wall_x += BSIZE;
+			}
+			else if (angle <= 90 && angle >= 0)
+			{
+				v_wall_y += BSIZE;
+				h_wall_x += BSIZE;
+				h_wall_y += BSIZE;
+				v_wall_x += BSIZE;
+			}
 		}
 	}
-	return (-1);
+	
 }
 
 void	draw_2d(t_elm_map *map)
@@ -216,12 +338,14 @@ void	draw_2d(t_elm_map *map)
 	j = 0;
 	while(i <= 30 && i >= -30)
 	{
-		find_wall(map , i, j);
+		// printf("===> %f\n", map->dir + i);
+		// find_wall(map , i, j);
 		(void)end_x;
 		(void)end_y;
-		// end_x = sin(deg2rad(map->dir) + deg2rad(i)) * 1000000 + map->p_x;
-		// end_y = cos(deg2rad(map->dir + i)) * 1000000 + map->p_y;
-		// draw_line(map, end_x, end_y, j, i);
+		end_x = sin(deg2rad(map->dir + i)) * 1000000 + map->p_x;
+		end_y = cos(deg2rad(map->dir + i)) * 1000000 + map->p_y;
+		draw_line(map, end_x, end_y, j, i);
+		find_wall2(map , i, 0);
 		i -= .03;
 		j = j + 1;
 	}
