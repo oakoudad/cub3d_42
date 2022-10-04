@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/03 20:54:00 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/04 20:55:07 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
 		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0xaaddaa);
 }
 
+
+
 int	draw_line(t_elm_map *map, float endX, float endY, float i, float dilta)
 {
 	float	deltaX;
@@ -114,7 +116,7 @@ int	draw_line(t_elm_map *map, float endX, float endY, float i, float dilta)
 		else
 		{
 			rsaaam(map, endX, endY, i, dilta);
-			return (/*my_mlx_pixel_put(&map->m_mlx.img, endX, endY, 0xff0000), */0);
+			return (my_mlx_pixel_put(&map->m_mlx.img, endX, endY, 0xff0000), 0);
 		}
 		endX += deltaX;
 		endY += deltaY;
@@ -165,88 +167,68 @@ float	correct_angle(float angle)
 	return (angle);
 }
 
-float	find_wall(t_elm_map *map , float angle, float x)
+// float	find_wall(t_elm_map *map, float angle, float x)
+// {
+// 	float	h_wall_x = 0;
+// 	float	h_wall_y = 0;
+// 	float	v_wall_x;
+// 	float	v_wall_y;
+// 	int		h = -1;
+// 	int		v = -1;
+	
+// 	(void)x;
+// 	angle = correct_angle(map->dir + angle);
+// 	if ((angle >= 270 && angle <= 360) || (angle >= 0 && angle < 90))
+// 		v = 1;
+// 	if (!(angle > 180 && angle < 360))
+// 		h = 1;
+// 	v_wall_y = floor(map->p_y / BSIZE) * BSIZE;
+// 	if (v == 1)
+// 		v_wall_y += BSIZE;
+// 	v_wall_x = map->p_x + v * (fabs(map->p_y - v_wall_y) * tan(deg2rad(angle)));
+
+// 	h_wall_x = floor(map->p_x / BSIZE) * BSIZE;
+// 	if (h == 1)
+// 		h_wall_x += BSIZE;
+// 	h_wall_y = map->p_y + h * (fabs(map->p_x - h_wall_x) * tan(deg2rad(90 - angle)));
+
+// 	if (h_wall_y / BSIZE >= 0  && h_wall_y / BSIZE < map->line_nbr && h_wall_x / BSIZE >= 0 && h_wall_x / BSIZE <= map->longer_line)
+// 		my_mlx_pixel_put(&map->m_mlx.img, h_wall_x, h_wall_y, 0xff0000);// Red, X, hiresiontal
+// 	if (v_wall_y / BSIZE >= 0  && v_wall_y / BSIZE < map->line_nbr && v_wall_x / BSIZE >= 0 && v_wall_x / BSIZE <= map->longer_line)
+// 		my_mlx_pixel_put(&map->m_mlx.img, v_wall_x, v_wall_y, 0x00ff00);// green, Y, verticale
+	
+	
+// 	return(-1);
+// }
+
+float	findwall(t_elm_map *map, float angle, float x)
 {
-	float	h_wall_x = 0;
-	float	h_wall_y = 0;
+	float	h_wall_x;
+	float	h_wall_y;
 	float	v_wall_x;
 	float	v_wall_y;
-	int		h = -1;
-	int		v = -1;
-	
-	(void)x;
-	printf("%f\n\n\n", map->dir + angle);
-	angle = correct_angle(map->dir + angle);
-	if ((angle >= 270 && angle <= 360) || (angle >= 0 && angle < 90))
-		v = 1;
-	if (!(angle > 180 && angle < 360))
-		h = 1;
-	v_wall_y = floor(map->p_y / BSIZE) * BSIZE;
-	if (v == 1)
-		v_wall_y += BSIZE;
-	v_wall_x = map->p_x + v * (fabs(map->p_y - v_wall_y) * tan(deg2rad(angle)));
+	double py;
+	double px;
 
-	h_wall_x = floor(map->p_x / BSIZE) * BSIZE;
-	if (h == 1)
-		h_wall_x += BSIZE;
-	h_wall_y = map->p_y + h * (fabs(map->p_x - h_wall_x) * tan(deg2rad(90 - angle)));
-	if (h_wall_y / BSIZE >= 0  && h_wall_y / BSIZE < map->line_nbr && h_wall_x / BSIZE >= 0 && h_wall_x / BSIZE <= map->longer_line)
-		my_mlx_pixel_put(&map->m_mlx.img, h_wall_x, h_wall_y, 0xff0000);// Red, X, hiresiontal
-	if (v_wall_y / BSIZE >= 0  && v_wall_y / BSIZE < map->line_nbr && v_wall_x / BSIZE >= 0 && v_wall_x / BSIZE <= map->longer_line)
-		my_mlx_pixel_put(&map->m_mlx.img, v_wall_x, v_wall_y, 0x00ff00);// green, Y, verticale
-	while (1)
+	py = map->p_y;
+	px = map->p_x;
+	angle = correct_angle(map->dir + angle);
+	// init first step
+	if (angle <= 270 && angle >= 180)
 	{
-		if (is_wall(map, (int)h_wall_y, (int)h_wall_x) == 1 || is_wall(map, (int)v_wall_y, (int)v_wall_x) == 1)
-		{
-			if (dist(map, h_wall_y, h_wall_x) <= dist(map, v_wall_y, v_wall_x))
-			{
-				printf("kayn 7it H\n");
-				my_mlx_pixel_put(&map->m_mlx.img, h_wall_x, h_wall_y, 0x00ff00);
-				//rsaaam(map, h_wall_x, h_wall_y, angle, x);
-				return(dist(map, h_wall_y, h_wall_x));
-			}
-			else
-			{
-				printf("kayn 7it V\n");
-				my_mlx_pixel_put(&map->m_mlx.img, v_wall_x, v_wall_y, 0x00ffff);
-				//rsaaam(map, h_wall_x, h_wall_y, angle, x);
-				return(dist(map, h_wall_y, h_wall_x));
-			}
-		}
-		else
-		{
-			//printf("makaynch 7it\n");
-			if (angle >= 180 && angle <= 270)
-			{
-				v_wall_y = BSIZE;//here
-				h_wall_x += BSIZE;
-				h_wall_y -= BSIZE;
-				v_wall_x += BSIZE;
-			}
-			else if (angle >= 90 && angle <= 180)
-			{
-				v_wall_y -= BSIZE;
-				h_wall_x -= BSIZE;
-				h_wall_y -= BSIZE;
-				v_wall_x -= BSIZE;
-			}
-			else if (angle >= 270 && angle <= 360)
-			{
-				v_wall_y += BSIZE;
-				h_wall_x += BSIZE;
-				h_wall_y += BSIZE;
-				v_wall_x += BSIZE;
-			}
-			else if (angle <= 90 && angle >= 0)
-			{
-				v_wall_y += BSIZE;
-				h_wall_x -= BSIZE;
-				h_wall_y += BSIZE;
-				v_wall_x -= BSIZE;
-			}
-		}
+		v_wall_y = (floor(py)/BSIZE) * BSIZE;
+		v_wall_x = px + ((py - v_wall_y)/tan(deg2rad(angle)));
+		h_wall_x = (floor(px/BSIZE))* BSIZE;
+		h_wall_y = py + ((v_wall_x - px)) * tan(deg2rad(angle));
 	}
-	return(-1);
+	if (angle >= 90 && angle <= 180)
+	{
+		v_wall_y = (floor(py)/BSIZE) * BSIZE;
+		v_wall_x = px + ((py - v_wall_y)/tan(deg2rad(angle)));
+		h_wall_x = (floor(px/BSIZE))* BSIZE;
+		h_wall_y = py + ((v_wall_x - px)) * tan(deg2rad(angle));
+	}
+	
 }
 
 void	draw_2d(t_elm_map *map)
@@ -261,14 +243,10 @@ void	draw_2d(t_elm_map *map)
 	j = 0;
 	while(i <= 30 && i >= -30)
 	{
-		// printf("===> %f\n", map->dir + i);
-		// find_wall(map , i, j);
-		(void)end_x;
-		(void)end_y;
-		end_x = sin(deg2rad(map->dir + 0)) * 1000000 + map->p_x;
-		end_y = cos(deg2rad(map->dir + 0)) * 1000000 + map->p_y;
-		draw_line(map, end_x, end_y, j, 0);
-		find_wall(map , 0, j);
+		end_x = sin(deg2rad(map->dir + i)) * 10000 + map->p_x;
+		end_y = cos(deg2rad(map->dir + i)) * 10000 + map->p_y;
+		draw_line(map, end_x, end_y, j, i);
+		findwall(map, i, 0);
 		i -= .03;
 		j = j + 1;
 	}
@@ -423,9 +401,6 @@ void	raycasting_main(t_elm_map	*map)
 	map->m_mlx.win = mlx_new_window(map->m_mlx.mlx, map->longer_line * BSIZE, (map->line_nbr) * BSIZE, "CUB3D!");
 	map->m_mlx.img.img = mlx_new_image(map->m_mlx.mlx, map->longer_line * BSIZE, (map->line_nbr) * BSIZE);
 	map->m_mlx.img.addr = mlx_get_data_addr(map->m_mlx.img.img, &map->m_mlx.img.bits_per_pixel, &map->m_mlx.img.line_length, &map->m_mlx.img.endian);
-
-	
-	
 
 	draw_2d(map);
 }
