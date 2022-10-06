@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:31:05 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/07 00:49:08 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/07 00:53:39 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	main(int ac, char **av)
 	check_map(&map);
 	map.map = map.check_map + 1;
 	raycasting_main(&map);
-	mlx_hook(map.m_mlx.win, 2, (1L << 0), release, &map);
+	mlx_hook(map.m_mlx.win, 2, (1L << 0), release, &map);//mask
 	mlx_hook(map.m_mlx.win, 2, (1L << 0), keyPress, &map);
 	mlx_loop(map.m_mlx.mlx);
 }
