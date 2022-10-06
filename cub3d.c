@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:31:05 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/24 17:41:14 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/06 23:42:20 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int keyPress(int key, t_elm_map	*map)
 		map->keys.cam = 'R';
 	if (key == CAMERA_L)
 		map->keys.cam = 'L';
-	printf("X = %c, Y = %c, cam = %c\n", map->keys.x, map->keys.y, map->keys.cam);
 	events(key, map);
     return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/06 22:38:51 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/07 00:27:09 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,8 @@ int	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
 	deltaY = wall_y - map->p_y;
 
 	distance = sqrt((deltaX * deltaX) + (deltaY * deltaY));
-	//distance = fabs(cos(deg2rad(map->dir) - deg2rad(dilta))) * distance;
+	distance = cos(deg2rad(dilta)) * fabs(distance);
 	(void)dilta;
-	//distance = sqrt((distance * distance) - (a * a));
 	
 	h =  HSCREEN * 5 / (distance);
 	//((distance * BSIZE) / map->line_nbr);
@@ -95,11 +94,11 @@ int	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
 
 
 
-int	draw_line(t_elm_map *map, float endX, float endY, float i, float dilta)
+int	draw_line(t_elm_map *map, float endX, float endY)
 {
 	float	deltaX;
 	float	deltaY;
-	float	pixels;
+	int	pixels;
 
 	deltaX = endX - map->p_x;
 	deltaY = endY - map->p_y;
@@ -110,15 +109,11 @@ int	draw_line(t_elm_map *map, float endX, float endY, float i, float dilta)
 	endY = map->p_y;
 	while (pixels && endY / BSIZE >= 0 && endX / BSIZE >= 0 && endX / BSIZE <= map->longer_line && endY / BSIZE <= map->line_nbr)
 	{
-		if (map->map[((int)endY / BSIZE)][(int)endX / BSIZE] == '0'){
+		if (map->map[((int)endY / BSIZE)][(int)endX / BSIZE] == '0')
 			my_mlx_pixel_put(&map->m_mlx.img, endX, endY, 0xffffff);
-		}
-		else
+		else if (map->map[((int)endY / BSIZE)][(int)endX / BSIZE] == '1')
 		{
-			dilta = 0;
-			i = 0;
-			//rsaaam(map, endX, endY, i, dilta);
-			return (/*my_mlx_pixel_put(&map->m_mlx.img, endX, endY, 0xff0000),*/ 0);
+			my_mlx_pixel_put(&map->m_mlx.img, endX, endY, 0xff0000);
 		}
 		endX += deltaX;
 		endY += deltaY;
@@ -126,17 +121,6 @@ int	draw_line(t_elm_map *map, float endX, float endY, float i, float dilta)
 	}
 	return (1);
 }
-
-/*
-ay = [py/BSIZE]*BSIZE
-ax = px + (py - ay)/tan(angel)
-ystep = BSIZE
-xstep = ystep/tan(angel);
-	angel = 
-	
-	// ystep = BSIZE;
-	// xstep = BSIZE/tan(rad2deg(map->dir));
-*/
 
 
 
@@ -151,16 +135,15 @@ void	draw_2d(t_elm_map *map)
 	i = 30;
 	j = 0;
 	
-	// while(i <= 30 && i >= -30)
-	// {
-		end_x = sin(deg2rad(map->dir + 0)) * 10000 + map->p_x;
-		end_y = cos(deg2rad(map->dir + 0)) * 10000 + map->p_y;
-		draw_line(map, end_x, end_y, j, 0);
-		findwall(map, 0, j);
-	// 	i -= .03;
-	// 	j = j + 1;
-	// }
-	//printf("%f\n", j);
+	while(i <= 30 && i >= -30)
+	{
+		end_x = sin(deg2rad(map->dir + i)) * 20 + map->p_x;
+		end_y = cos(deg2rad(map->dir + i)) * 20 + map->p_y;
+		draw_line(map, end_x, end_y);
+		findwall(map, i, j);
+		i -= .03;
+		j = j + 1;
+	}
 	mlx_put_image_to_window(map->m_mlx.mlx, map->m_mlx.win,
 		map->m_mlx.img.img, 0, 0);
 	mlx_put_image_to_window(map->m_mlx.mlx, map->m_mlx.win3d,
@@ -266,14 +249,12 @@ void    change_dir(t_elm_map	*map, char c, int move)
 		map->dir = move;
 	else
 		map->dir += move;
-	printf("{%d}\n", map->dir);
 	draw_2d(map);
 }
 
 
 int	events(int key, t_elm_map	*map)
 {
-	printf("%d\n", key);
 	if (key == S || key == A || key == W || key == D
 		|| key == CAMERA_L || key == CAMERA_R)
 	{
@@ -289,9 +270,9 @@ int	events(int key, t_elm_map	*map)
 	if (key == A)
 		move_player(map, 'a');
 	if (key == CAMERA_R)
-		change_dir(map, 'r', -5);
+		change_dir(map, 'r', -2);
 	if (key == CAMERA_L)
-		change_dir(map, 'l', 5);
+		change_dir(map, 'l', 2);
 	if (key == ESC)
 		exit(1);
 	return (1);

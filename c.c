@@ -46,7 +46,6 @@ int keyPress(int key, t_hook	*map)
 		map->cam = 'R';
 	if (key == CAMERA_L)
 		map->cam = 'L';
-	printf("X = %c, Y = %c, cam = %c\n", map->x, map->y, map->cam);
     return 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 18:49:48 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/06 23:02:11 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/06 23:43:09 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,34 +21,44 @@ float dist(t_elm_map *map, float endX, float endY)
 	deltaX = endX - map->p_x;
 	deltaY = endY - map->p_y;
 	dst = sqrt((deltaX * deltaX) + (deltaY * deltaY));
-	return (dst);
+	return (fabs(dst));
 }
 
 int is_wall(t_elm_map *map, float x, float y)
 {
 	if ((int)(y / BSIZE) < 0  || (int)(y / BSIZE) >= map->line_nbr)
-		return (1);
+		return (-1);
 	if ((int)(x / BSIZE) < 0 || (int)(x / BSIZE) >= map->longer_line)
-		return (1);
+		return (-1);
 	if (map->map[(int)(y / BSIZE)][(int)(x / BSIZE)] == '0')
 		return (0);
 	return (1);
 }
 
-int dstwalldraw(t_elm_map *map,t_raying *r,float xv, float yv, float xh, float yh, int x)
+void dstwalldraw(t_elm_map *map,t_raying *r,float xv, float yv, float xh, float yh, int x)
 {
 	float distv;
 	float disth;
 
 	distv = -1;
 	disth = -1;
-	x = 0;
-	printf("%f %f %f %f %f\n", xv, yv, xh, yh, r->angl);
 	if (is_wall(map, xv, yv) == 1)
-		puts("yes its a wall\n");
-	else
-		puts("omar zamel\n");
-	return (-1);
+		distv = dist(map, xv, yv);
+	if (is_wall(map, xh, yh) == 1)
+		disth = dist(map, xh, yh);
+	if (distv != -1 && disth != -1)
+	{
+		if (distv < disth)
+			rsaaam(map, xv, yv, x, r->angl);
+		else
+			rsaaam(map, xh, yh, x, r->angl);
+		return ;
+	}
+	if (distv != -1)
+		rsaaam(map, xv, yv, x, r->angl);
+	if (disth != -1)
+		rsaaam(map, xh, yh, x, r->angl);
+	return ;
 }
 
 float	correct_angle(float angle)
@@ -74,7 +84,6 @@ void	findwall(t_elm_map *map, float angle, float x)
 	raying.hor = 1;
 	raying.angl = angle;
 	angle = correct_angle(map->dir + angle);
-	// printf("{%f}\n", angle);
 	if ((angle > 270 && angle <= 360) || (angle >= 0 && angle < 90))
 		raying.vrt  = -1;
 	else if (angle == 270 || angle == 90)
@@ -100,7 +109,6 @@ void	findwall(t_elm_map *map, float angle, float x)
 
 	while(1 && raying.vrt != 0)
 	{
-		puts("here");
 		if (is_wall(map, raying.v_wall_x, raying.v_wall_y - raying.vrt))
 		{
 			//my_mlx_pixel_put(&map->m_mlx.img, raying.v_wall_x, raying.v_wall_y, 0x00ff00);
@@ -117,10 +125,13 @@ void	findwall(t_elm_map *map, float angle, float x)
 		raying.v_step_x = raying.v_step_x - raying.v_wall_x;
 		raying.v_wall_x += raying.v_step_x;
 	}
-	
+	if (raying.vrt == 0)
+	{
+		raying.v_wall_x = -100000000;
+		raying.v_wall_y = -100000000;
+	}
 	while(1 && raying.hor != 0)
 	{
-		printf("%d, angle = %f\n", raying.vrt, angle);
 		if (is_wall(map, raying.h_wall_x - raying.hor, raying.h_wall_y))
 		{
 			//my_mlx_pixel_put(&map->m_mlx.img, raying.h_wall_x, raying.h_wall_y, 0xff0000);
@@ -135,6 +146,10 @@ void	findwall(t_elm_map *map, float angle, float x)
 		raying.h_step_y = raying.h_step_y - raying.h_wall_y;
 		raying.h_wall_y += raying.h_step_y;
 	}
-	// x = 0;
+	if (raying.hor == 0)
+	{
+		raying.h_wall_x = -100000000;
+		raying.h_wall_y = -100000000;
+	}
 	dstwalldraw(map, &raying, raying.v_wall_x, raying.v_wall_y - raying.vrt, raying.h_wall_x - raying.hor, raying.h_wall_y, x);
 }
