@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/05 19:25:21 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/06 19:55:17 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,12 @@ typedef struct raying
 	float	h_wall_y;
 	float	v_wall_x;
 	float	v_wall_y;
-	int	vrt;
-	int hor;
+	float	v_step_y;
+	float	v_step_x;
+	float	h_step_y;
+	float	h_step_x;
+	int		vrt;
+	int		hor;
 	float angl;// clean value
 }t_raying;
 

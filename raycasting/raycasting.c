@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/05 22:36:04 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/06 19:51:06 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,11 @@ void	draw_2d(t_elm_map *map)
 	draw_map_2d(map);
 	i = 30;
 	j = 0;
-	while(i <= 30 && i >= -30)
+	end_x = sin(deg2rad(map->dir + 0)) * 10000 + map->p_x;
+	end_y = cos(deg2rad(map->dir + 0)) * 10000 + map->p_y;
+	draw_line(map, end_x, end_y, j, 0);
+	findwall(map, 0, 0);
+	while(/*i <= 30 && i >= -30*/0)
 	{
 		end_x = sin(deg2rad(map->dir + 0)) * 10000 + map->p_x;
 		end_y = cos(deg2rad(map->dir + 0)) * 10000 + map->p_y;
