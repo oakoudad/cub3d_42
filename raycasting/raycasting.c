@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/04 20:55:07 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/05 22:36:04 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,8 @@ void	draw_map_2d(t_elm_map	*map)
 	}
 }
 
-void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
+int	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
 {
-	puts("fbdfbadb\n");
 	float	h;
 	float	distance;
 	
@@ -91,6 +90,7 @@ void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
 		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0xcccccc);
 	while (yy < HSCREEN)
 		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0xaaddaa);
+	return(1);
 }
 
 
@@ -116,7 +116,7 @@ int	draw_line(t_elm_map *map, float endX, float endY, float i, float dilta)
 		else
 		{
 			rsaaam(map, endX, endY, i, dilta);
-			return (my_mlx_pixel_put(&map->m_mlx.img, endX, endY, 0xff0000), 0);
+			return (/*my_mlx_pixel_put(&map->m_mlx.img, endX, endY, 0xff0000),*/ 0);
 		}
 		endX += deltaX;
 		endY += deltaY;
@@ -136,100 +136,7 @@ xstep = ystep/tan(angel);
 	// xstep = BSIZE/tan(rad2deg(map->dir));
 */
 
-float dist(t_elm_map *map, float endX, float endY)
-{
-	float	deltaX;
-	float	deltaY;
-	float	dst;
-	
-	deltaX = endX - map->p_x;
-	deltaY = endY - map->p_y;
-	dst = sqrt((deltaX * deltaX) + (deltaY * deltaY));
-	return (dst);
-}
 
-int is_wall(t_elm_map *map, int x, int y)
-{
-	if (y / BSIZE >= 0  && y / BSIZE < map->line_nbr && x / BSIZE >= 0 && x / BSIZE <= map->longer_line && map->map[y/BSIZE][x/BSIZE] == '1')
-		return (1);
-	else if (y / BSIZE < 0 || x / BSIZE < 0 || x / BSIZE > map->longer_line || y / BSIZE > map->line_nbr)
-		return (1);
-	else
-		return (-1);
-}
-
-float	correct_angle(float angle)
-{
-	if (angle > 360)
-		return (angle - 360);
-	if (angle < 0)
-		return (360 + angle);
-	return (angle);
-}
-
-// float	find_wall(t_elm_map *map, float angle, float x)
-// {
-// 	float	h_wall_x = 0;
-// 	float	h_wall_y = 0;
-// 	float	v_wall_x;
-// 	float	v_wall_y;
-// 	int		h = -1;
-// 	int		v = -1;
-	
-// 	(void)x;
-// 	angle = correct_angle(map->dir + angle);
-// 	if ((angle >= 270 && angle <= 360) || (angle >= 0 && angle < 90))
-// 		v = 1;
-// 	if (!(angle > 180 && angle < 360))
-// 		h = 1;
-// 	v_wall_y = floor(map->p_y / BSIZE) * BSIZE;
-// 	if (v == 1)
-// 		v_wall_y += BSIZE;
-// 	v_wall_x = map->p_x + v * (fabs(map->p_y - v_wall_y) * tan(deg2rad(angle)));
-
-// 	h_wall_x = floor(map->p_x / BSIZE) * BSIZE;
-// 	if (h == 1)
-// 		h_wall_x += BSIZE;
-// 	h_wall_y = map->p_y + h * (fabs(map->p_x - h_wall_x) * tan(deg2rad(90 - angle)));
-
-// 	if (h_wall_y / BSIZE >= 0  && h_wall_y / BSIZE < map->line_nbr && h_wall_x / BSIZE >= 0 && h_wall_x / BSIZE <= map->longer_line)
-// 		my_mlx_pixel_put(&map->m_mlx.img, h_wall_x, h_wall_y, 0xff0000);// Red, X, hiresiontal
-// 	if (v_wall_y / BSIZE >= 0  && v_wall_y / BSIZE < map->line_nbr && v_wall_x / BSIZE >= 0 && v_wall_x / BSIZE <= map->longer_line)
-// 		my_mlx_pixel_put(&map->m_mlx.img, v_wall_x, v_wall_y, 0x00ff00);// green, Y, verticale
-	
-	
-// 	return(-1);
-// }
-
-float	findwall(t_elm_map *map, float angle, float x)
-{
-	float	h_wall_x;
-	float	h_wall_y;
-	float	v_wall_x;
-	float	v_wall_y;
-	double py;
-	double px;
-
-	py = map->p_y;
-	px = map->p_x;
-	angle = correct_angle(map->dir + angle);
-	// init first step
-	if (angle <= 270 && angle >= 180)
-	{
-		v_wall_y = (floor(py)/BSIZE) * BSIZE;
-		v_wall_x = px + ((py - v_wall_y)/tan(deg2rad(angle)));
-		h_wall_x = (floor(px/BSIZE))* BSIZE;
-		h_wall_y = py + ((v_wall_x - px)) * tan(deg2rad(angle));
-	}
-	if (angle >= 90 && angle <= 180)
-	{
-		v_wall_y = (floor(py)/BSIZE) * BSIZE;
-		v_wall_x = px + ((py - v_wall_y)/tan(deg2rad(angle)));
-		h_wall_x = (floor(px/BSIZE))* BSIZE;
-		h_wall_y = py + ((v_wall_x - px)) * tan(deg2rad(angle));
-	}
-	
-}
 
 void	draw_2d(t_elm_map *map)
 {
@@ -243,10 +150,10 @@ void	draw_2d(t_elm_map *map)
 	j = 0;
 	while(i <= 30 && i >= -30)
 	{
-		end_x = sin(deg2rad(map->dir + i)) * 10000 + map->p_x;
-		end_y = cos(deg2rad(map->dir + i)) * 10000 + map->p_y;
-		draw_line(map, end_x, end_y, j, i);
-		findwall(map, i, 0);
+		end_x = sin(deg2rad(map->dir + 0)) * 10000 + map->p_x;
+		end_y = cos(deg2rad(map->dir + 0)) * 10000 + map->p_y;
+		draw_line(map, end_x, end_y, j, 0);
+		findwall(map, 0, 0);
 		i -= .03;
 		j = j + 1;
 	}

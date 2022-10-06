@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/04 00:36:54 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/05 19:25:21 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,17 @@ typedef struct elmmap
 	t_hook		keys;
 }	t_elm_map;
 
+typedef struct raying
+{
+	float	h_wall_x;
+	float	h_wall_y;
+	float	v_wall_x;
+	float	v_wall_y;
+	int	vrt;
+	int hor;
+	float angl;// clean value
+}t_raying;
+
 # define NO 0
 # define SO 1
 # define WE 2
@@ -152,4 +163,9 @@ double	deg2rad(double deg);
 // ERROR PRINT & FREE & DESTROY
 int		put_error(char *str);
 
+
+//
+int	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta);
+void	findwall(t_elm_map *map, float angle, float x);
+void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
 #endif
