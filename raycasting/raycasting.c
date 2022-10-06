@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/06 19:51:06 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/06 22:38:51 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,9 @@ int	draw_line(t_elm_map *map, float endX, float endY, float i, float dilta)
 		}
 		else
 		{
-			rsaaam(map, endX, endY, i, dilta);
+			dilta = 0;
+			i = 0;
+			//rsaaam(map, endX, endY, i, dilta);
 			return (/*my_mlx_pixel_put(&map->m_mlx.img, endX, endY, 0xff0000),*/ 0);
 		}
 		endX += deltaX;
@@ -148,20 +150,17 @@ void	draw_2d(t_elm_map *map)
 	draw_map_2d(map);
 	i = 30;
 	j = 0;
-	end_x = sin(deg2rad(map->dir + 0)) * 10000 + map->p_x;
-	end_y = cos(deg2rad(map->dir + 0)) * 10000 + map->p_y;
-	draw_line(map, end_x, end_y, j, 0);
-	findwall(map, 0, 0);
-	while(/*i <= 30 && i >= -30*/0)
-	{
+	
+	// while(i <= 30 && i >= -30)
+	// {
 		end_x = sin(deg2rad(map->dir + 0)) * 10000 + map->p_x;
 		end_y = cos(deg2rad(map->dir + 0)) * 10000 + map->p_y;
 		draw_line(map, end_x, end_y, j, 0);
-		findwall(map, 0, 0);
-		i -= .03;
-		j = j + 1;
-	}
-	printf("%f\n", j);
+		findwall(map, 0, j);
+	// 	i -= .03;
+	// 	j = j + 1;
+	// }
+	//printf("%f\n", j);
 	mlx_put_image_to_window(map->m_mlx.mlx, map->m_mlx.win,
 		map->m_mlx.img.img, 0, 0);
 	mlx_put_image_to_window(map->m_mlx.mlx, map->m_mlx.win3d,
