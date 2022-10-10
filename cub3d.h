@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/06 19:55:17 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/10 01:10:40 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ int		put_error(char *str);
 
 
 //
-int	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta);
+void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta);
 void	findwall(t_elm_map *map, float angle, float x);
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
 #endif

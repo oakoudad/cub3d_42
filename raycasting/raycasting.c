@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/07 00:27:09 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/10 01:25:04 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	draw_map_2d(t_elm_map	*map)
 	}
 }
 
-int	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
+void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
 {
 	float	h;
 	float	distance;
@@ -79,17 +79,14 @@ int	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
 	(void)dilta;
 	
 	h =  HSCREEN * 5 / (distance);
-	//((distance * BSIZE) / map->line_nbr);
 	float	yy = 0;
-	//float	to = (HSCREEN - h)/2;
 	float	to = (HSCREEN - h) / 2;
 	while (yy >= 0 && yy < to && yy < HSCREEN)
-		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0xAAAAFF);
+		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0x9999ff);
 	while (yy >= to && yy < to + h && yy < HSCREEN)
-		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0xcccccc);
+		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0xffffff);
 	while (yy < HSCREEN)
-		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0xaaddaa);
-	return(1);
+		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0x555555);
 }
 
 
@@ -137,8 +134,8 @@ void	draw_2d(t_elm_map *map)
 	
 	while(i <= 30 && i >= -30)
 	{
-		end_x = sin(deg2rad(map->dir + i)) * 20 + map->p_x;
-		end_y = cos(deg2rad(map->dir + i)) * 20 + map->p_y;
+		end_x = sin(deg2rad(map->dir + i)) * 30 + map->p_x;
+		end_y = cos(deg2rad(map->dir + i)) * 30 + map->p_y;
 		draw_line(map, end_x, end_y);
 		findwall(map, i, j);
 		i -= .03;
