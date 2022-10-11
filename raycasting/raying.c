@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 18:49:48 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/11 01:26:12 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/11 22:34:45 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,25 +50,25 @@ void dstwalldraw(t_elm_map *map,t_raying *r,float xv, float yv, float xh, float 
 	{
 		if (disth > distv || (floor(yv) == floor(yh) && r->vrt == 1) || (floor(yv) - 1 == floor(yh) && r->vrt == -1))
 		{
-			rsaaam(map, xv, yv, x, r->angl);
+			rsaaam(map, xv, yv, x, r->angl, 1);
 			return ;
 		}
 		if (disth < distv && r->hor == 0)
 		{
-			rsaaam(map, xv , yv , x, r->angl);
+			rsaaam(map, xv , yv , x, r->angl, 1);
 			return ;
 		}	
 		if (disth < distv)
 		{
-			rsaaam(map, xh , yh , x, r->angl);
+			rsaaam(map, xh , yh , x, r->angl, 0);
 			return ;
 		}
 		return ;
 	}
 	if (disth != -1)
-		rsaaam(map, xh, yh, x, r->angl);
+		rsaaam(map, xh, yh, x, r->angl, 0);
 	else if (distv != -1)
-		rsaaam(map, xv, yv, x, r->angl);
+		rsaaam(map, xv, yv, x, r->angl, 0);
 	return ;
 }
 

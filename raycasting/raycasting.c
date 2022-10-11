@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/11 21:44:37 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/11 22:39:34 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	draw_map_2d(t_elm_map	*map)
 	}
 }
 
-void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
+void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta, int v)
 {
 	float			h;
 	float			distance;
@@ -84,7 +84,7 @@ void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
 	distance = cos(deg2rad(dilta)) * fabs(distance);
 	(void)dilta;
 	
-	h =  HSCREEN * 5 / (distance);
+	h =  HSCREEN * BSIZE / (distance);
 	float	yy = 0;
 	float	to = (HSCREEN - h) / 2;
 
@@ -92,10 +92,11 @@ void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
 		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0x9999ff);
 	while (yy >= to && yy < to + h && yy < HSCREEN)
 	{
-		x = map->txtimg.height * BSIZE;
-		x %= map->txtimg.height;
-		y = map->txtimg.width / wall_y;
-		
+		if (v == 1)
+			x = (int)(wall_y) % BSIZE;
+		else
+			x = (int)(wall_x) % BSIZE;
+		y = (yy - to) * (BSIZE / h);
 		xcolor = create_texture(&map->txtimg.addr, map->txtimg.width, x, y);
 		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), xcolor);
 	}
