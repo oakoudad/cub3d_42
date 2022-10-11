@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/11 01:09:05 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/11 01:16:52 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct my_mlx
 	void	*win;
 	void	*win3d;
 	t_img	img;
+	t_img	img3d;
 }	t_mlx;
 
 typedef struct my_hook
