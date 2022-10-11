@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/11 02:11:23 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/11 21:12:22 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ typedef struct my_hook
 
 typedef struct textureimg
 {
-	int whith;
+	int width;
 	int height;
-	t_img	*img;
-	char	*addr;
+	t_img	img;
+	char	addr;
 }	t_textureimg;
 
 
@@ -182,5 +182,5 @@ int		put_error(char *str);
 void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta);
 void	findwall(t_elm_map *map, float angle, float x);
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
-unsigned int create_texture(char *addr,int whith,  int x, int y);
+unsigned int create_texture(char *addr,int width,  int x, int y);
 #endif
