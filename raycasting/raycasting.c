@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/10 02:25:52 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/11 02:47:43 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,16 @@ void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
 	h =  HSCREEN * 5 / (distance);
 	float	yy = 0;
 	float	to = (HSCREEN - h) / 2;
+	unsigned int color;
+
+	color = 0x00FF0000;
 	while (yy >= 0 && yy < to && yy < HSCREEN)
 		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0x9999ff);
 	while (yy >= to && yy < to + h && yy < HSCREEN)
-		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0xffffff);
+	{
+		color = create_texture(map->txtimg.addr, map->txtimg.whith, (int)wall_x, (int)wall_y);
+		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), color);
+	}
 	while (yy < HSCREEN)
 		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0x555555);
 }
@@ -275,9 +281,6 @@ int	events(int key, t_elm_map	*map)
 	return (1);
 }
 
-
-
-
 void	raycasting_main(t_elm_map	*map)
 {
 	map->m_mlx.mlx = mlx_init();
@@ -290,6 +293,10 @@ void	raycasting_main(t_elm_map	*map)
 	map->m_mlx.win = mlx_new_window(map->m_mlx.mlx, map->longer_line * BSIZE, (map->line_nbr) * BSIZE, "CUB3D!");
 	map->m_mlx.img.img = mlx_new_image(map->m_mlx.mlx, map->longer_line * BSIZE, (map->line_nbr) * BSIZE);
 	map->m_mlx.img.addr = mlx_get_data_addr(map->m_mlx.img.img, &map->m_mlx.img.bits_per_pixel, &map->m_mlx.img.line_length, &map->m_mlx.img.endian);
-
+	
+	puts("hello fucking seg\n");
+	map->txtimg.img->img =  mlx_xpm_file_to_image(map->m_mlx.mlx, "_texture/pngwing.com.xpm", &map->txtimg.whith, &map->txtimg.height);
+	// map->txtimg.img->img = mlx_png_file_to_image(map->m_mlx.mlx, "./_texture/pngwing.com.png", &map->txtimg.whith, &map->txtimg.height);
+	map->txtimg.img->addr = mlx_get_data_addr(map->txtimg.img->img,&map->txtimg.img->bits_per_pixel , &map->txtimg.img->line_length, &map->txtimg.img->endian);
 	draw_2d(map);
 }

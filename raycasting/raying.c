@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 18:49:48 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/10 02:33:33 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/11 01:26:12 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,45 +46,29 @@ void dstwalldraw(t_elm_map *map,t_raying *r,float xv, float yv, float xh, float 
 		distv = dist(map, xv, yv);
 	if (is_wall(map, xh, yh) == 1)
 		disth = dist(map, xh, yh);
-	// printf("______________\nXV = %f, XH = %f, hor = %d, vrt = %d\n", xv, xh, r->hor, r->vrt);
-	// printf("YV = %f, YH = %f, YV = %f, YH = %f\n", (yv), (yh), floor(yv), floor(yh));
 	if (distv != -1 && disth != -1)
 	{
 		if (disth > distv || (floor(yv) == floor(yh) && r->vrt == 1) || (floor(yv) - 1 == floor(yh) && r->vrt == -1))
 		{
 			rsaaam(map, xv, yv, x, r->angl);
-			// printf("****> %d %d \n", r->hor , r->vrt);
-			// puts("V");
 			return ;
 		}
 		if (disth < distv && r->hor == 0)
 		{
 			rsaaam(map, xv , yv , x, r->angl);
-			// printf("****> %f %f  %f\n", xv , yh, r->angl);
-			// printf("****> %d %d \n", r->hor , r->vrt);
-			// puts("H");
 			return ;
 		}	
 		if (disth < distv)
 		{
 			rsaaam(map, xh , yh , x, r->angl);
-			// printf("****> %f %f  %f\n", xv , yh, r->angl);
-			// printf("****> %d %d \n", r->hor , r->vrt);
-			// puts("H");
 			return ;
 		}
 		return ;
 	}
 	if (disth != -1)
-	{
 		rsaaam(map, xh, yh, x, r->angl);
-		// puts("H.\n");
-	}
 	else if (distv != -1)
-	{
 		rsaaam(map, xv, yv, x, r->angl);
-		// puts("V.\n");
-	}
 	return ;
 }
 
