@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/11 22:39:34 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/12 01:41:35 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta, in
 	x = 0;
 	y = 0;
 	
+	(void)v;
 	float	deltaX;
 	deltaX = wall_x - map->p_x;
 	float	deltaY;
@@ -87,17 +88,20 @@ void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta, in
 	h =  HSCREEN * BSIZE / (distance);
 	float	yy = 0;
 	float	to = (HSCREEN - h) / 2;
-
 	while (yy >= 0 && yy < to && yy < HSCREEN)
 		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0x9999ff);
+	int x_offset = 0;
+	int y_offset = 0;
 	while (yy >= to && yy < to + h && yy < HSCREEN)
 	{
-		if (v == 1)
-			x = (int)(wall_y) % BSIZE;
-		else
-			x = (int)(wall_x) % BSIZE;
-		y = (yy - to) * (BSIZE / h);
-		xcolor = create_texture(&map->txtimg.addr, map->txtimg.width, x, y);
+		// if (v == 1)
+		// 	x = (int)(wall_y) % BSIZE;
+		// else
+		// 	x = (int)(wall_x) % BSIZE;
+		// y = (yy - to) * (BSIZE / h);
+		y_offset = ((float)wall_y / h) * map->txtimg.height;
+		x_offset = (int)wall_x % map->txtimg.width;
+		xcolor = create_texture(x_offset, y_offset, map, h);
 		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), xcolor);
 	}
 	while (yy < HSCREEN)
@@ -303,7 +307,9 @@ void	raycasting_main(t_elm_map	*map)
 	map->m_mlx.img.img = mlx_new_image(map->m_mlx.mlx, map->longer_line * BSIZE, (map->line_nbr) * BSIZE);
 	map->m_mlx.img.addr = mlx_get_data_addr(map->m_mlx.img.img, &map->m_mlx.img.bits_per_pixel, &map->m_mlx.img.line_length, &map->m_mlx.img.endian);
 	
-	map->txtimg.img.img =  mlx_xpm_file_to_image(map->m_mlx.mlx , "_texture/wall.xpm", &map->txtimg.width, &map->txtimg.height);
+	map->txtimg.img.img =  mlx_xpm_file_to_image(map->m_mlx.mlx , "_texture/toto.xpm", &map->txtimg.width, &map->txtimg.height);
 	map->txtimg.img.addr = mlx_get_data_addr(map->txtimg.img.img,&map->txtimg.img.bits_per_pixel , &map->txtimg.img.line_length, &map->txtimg.img.endian);
+	// mlx_put_image_to_window(map->m_mlx.mlx, map->m_mlx.win3d, map->txtimg.img.img, 0, 0);
+	// mlx_loop(map->m_mlx.mlx);
 	draw_2d(map);
 }

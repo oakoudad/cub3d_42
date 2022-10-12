@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 18:49:48 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/11 22:34:45 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/11 22:52:02 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void dstwalldraw(t_elm_map *map,t_raying *r,float xv, float yv, float xh, float 
 	if (disth != -1)
 		rsaaam(map, xh, yh, x, r->angl, 0);
 	else if (distv != -1)
-		rsaaam(map, xv, yv, x, r->angl, 0);
+		rsaaam(map, xv, yv, x, r->angl, 1);
 	return ;
 }
 

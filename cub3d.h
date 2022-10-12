@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/11 22:34:58 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/12 01:19:42 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ typedef struct textureimg
 	int width;
 	int height;
 	t_img	img;
-	char	addr;
 }	t_textureimg;
 
 
@@ -179,8 +178,8 @@ int		put_error(char *str);
 
 
 //
-void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta, int v);
-void	findwall(t_elm_map *map, float angle, float x);
-void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
-unsigned int create_texture(char *addr,int width,  int x, int y);
+void			rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta, int v);
+void			findwall(t_elm_map *map, float angle, float x);
+void			my_mlx_pixel_put(t_img *data, int x, int y, int color);
+unsigned int	create_texture(int x, int y, t_elm_map *map, float h);
 #endif
