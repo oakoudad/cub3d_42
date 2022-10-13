@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/13 23:59:43 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/14 00:11:32 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,4 +186,5 @@ void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
 
 
 int	create_texture(int x, float y, t_elm_map *map, float h);
+
 #endif

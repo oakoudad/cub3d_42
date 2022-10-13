@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/14 00:04:36 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/14 00:12:41 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	draw_wall(t_elm_map *map, float wall_x, float wall_y, float i, float dilta,
 	deltaY = wall_y - map->p_y;
 	distance = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 	distance = cos(deg2rad(dilta)) * fabs(distance);
+
 	h =  HSCREEN * BSIZE / (distance);
 	float	yy = 0;
 	float	to = (HSCREEN - h) / 2;
@@ -339,8 +340,6 @@ void	raycasting_main(t_elm_map	*map)
 	map->m_mlx.win3d = mlx_new_window(map->m_mlx.mlx, WSCREEN, HSCREEN, "CUB3D!");
 	map->m_mlx.img3d.img = mlx_new_image (map->m_mlx.mlx, WSCREEN, HSCREEN);
 	map->m_mlx.img3d.addr = mlx_get_data_addr (map->m_mlx.img3d.img, &map->m_mlx.img3d.bits_per_pixel, &map->m_mlx.img3d.line_length, &map->m_mlx.img3d.endian);
-	
-
 	map->txtimg.img.img =  mlx_xpm_file_to_image(map->m_mlx.mlx , "_texture/mytxt.xpm", &map->txtimg.width, &map->txtimg.height);
 	map->txtimg.img.addr = (int *)mlx_get_data_addr(map->txtimg.img.img,&map->txtimg.img.bits_per_pixel , &map->txtimg.img.line_length, &map->txtimg.img.endian);
 	
