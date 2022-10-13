@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:29:04 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/23 14:44:05 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/14 00:00:12 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	check_space(t_elm_map *map, int y, int x)
 	if (!(map->check_map[y][x + 1] == ' ' || map->check_map[y][x + 1] == '1'
 		|| map->check_map[y][x + 1] == '\0'))
 		put_error("Error: The wall is not closed\n");
-	if (x > 0 && !(map->check_map[y][x - 1] == ' ' || map->check_map[y][x - 1] == '1'))
+	if (x > 0 && !(map->check_map[y][x - 1] == ' '
+		|| map->check_map[y][x - 1] == '1'))
 		put_error("Error: The wall is not closed\n");
 	if (map->check_map[y + 1] && !(map->check_map[y + 1][x] == ' '
 		|| map->check_map[y + 1][x] == '1'))
@@ -45,18 +46,6 @@ void	check_space(t_elm_map *map, int y, int x)
 	if (y > 0 && !(map->check_map[y - 1][x] == ' '
 		|| map->check_map[y - 1][x] == '1'))
 		put_error("Error: The wall is not closed\n");
-}
-
-void	set_direction(t_elm_map *map, char c)
-{
-	if (c == 'N')
-		map->dir = 180;
-	if (c == 'E')
-		map->dir = 270;
-	if (c == 'S')
-		map->dir = 0;
-	if (c == 'W')
-		map->dir = 90;
 }
 
 void	map_char(t_elm_map *map, int y, int x)
@@ -72,8 +61,8 @@ void	map_char(t_elm_map *map, int y, int x)
 		if (map->player > 0)
 			put_error("Error: You can't enter more than one player\n");
 		map->player++;
-		map->p_x = (x * BSIZE) + (BSIZE - PSIZE) / 2;
-		map->p_y = ((y - 1) * BSIZE) + (BSIZE - PSIZE) / 2;
+		map->p_x = (x * BSIZE) + (BSIZE) / 2;
+		map->p_y = ((y - 1) * BSIZE) + (BSIZE) / 2;
 		set_direction(map, c);
 	}
 	else if (c == ' ')
@@ -101,16 +90,14 @@ int	check_map(t_elm_map	*map)
 	return (1);
 }
 
-int	init_map(char *path, t_elm_map	*map)
+int	init_map(t_elm_map	*map, int fd)
 {
 	int		i;
-	int		fd;
 	char	*line;
 	int		is_map;
 
 	is_map = 0;
 	map->check_map = malloc(sizeof(char *) * (map->line_nbr + 3));
-	fd = open(path, O_RDONLY);
 	i = 0;
 	full_row(map, "", i++);
 	while (1)
@@ -128,6 +115,5 @@ int	init_map(char *path, t_elm_map	*map)
 		free(line);
 	}
 	full_row(map, "", i);
-	map->check_map[i + 1] = NULL;
-	return (1);
+	return (map->check_map[i + 1] = NULL, 1);
 }

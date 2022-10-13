@@ -12,12 +12,15 @@ SRC = 	./cub3d.c\
 		./parsing/check_inputs.c\
 		./parsing/check_map.c\
 		./parsing/map.c\
-		./raycasting/raycasting.c\
-		./raycasting/raying.c\
 		./parsing/check_map_utils.c\
+		./parsing/utils.c\
+		./raycasting/raycasting.c\
+		./raycasting/draw.c\
+		./raycasting/draw_utils.c\
 		./gnl/get_next_line.c\
 		./gnl/get_next_line_utils.c\
 		./math/math.c\
+		./raycasting/texture.c\
 
 OBJ = $(SRC:.c=.o)
 

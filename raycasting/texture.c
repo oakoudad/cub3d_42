@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   math.c                                             :+:      :+:    :+:   */
+/*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/21 12:57:37 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/12 00:32:09 by oakoudad         ###   ########.fr       */
+/*   Created: 2022/10/10 22:29:31 by eelmoham          #+#    #+#             */
+/*   Updated: 2022/10/13 23:53:17 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
-#include <stdio.h>
+#include "../cub3d.h"
 
-float	distance(int xa, int ya, int xb, int yb)
+int	create_texture(int x, float y, t_elm_map *map, float h)
 {
-	return (sqrt(pow(xb - xa, 2) + pow(yb - ya, 2)));
-}
+	int		*txtcolor;
+	int		yy;
 
-double	deg2rad(double deg)
-{
-	return (deg * (M_PI / 180));
-}
-
-double	rad2deg(double rad)
-{
-	return (rad * (180 / M_PI));
+	yy = y * (map->txtimg.width / h);
+	//yy = 499;
+	//printf("x = %f, y = %f\n", x, y);
+	//printf("cx = %f, cy = %f\n", xx, yy);
+	//printf("tH = %d, lH  = %f\n", map->txtimg.height, h);
+	txtcolor = map->txtimg.img.addr + (yy * (map->txtimg.img.line_length  / 4) + x);
+	return(*txtcolor);
 }

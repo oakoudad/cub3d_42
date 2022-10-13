@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/10 01:25:04 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/14 00:04:36 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,32 +64,34 @@ void	draw_map_2d(t_elm_map	*map)
 	}
 }
 
-void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta)
+void	draw_wall(t_elm_map *map, float wall_x, float wall_y, float i, float dilta, char c)
 {
 	float	h;
 	float	distance;
-	
 	float	deltaX;
-	deltaX = wall_x - map->p_x;
 	float	deltaY;
-	deltaY = wall_y - map->p_y;
+	unsigned int	xcolor;
 
+	deltaX = wall_x - map->p_x;
+	deltaY = wall_y - map->p_y;
 	distance = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 	distance = cos(deg2rad(dilta)) * fabs(distance);
-	(void)dilta;
-	
-	h =  HSCREEN * 5 / (distance);
+	h =  HSCREEN * BSIZE / (distance);
 	float	yy = 0;
 	float	to = (HSCREEN - h) / 2;
 	while (yy >= 0 && yy < to && yy < HSCREEN)
-		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0x9999ff);
+		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0xa6cef5);
 	while (yy >= to && yy < to + h && yy < HSCREEN)
-		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0xffffff);
+	{
+		float x = (((int)(wall_y) % BSIZE)) * map->txtimg.height / BSIZE;
+		if (c == 'v')
+			x = (((int)(wall_x) % BSIZE)) * map->txtimg.height / BSIZE;
+		xcolor = create_texture(x, yy - to, map, h);
+		my_mlx_pixel_put(&map->m_mlx.img3d, i, yy++, xcolor);
+	}
 	while (yy < HSCREEN)
-		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0x555555);
+		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0xeba673);
 }
-
-
 
 int	draw_line(t_elm_map *map, float endX, float endY)
 {
@@ -107,10 +109,12 @@ int	draw_line(t_elm_map *map, float endX, float endY)
 	while (pixels && endY / BSIZE >= 0 && endX / BSIZE >= 0 && endX / BSIZE <= map->longer_line && endY / BSIZE <= map->line_nbr)
 	{
 		if (map->map[((int)endY / BSIZE)][(int)endX / BSIZE] == '0')
-			my_mlx_pixel_put(&map->m_mlx.img, endX, endY, 0xffffff);
+		{
+			//my_mlx_pixel_put(&map->m_mlx.img, endX, endY, 0x00ff00);
+		}
 		else if (map->map[((int)endY / BSIZE)][(int)endX / BSIZE] == '1')
 		{
-			my_mlx_pixel_put(&map->m_mlx.img, endX, endY, 0xff0000);
+			return 0;
 		}
 		endX += deltaX;
 		endY += deltaY;
@@ -119,30 +123,87 @@ int	draw_line(t_elm_map *map, float endX, float endY)
 	return (1);
 }
 
+int	draw_line2(t_elm_map *map, float endX, float endY)
+{
+	float	deltaX;
+	float	deltaY;
+	int	pixels;
 
+	deltaX = endX - (75 + 20);
+	deltaY = endY - (75 + 20);
+	pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
+	deltaX /= pixels;
+	deltaY /= pixels;
+	endX = (75 + 20);
+	endY = (75 + 20);
+	while (pixels && endY / BSIZE >= 0 && endX / BSIZE >= 0 && endX / BSIZE <= map->longer_line && endY / BSIZE <= map->line_nbr)
+	{
+		if (map->map[((int)endY / BSIZE)][(int)endX / BSIZE] == '0')
+		{
+			my_mlx_pixel_put(&map->m_mlx.img3d, endX, endY, 0x00ff00);
+		}
+		else if (map->map[((int)endY / BSIZE)][(int)endX / BSIZE] == '1')
+		{
+			return 0;
+		}
+		endX += deltaX;
+		endY += deltaY;
+		--pixels;
+	}
+	return (1);
+}
 
-void	draw_2d(t_elm_map *map)
+void	draw_map(t_elm_map *map)
+{
+	int	i;
+	int	j;
+	int	x;
+	int	y;
+
+	j = 0;
+	while (j <= 150)
+	{
+		i = 0;
+		while (i <= 150)
+		{
+			y = map->p_y + (j - 75);
+			x = map->p_x + (i - 75);
+			if (y < 0 || y / BSIZE >= map->line_nbr || x < 0 || x / BSIZE >= map->longer_line)
+				my_mlx_pixel_put(&map->m_mlx.img3d, i + 20, j + 20, 0x333333);
+			else if (map->map[y / BSIZE][x / BSIZE] == '0')
+				my_mlx_pixel_put(&map->m_mlx.img3d, i + 20, j + 20, 0xcccccc);
+			else
+				my_mlx_pixel_put(&map->m_mlx.img3d, i + 20, j + 20, 0xaaaaaa);
+			i++;
+		}
+		j++;
+	}
+	draw_line2(map, sin(deg2rad(map->dir)) * 10 + 95, cos(deg2rad(map->dir)) * 10 + 95);
+	my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20 + 1, j / 2 + 20, 0x001100);
+	my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20 - 1, j / 2 + 20, 0x001100);
+	my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20, j / 2 + 20, 0x001100);
+	my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20, j / 2 + 20 + 1, 0x001100);
+	my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20, j / 2 + 20 - 1, 0x001100);
+}
+
+void	draw_3d(t_elm_map *map)
 {
 	float	end_x;
 	float	end_y;
 	float	i;
 	float	j;
 
-	draw_map_2d(map);
 	i = 30;
 	j = 0;
-	
 	while(i <= 30 && i >= -30)
 	{
-		end_x = sin(deg2rad(map->dir + i)) * 30 + map->p_x;
-		end_y = cos(deg2rad(map->dir + i)) * 30 + map->p_y;
-		draw_line(map, end_x, end_y);
+		end_x = sin(deg2rad(map->dir + i)) * 20 + map->p_x;
+		end_y = cos(deg2rad(map->dir + i)) * 20 + map->p_y;
 		findwall(map, i, j);
 		i -= .03;
 		j = j + 1;
 	}
-	mlx_put_image_to_window(map->m_mlx.mlx, map->m_mlx.win,
-		map->m_mlx.img.img, 0, 0);
+	draw_map(map);
 	mlx_put_image_to_window(map->m_mlx.mlx, map->m_mlx.win3d,
 		map->m_mlx.img3d.img, 0, 0);
 }
@@ -230,12 +291,12 @@ void	move_player(t_elm_map *map, char dir)
 		degrees = map->dir + 90;
 	else if (dir == 'd')
 		degrees = map->dir + 270;
-	offset = ((PSIZE * 3) * sqrt(2)) / 2;
+	offset = ((PSIZE * 3 * 8) * sqrt(2)) / 2;
 	rads = deg2rad(degrees);
 	x = sin(rads) * offset + map->p_x;
 	y = cos(rads) * offset + map->p_y;
 	check_and_correct(map, x, y);
-	draw_2d(map);
+	draw_3d(map);
 }
 
 void    change_dir(t_elm_map	*map, char c, int move)
@@ -246,7 +307,7 @@ void    change_dir(t_elm_map	*map, char c, int move)
 		map->dir = move;
 	else
 		map->dir += move;
-	draw_2d(map);
+	draw_3d(map);
 }
 
 
@@ -254,10 +315,7 @@ int	events(int key, t_elm_map	*map)
 {
 	if (key == S || key == A || key == W || key == D
 		|| key == CAMERA_L || key == CAMERA_R)
-	{
-		mlx_clear_window(map->m_mlx.mlx, map->m_mlx.win);
 		mlx_clear_window(map->m_mlx.mlx, map->m_mlx.win3d);
-	}
 	if (key == W)
 		move_player(map, 'w');
 	if (key == S)
@@ -275,20 +333,16 @@ int	events(int key, t_elm_map	*map)
 	return (1);
 }
 
-
-
-
 void	raycasting_main(t_elm_map	*map)
 {
 	map->m_mlx.mlx = mlx_init();
-	
 	map->m_mlx.win3d = mlx_new_window(map->m_mlx.mlx, WSCREEN, HSCREEN, "CUB3D!");
 	map->m_mlx.img3d.img = mlx_new_image (map->m_mlx.mlx, WSCREEN, HSCREEN);
 	map->m_mlx.img3d.addr = mlx_get_data_addr (map->m_mlx.img3d.img, &map->m_mlx.img3d.bits_per_pixel, &map->m_mlx.img3d.line_length, &map->m_mlx.img3d.endian);
+	
 
-	map->m_mlx.win = mlx_new_window(map->m_mlx.mlx, map->longer_line * BSIZE, (map->line_nbr) * BSIZE, "CUB3D!");
-	map->m_mlx.img.img = mlx_new_image(map->m_mlx.mlx, map->longer_line * BSIZE, (map->line_nbr) * BSIZE);
-	map->m_mlx.img.addr = mlx_get_data_addr(map->m_mlx.img.img, &map->m_mlx.img.bits_per_pixel, &map->m_mlx.img.line_length, &map->m_mlx.img.endian);
-
-	draw_2d(map);
+	map->txtimg.img.img =  mlx_xpm_file_to_image(map->m_mlx.mlx , "_texture/mytxt.xpm", &map->txtimg.width, &map->txtimg.height);
+	map->txtimg.img.addr = (int *)mlx_get_data_addr(map->txtimg.img.img,&map->txtimg.img.bits_per_pixel , &map->txtimg.img.line_length, &map->txtimg.img.endian);
+	
+	draw_3d(map);
 }

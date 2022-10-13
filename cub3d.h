@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/10 01:10:40 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/13 23:59:43 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,14 @@ typedef struct s_data
 	int		endian;
 }	t_img;
 
+typedef struct s_texture_img
+{
+	void	*img;
+	int		*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_texture_img;
 
 typedef struct my_mlx
 {
@@ -63,6 +71,13 @@ typedef struct my_hook
 	char	cam;
 }	t_hook;
 
+typedef struct textureimg
+{
+	int				width;
+	int				height;
+	t_texture_img	img;
+}	t_textureimg;
+
 typedef struct elmmap
 {
 	int			texture_fd[4];
@@ -79,7 +94,9 @@ typedef struct elmmap
 	t_color		floor;
 	t_color		ceiling;
 	t_hook		keys;
+	t_textureimg	txtimg;
 }	t_elm_map;
+
 
 typedef struct raying
 {
@@ -93,27 +110,17 @@ typedef struct raying
 	float	h_step_x;
 	int		vrt;
 	int		hor;
-	float angl;// clean value
+	float	angl;
 }t_raying;
 
 # define NO 0
 # define SO 1
 # define WE 2
 # define EA 3
-# define BSIZE 10
+# define BSIZE 64
 # define PSIZE 1
 # define HSCREEN 1000.0
 # define WSCREEN 2000.0
-# define PX  map->p_x
-# define PY  map->p_y 
-
-//# define W 119
-//# define D 100
-//# define S 115
-//# define A 97
-//# define ESC 65307
-//# define CAMERA_R 65361
-//# define CAMERA_L 65363
 
 # define W 13
 # define D 2
@@ -138,6 +145,9 @@ void	check_digits(char	**rgb, t_elm_map *map, char *line);
 void	check_color(char *line, t_elm_map *map);
 int		check_empty_line(char *line);
 char	*ignore_space(char *haystack);
+float	to_positive_angle(float angle);
+float	dist(t_elm_map *map, float endX, float endY);
+int		is_wall(t_elm_map *map, float x, float y);
 
 //GET NEXT LINE
 char	*get_line(char *r, int fd);
@@ -153,23 +163,27 @@ int		ft_strstart(char *haystack, char *needle);
 void	read_file(char *path, t_elm_map *map);
 char	*get_informations(char *line);
 void	set_colors(char *line, t_color	*color, char **rgb);
-int		init_map(char *path, t_elm_map	*map);
+int		init_map(t_elm_map	*map, int fd);
 int		check_map(t_elm_map	*map);
+void	set_direction(t_elm_map *map, char c);
 
 //RAYCASTING
 void	raycasting_main(t_elm_map	*map);
 void	put_block(int y, int x, t_elm_map *map, int color);
 void	put_player_block(int y, int x, t_elm_map *map, int color);
 int		events(int key, t_elm_map	*map);
+void	draw_wall(t_elm_map *map, float wall_x, float wall_y, float i, float dilta, char c);
+void	findwall(t_elm_map *map, float angle, float x);
+
 // MATH
 double	deg2rad(double deg);
 
 // ERROR PRINT & FREE & DESTROY
 int		put_error(char *str);
 
-
-//
-void	rsaaam(t_elm_map *map, float wall_x, float wall_y, float i, float dilta);
-void	findwall(t_elm_map *map, float angle, float x);
+// mlx
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
+
+
+int	create_texture(int x, float y, t_elm_map *map, float h);
 #endif
