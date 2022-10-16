@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:28:02 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/16 13:29:49 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 15:12:30 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	move_player(t_elm_map *map, char dir)
 		degrees = map->dir + 90;
 	else if (dir == 'd')
 		degrees = map->dir + 270;
-	offset = (sqrt(BSIZE) * sqrt(2)) / 2;
+	offset = (sqrt(BSIZE) * 2 * sqrt(2)) / 2;
 	rads = deg2rad(degrees);
 	x = sin(rads) * offset + map->p_x;
 	y = cos(rads) * offset + map->p_y;

@@ -1,10 +1,10 @@
 C 122,202,199
 F 114,85,68
 
-        SO	      			./_texture/textture03
-NO ./_texture/textture03.xpm
-WE ./_texture/texture
-EA					./_texture/texture
+SO	      			./_texture/SO.xpm
+NO ./_texture/NO.xpm
+WE ./_texture/WE.xpm
+EA					./_texture/EA.xpm
                                          
 11111111111111
 100000000000001

@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/16 13:32:11 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 15:11:35 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ typedef struct elmmap
 	t_color			ceiling;
 	t_hook			keys;
 	t_textureimg	texture_no;
-	t_textureimg	texture_w;
+	t_textureimg	texture_we;
 	t_textureimg	texture_ea;
-	t_textureimg	texture_s;
+	t_textureimg	texture_so;
 }	t_elm_map;
 
 typedef struct raying
@@ -141,7 +141,7 @@ typedef struct s_drwall
 # define EA 3
 
 # define MAPSIZE 10
-# define BSIZE 64
+# define BSIZE 128
 # define PSIZE 1
 # define HSCREEN 1000.0
 # define WSCREEN 2000.0

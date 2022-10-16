@@ -41,7 +41,6 @@ COLOUR_END=\033[0m
 all : $(NAME)
 
 $(NAME) : $(INC)  $(OBJ)
-	# @$(CC) $(OBJ) -o $(NAME) -L.. -lmlx -L%%%%/../lib -lXext -lX11 -lm -lbsd
 	@$(CC) $(OBJ) -o $(NAME) -lmlx -framework OpenGL -framework AppKit
 	@echo "$(COLOUR_GREEN)Executable created (./${NAME})$(COLOUR_END)"
 
