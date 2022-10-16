@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/16 09:55:53 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/16 11:12:39 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,14 @@ typedef struct raying
 	float	angl;
 }t_raying;
 
+typedef struct s_txt
+{
+	float	x;
+	float	y;
+	float	h;
+	char 	c;
+}t_txt;	
+
 # define NO 0
 # define SO 1
 # define WE 2
@@ -190,6 +198,16 @@ int		put_error(char *str);
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
 
 
-int	create_texture(float x, float y, t_elm_map *map, float h, char c);
+int	create_texture(t_elm_map *map, t_txt *txt);
+//utils functions
+unsigned long	creatergb(int r, int g, int b);
+void	put_block(int y, int x, t_elm_map	*map, int color);
+void	draw_map_2d(t_elm_map	*map);
 
+//find wall
+void	dst_draw2(t_elm_map *map, t_raying *r, int x, float distv);
+void	dst_draw(t_elm_map *map, t_raying *r, int x);
+void	get_hor_wall(t_elm_map *map, t_raying	*raying, float angle);
+void	get_vrt_wall(t_elm_map *map, t_raying	*raying, float angle);
+void	init_raying(t_elm_map *map, float *angle, t_raying	*raying);
 #endif

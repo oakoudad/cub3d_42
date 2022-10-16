@@ -3,71 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/16 09:56:11 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/16 11:27:44 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
-
-void	my_mlx_pixel_put(t_img *data, int x, int y, int color)
-{
-	char	*dst;
-
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
-}
-
-void	put_block(int y, int x, t_elm_map	*map, int color)
-{
-	int	j;
-	int	i;
-
-	j = y * BSIZE;
-	while (j < (y * BSIZE) + BSIZE)
-	{
-		i = x * BSIZE;
-		while (i < (x * BSIZE) + BSIZE)
-		{
-			my_mlx_pixel_put(&map->m_mlx.img, i, j, color);
-			i++;
-		}
-		j++;
-	}
-}
-
-void	put_player_block(int y, int x, t_elm_map *map, int color)
-{
-	my_mlx_pixel_put(&map->m_mlx.img, x, y, color);
-}
-
-void	draw_map_2d(t_elm_map	*map)
-{
-	int	y;
-	int	x;
-
-	y = 0;
-	while (map->map[y] && y < map->line_nbr)
-	{
-		x = 0;
-		while (map->map[y][x])
-		{
-			if (map->map[y][x] == '1')
-				put_block(y, x, map, 0x333333);
-			else if (map->map[y][x] == '0')
-				put_block(y, x, map, 0x777777);
-			x++;
-		}
-		y++;
-	}
-}
-
-unsigned long createRGB(int r, int g, int b)
-{   
-    return ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
-}
 
 void	draw_wall(t_elm_map *map, float wall_x, float wall_y, float i, float dilta, char c)
 {
@@ -76,6 +19,7 @@ void	draw_wall(t_elm_map *map, float wall_x, float wall_y, float i, float dilta,
 	float	deltaX;
 	float	deltaY;
 	unsigned int	xcolor;
+	t_txt *txt;
 
 	deltaX = wall_x - map->p_x;
 	deltaY = wall_y - map->p_y;
@@ -86,7 +30,7 @@ void	draw_wall(t_elm_map *map, float wall_x, float wall_y, float i, float dilta,
 	float	yy = 0;
 	float	to = (HSCREEN - h) / 2;
 	while (yy >= 0 && yy < to && yy < HSCREEN)
-		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), (int)createRGB(map->ceiling.r, map->ceiling.g, map->ceiling.b));
+		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), (int)creatergb(map->ceiling.r, map->ceiling.g, map->ceiling.b));
 	while (yy >= to && yy < to + h && yy < HSCREEN)
 	{
 		float x = ((int)wall_y % BSIZE) * map->texture_no.height / BSIZE;
@@ -96,7 +40,7 @@ void	draw_wall(t_elm_map *map, float wall_x, float wall_y, float i, float dilta,
 		my_mlx_pixel_put(&map->m_mlx.img3d, i, yy++, xcolor);
 	}
 	while (yy < HSCREEN)
-		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), (int)createRGB(map->floor.r, map->floor.g, map->floor.b));
+		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), (int)creatergb(map->floor.r, map->floor.g, map->floor.b));
 }
 
 int	draw_line(t_elm_map *map, float endX, float endY)

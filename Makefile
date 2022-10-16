@@ -15,6 +15,8 @@ SRC = 	./cub3d.c\
 		./parsing/check_map_utils.c\
 		./parsing/utils.c\
 		./raycasting/raycasting.c\
+		./raycasting/raycasting_utils.c\
+		./raycasting/findwall.c\
 		./raycasting/draw.c\
 		./raycasting/draw_utils.c\
 		./gnl/get_next_line.c\
