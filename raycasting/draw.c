@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 18:49:48 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/13 21:54:04 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/16 10:34:14 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+
+void	dst_draw2(t_elm_map *map, t_raying *r, int x, float distv)
+{
+	if (distv != -1)
+		draw_wall(map, r->v_wall_x,
+			r->v_wall_y, x, to_positive_angle(r->angl), 'v');
+	return ;
+}
 
 void	dst_draw(t_elm_map *map, t_raying *r, int x)
 {
@@ -20,7 +28,7 @@ void	dst_draw(t_elm_map *map, t_raying *r, int x)
 	distv = -1;
 	disth = -1;
 	if (is_wall(map, r->v_wall_x, r->v_wall_y - r->vrt) == 1)
-		distv = dist(map, r->v_wall_x, r->v_wall_y);	
+		distv = dist(map, r->v_wall_x, r->v_wall_y);
 	if (is_wall(map, r->h_wall_x - r->hor, r->h_wall_y) == 1)
 		disth = dist(map, r->h_wall_x, r->h_wall_y);
 	if (distv != -1 && disth != -1)
@@ -34,10 +42,9 @@ void	dst_draw(t_elm_map *map, t_raying *r, int x)
 		return ;
 	}
 	if (disth != -1)
-		draw_wall(map, r->h_wall_x, r->h_wall_y, x, to_positive_angle(r->angl), 'h');
-	if (distv != -1)
-		draw_wall(map, r->v_wall_x, r->v_wall_y, x, to_positive_angle(r->angl), 'v');
-	return ;
+		draw_wall(map, r->h_wall_x,
+			r->h_wall_y, x, to_positive_angle(r->angl), 'h');
+	dst_draw2(map, r, x, distv);
 }
 
 void	init_raying(t_elm_map *map, float *angle, t_raying	*raying)
@@ -110,14 +117,4 @@ void	get_hor_wall(t_elm_map *map, t_raying	*raying, float angle)
 		raying->h_wall_x = -100000000;
 		raying->h_wall_y = -100000000;
 	}
-}
-
-void	findwall(t_elm_map *map, float angle, float x)
-{
-	t_raying	raying;
-
-	init_raying(map, &angle, &raying);
-	get_vrt_wall(map, &raying, angle);
-	get_hor_wall(map, &raying, angle);
-	dst_draw(map, &raying, x);
 }
