@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/16 11:12:39 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 12:11:49 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,18 @@ typedef struct s_txt
 	float	h;
 	char 	c;
 }t_txt;	
+
+typedef struct s_drwall
+{
+	float			h;
+	float			distance;
+	float			deltaX;
+	float			deltaY;
+	float			yy;
+	float			to;
+	unsigned int	xcolor;
+	t_txt			txt;
+} t_drwall;
 
 # define NO 0
 # define SO 1

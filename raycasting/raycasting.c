@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/16 11:27:44 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 12:12:16 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,31 @@
 
 void	draw_wall(t_elm_map *map, float wall_x, float wall_y, float i, float dilta, char c)
 {
-	float	h;
-	float	distance;
-	float	deltaX;
-	float	deltaY;
-	unsigned int	xcolor;
-	t_txt *txt;
+	t_drwall drwall;
 
-	deltaX = wall_x - map->p_x;
-	deltaY = wall_y - map->p_y;
-	distance = sqrt((deltaX * deltaX) + (deltaY * deltaY));
-	distance = cos(deg2rad(dilta)) * fabs(distance);
-
-	h =  HSCREEN * BSIZE / (distance);
-	float	yy = 0;
-	float	to = (HSCREEN - h) / 2;
-	while (yy >= 0 && yy < to && yy < HSCREEN)
-		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), (int)creatergb(map->ceiling.r, map->ceiling.g, map->ceiling.b));
-	while (yy >= to && yy < to + h && yy < HSCREEN)
+	drwall.deltaX = wall_x - map->p_x;
+	drwall.deltaY = wall_y - map->p_y;
+	drwall.distance = sqrt((drwall.deltaX * drwall.deltaX) + (drwall.deltaY * drwall.deltaY));
+	drwall.distance = cos(deg2rad(dilta)) * fabs(drwall.distance);
+	drwall.h =  HSCREEN * BSIZE / (drwall.distance);
+	drwall.yy = 0;
+	drwall.to = (HSCREEN - drwall.h) / 2;
+	while (drwall.yy >= 0 && drwall.yy < drwall.to && drwall.yy < HSCREEN)
+		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (drwall.yy++), (int)creatergb(map->ceiling.r, map->ceiling.g, map->ceiling.b));
+	while (drwall.yy >= drwall.to && drwall.yy < drwall.to + drwall.h && drwall.yy < HSCREEN)
 	{
 		float x = ((int)wall_y % BSIZE) * map->texture_no.height / BSIZE;
 		if (c == 'v')
 			x = ((int)wall_x % BSIZE) * map->texture_ea.height / BSIZE;
-		xcolor = create_texture(x, yy - to, map, h, c);
-		my_mlx_pixel_put(&map->m_mlx.img3d, i, yy++, xcolor);
+		drwall.txt.x = x;
+		drwall.txt.y = drwall.yy - drwall.to;
+		drwall.txt.c = c;
+		drwall.txt.h = drwall.h;
+		drwall.xcolor = create_texture(map, &drwall.txt);
+		my_mlx_pixel_put(&map->m_mlx.img3d, i, drwall.yy++, drwall.xcolor);
 	}
-	while (yy < HSCREEN)
-		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), (int)creatergb(map->floor.r, map->floor.g, map->floor.b));
+	while (drwall.yy < HSCREEN)
+		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (drwall.yy++), (int)creatergb(map->floor.r, map->floor.g, map->floor.b));
 }
 
 int	draw_line(t_elm_map *map, float endX, float endY)
