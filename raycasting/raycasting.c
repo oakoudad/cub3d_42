@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/14 00:12:41 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/16 09:56:11 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,11 @@ void	draw_map_2d(t_elm_map	*map)
 	}
 }
 
+unsigned long createRGB(int r, int g, int b)
+{   
+    return ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
+}
+
 void	draw_wall(t_elm_map *map, float wall_x, float wall_y, float i, float dilta, char c)
 {
 	float	h;
@@ -81,17 +86,17 @@ void	draw_wall(t_elm_map *map, float wall_x, float wall_y, float i, float dilta,
 	float	yy = 0;
 	float	to = (HSCREEN - h) / 2;
 	while (yy >= 0 && yy < to && yy < HSCREEN)
-		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0xa6cef5);
+		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), (int)createRGB(map->ceiling.r, map->ceiling.g, map->ceiling.b));
 	while (yy >= to && yy < to + h && yy < HSCREEN)
 	{
-		float x = (((int)(wall_y) % BSIZE)) * map->txtimg.height / BSIZE;
+		float x = ((int)wall_y % BSIZE) * map->texture_no.height / BSIZE;
 		if (c == 'v')
-			x = (((int)(wall_x) % BSIZE)) * map->txtimg.height / BSIZE;
-		xcolor = create_texture(x, yy - to, map, h);
+			x = ((int)wall_x % BSIZE) * map->texture_ea.height / BSIZE;
+		xcolor = create_texture(x, yy - to, map, h, c);
 		my_mlx_pixel_put(&map->m_mlx.img3d, i, yy++, xcolor);
 	}
 	while (yy < HSCREEN)
-		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), 0xeba673);
+		my_mlx_pixel_put(&map->m_mlx.img3d, (i), (yy++), (int)createRGB(map->floor.r, map->floor.g, map->floor.b));
 }
 
 int	draw_line(t_elm_map *map, float endX, float endY)
@@ -139,14 +144,7 @@ int	draw_line2(t_elm_map *map, float endX, float endY)
 	endY = (75 + 20);
 	while (pixels && endY / BSIZE >= 0 && endX / BSIZE >= 0 && endX / BSIZE <= map->longer_line && endY / BSIZE <= map->line_nbr)
 	{
-		if (map->map[((int)endY / BSIZE)][(int)endX / BSIZE] == '0')
-		{
-			my_mlx_pixel_put(&map->m_mlx.img3d, endX, endY, 0x00ff00);
-		}
-		else if (map->map[((int)endY / BSIZE)][(int)endX / BSIZE] == '1')
-		{
-			return 0;
-		}
+		my_mlx_pixel_put(&map->m_mlx.img3d, endX, endY, 0x00ff00);
 		endX += deltaX;
 		endY += deltaY;
 		--pixels;
@@ -167,11 +165,13 @@ void	draw_map(t_elm_map *map)
 		i = 0;
 		while (i <= 150)
 		{
-			y = map->p_y + (j - 75);
-			x = map->p_x + (i - 75);
-			if (y < 0 || y / BSIZE >= map->line_nbr || x < 0 || x / BSIZE >= map->longer_line)
+			y = map->p_y * MAPSIZE / BSIZE;
+			y = y + (j - 75);
+			x = map->p_x * MAPSIZE / BSIZE;
+			x = x + (i - 75);
+			if (y < 0 || (y / MAPSIZE) >= map->line_nbr || x < 0 || (x / MAPSIZE) >= map->longer_line)
 				my_mlx_pixel_put(&map->m_mlx.img3d, i + 20, j + 20, 0x333333);
-			else if (map->map[y / BSIZE][x / BSIZE] == '0')
+			else if (map->map[(y / MAPSIZE)][(x / MAPSIZE)] == '0')
 				my_mlx_pixel_put(&map->m_mlx.img3d, i + 20, j + 20, 0xcccccc);
 			else
 				my_mlx_pixel_put(&map->m_mlx.img3d, i + 20, j + 20, 0xaaaaaa);
@@ -179,7 +179,7 @@ void	draw_map(t_elm_map *map)
 		}
 		j++;
 	}
-	draw_line2(map, sin(deg2rad(map->dir)) * 10 + 95, cos(deg2rad(map->dir)) * 10 + 95);
+	draw_line2(map, sin(deg2rad(map->dir)) * 15 + 95, cos(deg2rad(map->dir)) * 15 + 95);
 	my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20 + 1, j / 2 + 20, 0x001100);
 	my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20 - 1, j / 2 + 20, 0x001100);
 	my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20, j / 2 + 20, 0x001100);
@@ -292,7 +292,7 @@ void	move_player(t_elm_map *map, char dir)
 		degrees = map->dir + 90;
 	else if (dir == 'd')
 		degrees = map->dir + 270;
-	offset = ((PSIZE * 3 * 8) * sqrt(2)) / 2;
+	offset = (PSIZE * 8 * sqrt(2)) / 2;
 	rads = deg2rad(degrees);
 	x = sin(rads) * offset + map->p_x;
 	y = cos(rads) * offset + map->p_y;
@@ -340,8 +340,12 @@ void	raycasting_main(t_elm_map	*map)
 	map->m_mlx.win3d = mlx_new_window(map->m_mlx.mlx, WSCREEN, HSCREEN, "CUB3D!");
 	map->m_mlx.img3d.img = mlx_new_image (map->m_mlx.mlx, WSCREEN, HSCREEN);
 	map->m_mlx.img3d.addr = mlx_get_data_addr (map->m_mlx.img3d.img, &map->m_mlx.img3d.bits_per_pixel, &map->m_mlx.img3d.line_length, &map->m_mlx.img3d.endian);
-	map->txtimg.img.img =  mlx_xpm_file_to_image(map->m_mlx.mlx , "_texture/mytxt.xpm", &map->txtimg.width, &map->txtimg.height);
-	map->txtimg.img.addr = (int *)mlx_get_data_addr(map->txtimg.img.img,&map->txtimg.img.bits_per_pixel , &map->txtimg.img.line_length, &map->txtimg.img.endian);
 	
+	map->texture_no.img.img =  mlx_xpm_file_to_image(map->m_mlx.mlx , map->texture.no, &map->texture_no.width, &map->texture_no.height);
+	map->texture_no.img.addr = (int *)mlx_get_data_addr(map->texture_no.img.img,&map->texture_no.img.bits_per_pixel , &map->texture_no.img.line_length, &map->texture_no.img.endian);
+	
+	map->texture_ea.img.img =  mlx_xpm_file_to_image(map->m_mlx.mlx , map->texture.ea, &map->texture_ea.width, &map->texture_ea.height);
+	map->texture_ea.img.addr = (int *)mlx_get_data_addr(map->texture_ea.img.img,&map->texture_ea.img.bits_per_pixel , &map->texture_ea.img.line_length, &map->texture_ea.img.endian);
+
 	draw_3d(map);
 }

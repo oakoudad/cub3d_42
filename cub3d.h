@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/14 00:11:32 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/16 09:55:53 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,21 +80,24 @@ typedef struct textureimg
 
 typedef struct elmmap
 {
-	int			texture_fd[4];
-	t_texture	texture;
-	int			line_nbr;
-	int			player;
-	double		p_x;
-	double		p_y;
-	int			dir;
-	int			longer_line;
-	char		**check_map;
-	char		**map;
-	t_mlx		m_mlx;
-	t_color		floor;
-	t_color		ceiling;
-	t_hook		keys;
-	t_textureimg	txtimg;
+	int				texture_fd[4];
+	t_texture		texture;
+	int				line_nbr;
+	int				player;
+	double			p_x;
+	double			p_y;
+	int				dir;
+	int				longer_line;
+	char			**check_map;
+	char			**map;
+	t_mlx			m_mlx;
+	t_color			floor;
+	t_color			ceiling;
+	t_hook			keys;
+	t_textureimg	texture_no;
+	t_textureimg	texture_w;
+	t_textureimg	texture_ea;
+	t_textureimg	texture_s;
 }	t_elm_map;
 
 
@@ -117,6 +120,8 @@ typedef struct raying
 # define SO 1
 # define WE 2
 # define EA 3
+
+# define MAPSIZE 10
 # define BSIZE 64
 # define PSIZE 1
 # define HSCREEN 1000.0
@@ -185,6 +190,6 @@ int		put_error(char *str);
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
 
 
-int	create_texture(int x, float y, t_elm_map *map, float h);
+int	create_texture(float x, float y, t_elm_map *map, float h, char c);
 
 #endif
