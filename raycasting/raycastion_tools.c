@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:23:20 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/16 13:32:19 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 16:13:14 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,28 @@ void	init_draw_wall(t_elm_map *map, t_txt data, t_drwall	*drwall)
 	drwall->to = (HSCREEN - drwall->h) / 2;
 }
 
-void	draw_wall(t_elm_map *map, float i, t_txt data)
+int	init_x(t_elm_map *map, t_txt data, t_raying *r)
+{
+	int	x;
+
+	if (data.c == 'v')
+	{
+		if (r->vrt == -1)
+			x = ((int)data.x % BSIZE) * map->txt_so.height / BSIZE;
+		else
+			x = ((int)data.x % BSIZE) * map->txt_no.height / BSIZE;
+	}
+	else
+	{
+		if (r->hor == -1)
+			x = ((int)data.y % BSIZE) * map->txt_ea.height / BSIZE;
+		else
+			x = ((int)data.y % BSIZE) * map->txt_we.height / BSIZE;
+	}
+	return (x);
+}
+
+void	draw_wall(t_elm_map *map, float i, t_txt data, t_raying *r)
 {
 	t_drwall	drwall;
 	float		x;
@@ -36,14 +57,12 @@ void	draw_wall(t_elm_map *map, float i, t_txt data)
 	while (drwall.yy >= drwall.to
 		&& drwall.yy < drwall.to + drwall.h && drwall.yy < HSCREEN)
 	{
-		x = ((int)data.y % BSIZE) * map->texture_no.height / BSIZE;
-		if (data.c == 'v')
-			x = ((int)data.x % BSIZE) * map->texture_ea.height / BSIZE;
+		x = init_x(map, data, r);
 		drwall.txt.x = x;
 		drwall.txt.y = drwall.yy - drwall.to;
 		drwall.txt.c = data.c;
 		drwall.txt.h = drwall.h;
-		drwall.xcolor = create_texture(map, &drwall.txt);
+		drwall.xcolor = create_texture(map, &drwall.txt, r, &data);
 		my_mlx_pixel_put(&map->m_mlx.img3d, i, drwall.yy++, drwall.xcolor);
 	}
 	while (drwall.yy < HSCREEN)

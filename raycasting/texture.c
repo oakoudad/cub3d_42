@@ -6,28 +6,33 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 22:29:31 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/16 11:53:05 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 16:13:14 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-int	create_texture(t_elm_map *map, t_txt *txt)
+int	create_texture(t_elm_map *map, t_txt *txt, t_raying *r, t_txt *data)
 {
-	int		*txtcolor;
-	float	yy;
+	int				*txtcolor;
+	float			y;
+	t_textureimg	*txting;
 
-	if (txt->c == 'v')
+	if (data->c == 'v')
 	{
-		yy = txt->y * (map->texture_ea.width / txt->h);
-		txtcolor = map->texture_ea.img.addr +((int)yy
-				* (map->texture_ea.img.line_length / 4) + (int)txt->x);
+		if (r->vrt == -1)
+			txting = &map->txt_so;
+		else
+			txting = &map->txt_no;
 	}
 	else
 	{
-		yy = txt->y * (map->texture_no.width / txt->h);
-		txtcolor = map->texture_no.img.addr + ((int)yy
-				* (map->texture_no.img.line_length / 4) + (int)txt->x);
+		if (r->hor == -1)
+			txting = &map->txt_ea;
+		else
+			txting = &map->txt_we;
 	}
+	y = txt->y * ((*txting).width / txt->h);
+	txtcolor = (*txting).img.addr +((int)y * ((*txting).img.line_length / 4) + (int)txt->x);
 	return (*txtcolor);
 }

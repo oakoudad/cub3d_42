@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:31:05 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/12 04:03:16 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/16 16:59:03 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,18 @@ void	init_struct(t_elm_map	*map)
 	map->line_nbr = 0;
 	map->longer_line = 0;
 	map->player = 0;
-	map->keys.x = 0;
-	map->keys.y = 0;
+	map->keys.hor = 0;
+	map->keys.vrt = 0;
 	map->keys.cam = 0;
 }
 
 int	release(int key, t_elm_map	*map)
 {
+	puts("here");
 	if (key == W || key == S)
-		map->keys.x = 0;
+		map->keys.vrt = 0;
 	if (key == A || key == D)
-		map->keys.y = 0;
+		map->keys.hor = 0;
 	if (key == CAMERA_L || key == CAMERA_L)
 		map->keys.cam = 0;
 	return (0);
@@ -46,13 +47,13 @@ int	release(int key, t_elm_map	*map)
 int	key_press(int key, t_elm_map *map)
 {
 	if (key == W)
-		map->keys.x = 'W';
-	if (key == S)
-		map->keys.x = 'S';
-	if (key == D)
-		map->keys.y = 'D';
+		map->keys.vrt = 1;
+	else if (key == S)
+		map->keys.vrt = -1;
 	if (key == A)
-		map->keys.y = 'A';
+		map->keys.hor = 1;
+	else if (key == D)
+		map->keys.hor = -1;
 	if (key == CAMERA_R)
 		map->keys.cam = 'R';
 	if (key == CAMERA_L)
@@ -80,5 +81,6 @@ int	main(int ac, char **av)
 	raycasting_main(&map);
 	mlx_hook(map.m_mlx.win3d, 2, (1L << 0), release, &map);
 	mlx_hook(map.m_mlx.win3d, 2, (1L << 0), key_press, &map);
+	//mlx_key_hook(map.m_mlx.win3d, events, &map);
 	mlx_loop(map.m_mlx.mlx);
 }

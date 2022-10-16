@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 12:37:09 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/16 12:39:40 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 15:16:23 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,5 @@ void	dst_draw_norm(t_elm_map *map, t_raying *r, int x, float distv)
 
 	data = init_data(r->v_wall_x, r->v_wall_y, fix_angle(r->angl), 'v');
 	if (distv != -1)
-		draw_wall(map, x, data);
+		draw_wall(map, x, data, r);
 }

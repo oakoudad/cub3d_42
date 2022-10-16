@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:28:02 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/16 15:12:30 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 16:52:44 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,9 @@ void	change_dir(t_elm_map *map, char c, int move)
 
 int	events(int key, t_elm_map	*map)
 {
-	if (key == S || key == A || key == W || key == D
-		|| key == CAMERA_L || key == CAMERA_R)
-		mlx_clear_window(map->m_mlx.mlx, map->m_mlx.win3d);
+	printf("HOR = %d, ", map->keys.hor);
+	printf("VRT = %d, ", map->keys.vrt);
+	printf("CAM = %d\n", map->keys.vrt);
 	if (key == W)
 		move_player(map, 'w');
 	if (key == S)

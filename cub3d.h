@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/16 15:11:35 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 17:02:10 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,14 @@ typedef struct s_texture_img
 typedef struct my_mlx
 {
 	void	*mlx;
-	void	*win;
 	void	*win3d;
-	t_img	img;
 	t_img	img3d;
 }	t_mlx;
 
 typedef struct my_hook
 {
-	char	x;
-	char	y;
+	char	hor;
+	char	vrt;
 	char	cam;
 }	t_hook;
 
@@ -94,10 +92,10 @@ typedef struct elmmap
 	t_color			floor;
 	t_color			ceiling;
 	t_hook			keys;
-	t_textureimg	texture_no;
-	t_textureimg	texture_we;
-	t_textureimg	texture_ea;
-	t_textureimg	texture_so;
+	t_textureimg	txt_no;
+	t_textureimg	txt_we;
+	t_textureimg	txt_ea;
+	t_textureimg	txt_so;
 }	t_elm_map;
 
 typedef struct raying
@@ -141,7 +139,7 @@ typedef struct s_drwall
 # define EA 3
 
 # define MAPSIZE 10
-# define BSIZE 128
+# define BSIZE 1280
 # define PSIZE 1
 # define HSCREEN 1000.0
 # define WSCREEN 2000.0
@@ -186,17 +184,14 @@ int		init_map(t_elm_map	*map, int fd);
 int		check_map(t_elm_map	*map);
 void	set_direction(t_elm_map *map, char c);
 void	raycasting_main(t_elm_map	*map);
-void	put_block(int y, int x, t_elm_map *map, int color);
 int		events(int key, t_elm_map	*map);
-void	draw_wall(t_elm_map *map, float i, t_txt data);
+void	draw_wall(t_elm_map *map, float i, t_txt data, t_raying *r);
 void	findwall(t_elm_map *map, float angle, float x);
 double	deg2rad(double deg);
 int		put_error(char *str);
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
-int		create_texture(t_elm_map *map, t_txt *txt);
+int		create_texture(t_elm_map *map, t_txt *txt, t_raying *r, t_txt *data);
 int		creatergb(int r, int g, int b);
-void	put_block(int y, int x, t_elm_map	*map, int color);
-void	draw_map_2d(t_elm_map	*map);
 void	dst_draw2(t_elm_map *map, t_raying *r, int x, float distv);
 void	dst_draw(t_elm_map *map, t_raying *r, int x);
 void	get_hor_wall(t_elm_map *map, t_raying	*raying, float angle);

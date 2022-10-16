@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/16 15:04:31 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 16:47:54 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,35 +43,46 @@ void	draw_3d(t_elm_map *map)
 		j = j + 1;
 	}
 	draw_map(map);
+	mlx_clear_window(map->m_mlx.mlx, map->m_mlx.win3d);
 	mlx_put_image_to_window(map->m_mlx.mlx, map->m_mlx.win3d,
 		map->m_mlx.img3d.img, 0, 0);
 }
 
+void	check_xpm(t_elm_map	*map)
+{
+	if (map->txt_no.img.img == NULL)
+		exit(0);
+	if (map->txt_so.img.img == NULL)
+		exit(0);
+	if (map->txt_ea.img.img == NULL)
+		exit(0);
+	if (map->txt_we.img.img == NULL)
+		exit(0);
+}
+
 void	init_texture(t_elm_map	*map)
 {
-	map->texture_no.img.img = mlx_xpm_file_to_image(map->m_mlx.mlx,
-			map->texture.no, &map->texture_no.width, &map->texture_no.height);
-	map->texture_no.img.addr = (int *)mlx_get_data_addr(map->texture_no.img.img,
-			&map->texture_no.img.bits_per_pixel,
-			&map->texture_no.img.line_length, &map->texture_no.img.endian);
-	map->texture_ea.img.img = mlx_xpm_file_to_image(map->m_mlx.mlx,
-			map->texture.ea,
-			&map->texture_ea.width, &map->texture_ea.height);
-	map->texture_ea.img.addr = (int *)mlx_get_data_addr(map->texture_ea.img.img,
-			&map->texture_ea.img.bits_per_pixel,
-			&map->texture_ea.img.line_length, &map->texture_ea.img.endian);
-	map->texture_so.img.img = mlx_xpm_file_to_image(map->m_mlx.mlx,
-			map->texture.so,
-			&map->texture_so.width, &map->texture_so.height);
-	map->texture_so.img.addr = (int *)mlx_get_data_addr(map->texture_so.img.img,
-			&map->texture_so.img.bits_per_pixel,
-			&map->texture_so.img.line_length, &map->texture_so.img.endian);
-	map->texture_we.img.img = mlx_xpm_file_to_image(map->m_mlx.mlx,
-			map->texture.we,
-			&map->texture_we.width, &map->texture_we.height);
-	map->texture_ea.img.addr = (int *)mlx_get_data_addr(map->texture_we.img.img,
-			&map->texture_we.img.bits_per_pixel,
-			&map->texture_we.img.line_length, &map->texture_we.img.endian);
+	map->txt_no.img.img = mlx_xpm_file_to_image(map->m_mlx.mlx,
+			map->texture.no, &map->txt_no.width, &map->txt_no.height);
+	map->txt_ea.img.img = mlx_xpm_file_to_image(map->m_mlx.mlx, map->texture.ea,
+			&map->txt_ea.width, &map->txt_ea.height);
+	map->txt_so.img.img = mlx_xpm_file_to_image(map->m_mlx.mlx,
+			map->texture.so, &map->txt_so.width, &map->txt_so.height);
+	map->txt_we.img.img = mlx_xpm_file_to_image(map->m_mlx.mlx,
+			map->texture.we, &map->txt_we.width, &map->txt_we.height);
+	check_xpm(map);
+	map->txt_no.img.addr = (int *)mlx_get_data_addr(map->txt_no.img.img,
+			&map->txt_no.img.bits_per_pixel,
+			&map->txt_no.img.line_length, &map->txt_no.img.endian);
+	map->txt_ea.img.addr = (int *)mlx_get_data_addr(map->txt_ea.img.img,
+			&map->txt_ea.img.bits_per_pixel,
+			&map->txt_ea.img.line_length, &map->txt_ea.img.endian);
+	map->txt_so.img.addr = (int *)mlx_get_data_addr(map->txt_so.img.img,
+			&map->txt_so.img.bits_per_pixel,
+			&map->txt_so.img.line_length, &map->txt_so.img.endian);
+	map->txt_we.img.addr = (int *)mlx_get_data_addr(map->txt_we.img.img,
+			&map->txt_we.img.bits_per_pixel,
+			&map->txt_we.img.line_length, &map->txt_we.img.endian);
 }
 
 void	raycasting_main(t_elm_map	*map)
@@ -84,16 +95,6 @@ void	raycasting_main(t_elm_map	*map)
 	map->m_mlx.img3d.addr = mlx_get_data_addr (map->m_mlx.img3d.img,
 			&map->m_mlx.img3d.bits_per_pixel, &map->m_mlx.img3d.line_length,
 			&map->m_mlx.img3d.endian);
-	map->texture_no.img.img = mlx_xpm_file_to_image(map->m_mlx.mlx,
-			map->texture.no, &map->texture_no.width, &map->texture_no.height);
-	map->texture_no.img.addr = (int *)mlx_get_data_addr(map->texture_no.img.img,
-			&map->texture_no.img.bits_per_pixel,
-			&map->texture_no.img.line_length, &map->texture_no.img.endian);
-	map->texture_ea.img.img = mlx_xpm_file_to_image(map->m_mlx.mlx,
-			map->texture.ea,
-			&map->texture_ea.width, &map->texture_ea.height);
-	map->texture_ea.img.addr = (int *)mlx_get_data_addr(map->texture_ea.img.img,
-			&map->texture_ea.img.bits_per_pixel,
-			&map->texture_ea.img.line_length, &map->texture_ea.img.endian);
+	init_texture(map);
 	draw_3d(map);
 }
