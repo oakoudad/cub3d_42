@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   findwall.c                                         :+:      :+:    :+:   */
+/*   find_wall.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 10:52:39 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/16 11:00:31 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 12:38:55 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-void	dst_draw2(t_elm_map *map, t_raying *r, int x, float distv)
-{
-	if (distv != -1)
-		draw_wall(map, r->v_wall_x,
-			r->v_wall_y, x, to_positive_angle(r->angl), 'v');
-	return ;
-}
-
 void	dst_draw(t_elm_map *map, t_raying *r, int x)
 {
 	float	distv;
 	float	disth;
+	t_txt	data;
 
 	distv = -1;
 	disth = -1;
@@ -34,17 +27,18 @@ void	dst_draw(t_elm_map *map, t_raying *r, int x)
 	if (distv != -1 && disth != -1)
 	{
 		if (distv < disth)
-			draw_wall(map, r->v_wall_x, r->v_wall_y,
-				x, to_positive_angle(r->angl), 'v');
+			data = init_data(r->v_wall_x, r->v_wall_y, fix_angle(r->angl), 'v');
 		else
-			draw_wall(map, r->h_wall_x,
-				r->h_wall_y, x, to_positive_angle(r->angl), 'h');
+			data = init_data(r->h_wall_x, r->h_wall_y, fix_angle(r->angl), 'h');
+		draw_wall(map, x, data);
 		return ;
 	}
 	if (disth != -1)
-		draw_wall(map, r->h_wall_x,
-			r->h_wall_y, x, to_positive_angle(r->angl), 'h');
-	dst_draw2(map, r, x, distv);
+	{
+		data = init_data(r->h_wall_x, r->h_wall_y, fix_angle(r->angl), 'h');
+		draw_wall(map, x, data);
+	}
+	dst_draw_norm(map, r, x, distv);
 }
 
 void	get_hor_wall(t_elm_map *map, t_raying	*raying, float angle)
@@ -98,7 +92,7 @@ void	init_raying(t_elm_map *map, float *angle, t_raying	*raying)
 	raying->vrt = 1;
 	raying->hor = 1;
 	raying->angl = *angle;
-	*angle = to_positive_angle(map->dir + *angle);
+	*angle = fix_angle(map->dir + *angle);
 	if ((*angle > 270 && *angle <= 360) || (*angle >= 0 && *angle < 90))
 		raying->vrt = -1;
 	else if (*angle == 270 || *angle == 90)

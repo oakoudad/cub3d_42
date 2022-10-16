@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/16 12:11:49 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 13:32:11 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ typedef struct elmmap
 	t_textureimg	texture_s;
 }	t_elm_map;
 
-
 typedef struct raying
 {
 	float	h_wall_x;
@@ -114,27 +113,27 @@ typedef struct raying
 	int		vrt;
 	int		hor;
 	float	angl;
-}t_raying;
+}	t_raying;
 
 typedef struct s_txt
 {
 	float	x;
 	float	y;
 	float	h;
-	char 	c;
-}t_txt;	
+	char	c;
+}	t_txt;	
 
 typedef struct s_drwall
 {
 	float			h;
 	float			distance;
-	float			deltaX;
-	float			deltaY;
+	float			delta_x;
+	float			delta_y;
 	float			yy;
 	float			to;
 	unsigned int	xcolor;
 	t_txt			txt;
-} t_drwall;
+}	t_drwall;
 
 # define NO 0
 # define SO 1
@@ -155,7 +154,6 @@ typedef struct s_drwall
 # define CAMERA_R 124
 # define CAMERA_L 123
 
-//UTILS
 size_t	ft_strlen(const char	*s);
 int		ft_isspace(char c);
 int		ft_strcmp(const char *s1, const char *s2);
@@ -170,17 +168,13 @@ void	check_digits(char	**rgb, t_elm_map *map, char *line);
 void	check_color(char *line, t_elm_map *map);
 int		check_empty_line(char *line);
 char	*ignore_space(char *haystack);
-float	to_positive_angle(float angle);
+float	fix_angle(float angle);
 float	dist(t_elm_map *map, float endX, float endY);
 int		is_wall(t_elm_map *map, float x, float y);
-
-//GET NEXT LINE
 char	*get_line(char *r, int fd);
 char	*ft_re(char *r);
 char	*ft_affiche_line(char *r);
 char	*get_next_line(int fd);
-
-// PARSING
 void	check_inputs(int ac, char **av);
 void	check_extension(char *haystack, char *needle);
 void	check_map_format(char *line, t_elm_map *map);
@@ -191,35 +185,30 @@ void	set_colors(char *line, t_color	*color, char **rgb);
 int		init_map(t_elm_map	*map, int fd);
 int		check_map(t_elm_map	*map);
 void	set_direction(t_elm_map *map, char c);
-
-//RAYCASTING
 void	raycasting_main(t_elm_map	*map);
 void	put_block(int y, int x, t_elm_map *map, int color);
-void	put_player_block(int y, int x, t_elm_map *map, int color);
 int		events(int key, t_elm_map	*map);
-void	draw_wall(t_elm_map *map, float wall_x, float wall_y, float i, float dilta, char c);
+void	draw_wall(t_elm_map *map, float i, t_txt data);
 void	findwall(t_elm_map *map, float angle, float x);
-
-// MATH
 double	deg2rad(double deg);
-
-// ERROR PRINT & FREE & DESTROY
 int		put_error(char *str);
-
-// mlx
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
-
-
-int	create_texture(t_elm_map *map, t_txt *txt);
-//utils functions
-unsigned long	creatergb(int r, int g, int b);
+int		create_texture(t_elm_map *map, t_txt *txt);
+int		creatergb(int r, int g, int b);
 void	put_block(int y, int x, t_elm_map	*map, int color);
 void	draw_map_2d(t_elm_map	*map);
-
-//find wall
 void	dst_draw2(t_elm_map *map, t_raying *r, int x, float distv);
 void	dst_draw(t_elm_map *map, t_raying *r, int x);
 void	get_hor_wall(t_elm_map *map, t_raying	*raying, float angle);
 void	get_vrt_wall(t_elm_map *map, t_raying	*raying, float angle);
 void	init_raying(t_elm_map *map, float *angle, t_raying	*raying);
+t_txt	init_data(float x, float y, float h, char c);
+void	dst_draw_norm(t_elm_map *map, t_raying *r, int x, float distv);
+void	init_draw_wall(t_elm_map *map, t_txt data, t_drwall	*drwall);
+int		draw_line(t_elm_map *map, float endX, float endY);
+void	player_point(t_elm_map *map, int i, int j);
+void	draw_map2(t_elm_map *map, int j);
+int		events(int key, t_elm_map	*map);
+int		round_base(int nbr);
+void	draw_3d(t_elm_map *map);
 #endif

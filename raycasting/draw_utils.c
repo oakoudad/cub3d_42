@@ -6,13 +6,13 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 00:36:54 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/16 10:36:53 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 12:30:46 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-float	to_positive_angle(float angle)
+float	fix_angle(float angle)
 {
 	angle = fmodf(angle, 360);
 	while (angle < 0)

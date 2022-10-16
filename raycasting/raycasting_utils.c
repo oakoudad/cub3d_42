@@ -6,20 +6,20 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 10:44:04 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/16 10:49:20 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 13:30:43 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-unsigned long	creatergb(int r, int g, int b)
+int	creatergb(int r, int g, int b)
 {
 	unsigned long	color;
 
 	color = r << 16;
 	color += g << 8;
 	color += b;
-	return (color);
+	return ((int)color);
 }
 
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color)
@@ -48,9 +48,21 @@ void	put_block(int y, int x, t_elm_map	*map, int color)
 	}
 }
 
-void	put_player_block(int y, int x, t_elm_map *map, int color)
+int	round_base(int nbr)
 {
-	my_mlx_pixel_put(&map->m_mlx.img, x, y, color);
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while ((nbr + i) % PSIZE != 0)
+		i++;
+	while ((nbr - j) % PSIZE != 0)
+		j++;
+	if (i < j)
+		return (nbr + i);
+	else
+		return (nbr - j);
 }
 
 void	draw_map_2d(t_elm_map	*map)
