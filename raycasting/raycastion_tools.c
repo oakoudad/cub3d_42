@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:23:20 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/17 12:36:29 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/17 17:54:18 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,16 @@ int	init_x(t_elm_map *map, t_txt data, t_raying *r)
 	if (data.c == 'v')
 	{
 		if (r->vrt == -1)
-			x = ((int)data.x % BSIZE) * map->txt_so.height / BSIZE;
+			x = ((int)data.x % BSIZE) * map->txt_so.width / BSIZE;
 		else
-			x = ((int)data.x % BSIZE) * map->txt_no.height / BSIZE;
+			x = ((int)data.x % BSIZE) * map->txt_no.width / BSIZE;
 	}
 	else
 	{
 		if (r->hor == -1)
-			x = ((int)data.y % BSIZE) * map->txt_ea.height / BSIZE;
+			x = ((int)data.y % BSIZE) * map->txt_ea.width / BSIZE;
 		else
-			x = ((int)data.y % BSIZE) * map->txt_we.height / BSIZE;
+			x = ((int)data.y % BSIZE) * map->txt_we.width / BSIZE;
 	}
 	return (x);
 }
@@ -112,6 +112,8 @@ void	draw_map2(t_elm_map *map, int j)
 			my_mlx_pixel_put(&map->m_mlx.img3d, i + 20, j + 20, 0x333333);
 		else if (map->map[(y / MAPSIZE)][(x / MAPSIZE)] == '0')
 			my_mlx_pixel_put(&map->m_mlx.img3d, i + 20, j + 20, 0xcccccc);
+		else if (map->map[(y / MAPSIZE)][(x / MAPSIZE)] == ' ')
+			my_mlx_pixel_put(&map->m_mlx.img3d, i + 20, j + 20, 0x333333);
 		else
 			my_mlx_pixel_put(&map->m_mlx.img3d, i + 20, j + 20, 0xaaaaaa);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 22:29:31 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/17 12:37:16 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/17 18:46:16 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,25 @@ int	create_texture(t_elm_map *map, t_txt *txt, t_raying *r, t_txt *data)
 {
 	int				*txtcolor;
 	float			y;
-	t_textureimg	*txting;
+	t_textureimg	txting;
 
 	if (data->c == 'v')
 	{
 		if (r->vrt == -1)
-			txting = &map->txt_so;
+			txting = map->txt_so;
 		else
-			txting = &map->txt_no;
+			txting = map->txt_no;
 	}
 	else
 	{
 		if (r->hor == -1)
-			txting = &map->txt_ea;
+			txting = map->txt_ea;
 		else
-			txting = &map->txt_we;
+			txting = map->txt_we;
 	}
-	y = txt->y * ((*txting).width / txt->h);
-	txtcolor = (*txting).img.addr +((int)y
-			* ((*txting).img.line_length / 4) + (int)txt->x);
+	y = txt->y * (txting.height / txt->h);
+	printf("%d\n", (int)y * (txting.img.line_length / 4));
+	txtcolor = txting.img.addr + ((int)y
+			* (txting.img.line_length / 4) + (int)txt->x);
 	return (*txtcolor);
 }

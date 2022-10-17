@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:31:05 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/17 11:09:45 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/17 16:37:38 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	init_struct(t_elm_map	*map)
 	map->keys.hor = 0;
 	map->keys.vrt = 0;
 	map->keys.cam = 0;
-	map->keys.mok = 5;
 	map->texture_fd[NO] = -1;
 	map->texture_fd[SO] = -1;
 	map->texture_fd[WE] = -1;
@@ -31,11 +30,14 @@ void	init_struct(t_elm_map	*map)
 	map->line_nbr = 0;
 	map->longer_line = 0;
 	map->player = 0;
+	map->texture.no = NULL;
+	map->texture.so = NULL;
+	map->texture.we = NULL;
+	map->texture.ea = NULL;
 }
 
 int	release(int key, t_elm_map	*map)
 {
-	puts("mokl");
 	if (key == W || key == S)
 		map->keys.vrt = 0;
 	if (key == A || key == D)
@@ -43,7 +45,7 @@ int	release(int key, t_elm_map	*map)
 	if (key == CAMERA_L || key == CAMERA_R)
 		map->keys.cam = 0;
 	if (key == ESC)
-		exit(0);
+		close_game(map);
 	return (0);
 }
 
@@ -70,7 +72,7 @@ int	main(int ac, char **av)
 	int			fd;
 
 	init_struct(&map);
-	check_inputs(ac, av);
+	check_inputs(ac, av, &map);
 	read_file(av[1], &map);
 	fd = open(av[1], O_RDONLY);
 	if (!fd)
@@ -83,6 +85,7 @@ int	main(int ac, char **av)
 	raycasting_main(&map);
 	mlx_hook(map.m_mlx.win3d, 2, (1L << 0), key_press, &map);
 	mlx_hook(map.m_mlx.win3d, 3, (1L << 1), release, &map);
+	mlx_hook(map.m_mlx.win3d, 17, 0, close_game, &map);
 	mlx_loop_hook(map.m_mlx.mlx, events, &map);
 	mlx_loop(map.m_mlx.mlx);
 }

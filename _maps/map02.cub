@@ -1,10 +1,10 @@
-C 122,202,199
-F 200,200,200
+C 122, 202    , 255
+F 200, 200,200
 
-SO	      			./_texture/SO.xpm
-NO ./_texture/NO.xpm
-WE ./_texture/WE.xpm
-EA					./_texture/EA.xpm
+SO	      			./_texture/wall_v.xpm
+NO ./_texture/wall_v.xpm
+WE ./_texture/wall_h.xpm
+EA					./_texture/wall_h.xpm
                                          
 11111111111111
 100000000000001

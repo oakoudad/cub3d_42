@@ -2,13 +2,14 @@ NAME = cub3d
 
 INC = cub3d.h
 
-CC = cc -Wall -Wextra -Werror -fsanitize=address
+CC = cc -Wall -Wextra -Werror
 
 SRC = 	./cub3d.c\
 		./src/numbers.c\
 		./src/string.c\
 		./src/utils.c\
 		./src/ft_split.c\
+		./src/free.c\
 		./parsing/check_inputs.c\
 		./parsing/check_map.c\
 		./parsing/map.c\

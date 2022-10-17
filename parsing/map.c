@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:29:04 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/16 08:16:43 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/17 17:51:18 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,16 @@ void	check_space(t_elm_map *map, int y, int x)
 {
 	if (!(map->check_map[y][x + 1] == ' ' || map->check_map[y][x + 1] == '1'
 		|| map->check_map[y][x + 1] == '\0'))
-		put_error("Error: The wall is not closed\n");
+		put_error("Error: The wall is not closed\n", map);
 	if (x > 0 && !(map->check_map[y][x - 1] == ' '
 		|| map->check_map[y][x - 1] == '1'))
-		put_error("Error: The wall is not closed\n");
+		put_error("Error: The wall is not closed\n", map);
 	if (map->check_map[y + 1] && !(map->check_map[y + 1][x] == ' '
 		|| map->check_map[y + 1][x] == '1'))
-		put_error("Error: The wall is not closed\n");
+		put_error("Error: The wall is not closed\n", map);
 	if (y > 0 && !(map->check_map[y - 1][x] == ' '
 		|| map->check_map[y - 1][x] == '1'))
-		put_error("Error: The wall is not closed\n");
+		put_error("Error: The wall is not closed\n", map);
 }
 
 void	map_char(t_elm_map *map, int y, int x)
@@ -59,7 +59,7 @@ void	map_char(t_elm_map *map, int y, int x)
 	{
 		map->check_map[y][x] = '0';
 		if (map->player > 0)
-			put_error("Error: You can't enter more than one player\n");
+			put_error("Error: You can't enter more than one player\n", map);
 		map->player++;
 		map->p_x = (x * BSIZE) + (BSIZE) / 2;
 		map->p_y = ((y - 1) * BSIZE) + (BSIZE) / 2;
@@ -68,7 +68,7 @@ void	map_char(t_elm_map *map, int y, int x)
 	else if (c == ' ')
 		check_space(map, y, x);
 	else
-		put_error("Error: Invalid map character\n");
+		put_error("Error: Invalid map character\n", map);
 }
 
 int	check_map(t_elm_map	*map)
@@ -105,15 +105,16 @@ int	init_map(t_elm_map	*map, int fd)
 		line = get_next_line(fd);
 		if (line == NULL)
 			break ;
-		if (ft_strstart(line, "1"))
+		if (ft_strstart(line, "1", map))
 		{
+			if (is_map == -1)
+				put_error("Error: Empty line inside the map\n", map);
 			is_map = 1;
 			full_row(map, line, i++);
 		}
 		if (is_map == 1 && check_empty_line(line))
-			put_error("Error: Empty line inside the map\n");
+			is_map = -1;
 		free(line);
 	}
-	full_row(map, "", i);
-	return (map->check_map[i + 1] = NULL, 1);
+	return (full_row(map, "", i), map->check_map[i + 1] = NULL, 1);
 }

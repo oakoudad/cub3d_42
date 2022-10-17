@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   find_wall.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 10:52:39 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/16 15:16:07 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/17 16:48:53 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+
+int	is_wall_or_space(int x, int y, t_elm_map *map)
+{
+	if (map->map[y][x] == '1' || map->map[y][x] == ' ')
+		return (1);
+	return (0);
+}
 
 void	dst_draw(t_elm_map *map, t_raying *r, int x)
 {

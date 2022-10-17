@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/17 12:37:49 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/17 18:42:37 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ typedef struct my_hook
 	int	hor;
 	int	vrt;
 	int	cam;
-	int	mok;
 }	t_hook;
 
 typedef struct textureimg
@@ -85,7 +84,7 @@ typedef struct elmmap
 	int				player;
 	double			p_x;
 	double			p_y;
-	int				dir;
+	float			dir;
 	int				longer_line;
 	char			**check_map;
 	char			**map;
@@ -141,6 +140,7 @@ typedef struct s_drwall
 
 # define MAPSIZE 10
 # define BSIZE 1280
+# define SPEED 10
 # define PSIZE 1
 # define HSCREEN 1000.0
 # define WSCREEN 2000.0
@@ -174,13 +174,13 @@ char	*get_line(char *r, int fd);
 char	*ft_re(char *r);
 char	*ft_affiche_line(char *r);
 char	*get_next_line(int fd);
-void	check_inputs(int ac, char **av);
-void	check_extension(char *haystack, char *needle);
+void	check_inputs(int ac, char **av, t_elm_map *map);
+void	check_extension(char *haystack, char *needle, t_elm_map *map);
 void	check_map_format(char *line, t_elm_map *map);
-int		ft_strstart(char *haystack, char *needle);
+int		ft_strstart(char *haystack, char *needle, t_elm_map *map);
 void	read_file(char *path, t_elm_map *map);
 char	*get_informations(char *line);
-void	set_colors(char *line, t_color	*color, char **rgb);
+void	set_colors(char *line, t_color	*color, char **rgb, t_elm_map *map);
 int		init_map(t_elm_map	*map, int fd);
 int		check_map(t_elm_map	*map);
 void	set_direction(t_elm_map *map, char c);
@@ -189,7 +189,7 @@ int		events(t_elm_map	*map);
 void	draw_wall(t_elm_map *map, float i, t_txt data, t_raying *r);
 void	findwall(t_elm_map *map, float angle, float x);
 double	deg2rad(double deg);
-int		put_error(char *str);
+int		put_error(char *str, t_elm_map *map);
 void	my_mlx_pixel_put(t_img *data, int x, int y, int color);
 int		create_texture(t_elm_map *map, t_txt *txt, t_raying *r, t_txt *data);
 int		creatergb(int r, int g, int b);
@@ -207,4 +207,9 @@ void	draw_map2(t_elm_map *map, int j);
 void	player_point(t_elm_map *map, int i, int j);
 int		round_base(int nbr);
 void	draw_3d(t_elm_map *map);
+int		close_game(t_elm_map *map);
+void	error_and_free(t_elm_map *map, char *message);
+void	my_free(t_elm_map *map);
+int		is_wall_or_space(int x, int y, t_elm_map *map);
+void	check_array(t_elm_map *map, char *line, char *newline);
 #endif

@@ -6,14 +6,15 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:50:36 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/09/20 16:03:11 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/17 13:33:08 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-int	put_error(char *str)
+int	put_error(char *str, t_elm_map *map)
 {
+	my_free(map);
 	write(2, str, ft_strlen(str));
 	exit(1);
 }

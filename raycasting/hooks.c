@@ -6,7 +6,7 @@
 /*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:28:02 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/17 11:07:02 by oakoudad         ###   ########.fr       */
+/*   Updated: 2022/10/17 18:14:11 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ void	check_and_correct(t_elm_map *map, float x1, float y1)
 	status = 1;
 	x2 = x1 + PSIZE;
 	y2 = y1 + PSIZE;
-	if ((map->map[(int)y1 / BSIZE][(int)x1 / BSIZE]) == '1')
+	if (is_wall_or_space((int)x1 / BSIZE, (int)y1 / BSIZE, map))
 		status = 0;
-	if ((map->map[(int)y1 / BSIZE][(int)x2 / BSIZE]) == '1')
+	if (is_wall_or_space((int)x2 / BSIZE, (int)y1 / BSIZE, map))
 		status = 0;
-	if ((map->map[(int)y2 / BSIZE][(int)x1 / BSIZE]) == '1')
+	if (is_wall_or_space((int)x1 / BSIZE, (int)y2 / BSIZE, map))
 		status = 0;
-	if ((map->map[(int)y2 / BSIZE][(int)x2 / BSIZE]) == '1')
+	if (is_wall_or_space((int)x2 / BSIZE, (int)y2 / BSIZE, map))
 		status = 0;
 	if (status == 0)
 		correct_player(map);
@@ -75,7 +75,7 @@ void	move_player(t_elm_map *map, char dir, double extra)
 		degrees = map->dir + 90;
 	else if (dir == 'd')
 		degrees = map->dir + 270;
-	offset = (sqrt(BSIZE) * 4 * sqrt(2)) / 2;
+	offset = (sqrt(BSIZE) * SPEED * sqrt(2)) / 2;
 	rads = deg2rad(degrees + extra);
 	x = sin(rads) * offset + map->p_x;
 	y = cos(rads) * offset + map->p_y;
@@ -83,7 +83,7 @@ void	move_player(t_elm_map *map, char dir, double extra)
 	draw_3d(map);
 }
 
-void	change_dir(t_elm_map *map, char c, int move)
+void	change_dir(t_elm_map *map, char c, float move)
 {
 	if (map->dir == 0 && c == 'r')
 		map->dir = 355;
@@ -105,8 +105,8 @@ int	events(t_elm_map	*map)
 	if (map->keys.hor == 1)
 		move_player(map, 'a', 0);
 	if (map->keys.cam == 1)
-		change_dir(map, 'r', -2);
+		change_dir(map, 'r', -3);
 	else if (map->keys.cam == -1)
-		change_dir(map, 'l', 2);
+		change_dir(map, 'l', 3);
 	return (1);
 }

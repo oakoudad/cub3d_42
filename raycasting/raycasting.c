@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 15:17:23 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/16 16:47:54 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/17 18:42:33 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ void	draw_3d(t_elm_map *map)
 void	check_xpm(t_elm_map	*map)
 {
 	if (map->txt_no.img.img == NULL)
-		exit(0);
+		error_and_free(map, "North texture not valid\n");
 	if (map->txt_so.img.img == NULL)
-		exit(0);
+		error_and_free(map, "South texture not valid\n");
 	if (map->txt_ea.img.img == NULL)
-		exit(0);
+		error_and_free(map, "East texture not valid\n");
 	if (map->txt_we.img.img == NULL)
-		exit(0);
+		error_and_free(map, "West texture not valid\n");
 }
 
 void	init_texture(t_elm_map	*map)
