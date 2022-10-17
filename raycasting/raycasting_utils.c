@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 10:44:04 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/16 17:02:14 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/17 12:36:40 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+
+void	player_point(t_elm_map *map, int i, int j)
+{
+	draw_line(map, sin(deg2rad(map->dir))
+		* 15 + 95, cos(deg2rad(map->dir)) * 15 + 95);
+	my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20, j / 2 + 20, 0x001100);
+}
 
 int	creatergb(int r, int g, int b)
 {

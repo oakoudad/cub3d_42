@@ -2,7 +2,7 @@ NAME = cub3d
 
 INC = cub3d.h
 
-CC = cc -Wall -Wextra -Werror
+CC = cc -Wall -Wextra -Werror -fsanitize=address
 
 SRC = 	./cub3d.c\
 		./src/numbers.c\

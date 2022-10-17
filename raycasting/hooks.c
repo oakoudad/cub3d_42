@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:28:02 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/16 17:41:26 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/17 11:07:02 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,21 +94,19 @@ void	change_dir(t_elm_map *map, char c, int move)
 	draw_3d(map);
 }
 
-int	events(int key, t_elm_map	*map)
+int	events(t_elm_map	*map)
 {
-	if (key == W)
+	if (map->keys.vrt == 1)
 		move_player(map, 'w', 0);
-	if (key == S)
+	if (map->keys.vrt == -1)
 		move_player(map, 's', 0);
-	if (key == D)
+	if (map->keys.hor == -1)
 		move_player(map, 'd', 0);
-	if (key == A)
+	if (map->keys.hor == 1)
 		move_player(map, 'a', 0);
-	if (key == CAMERA_R)
+	if (map->keys.cam == 1)
 		change_dir(map, 'r', -2);
-	if (key == CAMERA_L)
+	else if (map->keys.cam == -1)
 		change_dir(map, 'l', 2);
-	if (key == ESC)
-		exit(1);
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 22:29:31 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/16 16:13:14 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/17 12:37:16 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	create_texture(t_elm_map *map, t_txt *txt, t_raying *r, t_txt *data)
 			txting = &map->txt_we;
 	}
 	y = txt->y * ((*txting).width / txt->h);
-	txtcolor = (*txting).img.addr +((int)y * ((*txting).img.line_length / 4) + (int)txt->x);
+	txtcolor = (*txting).img.addr +((int)y
+			* ((*txting).img.line_length / 4) + (int)txt->x);
 	return (*txtcolor);
 }

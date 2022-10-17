@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oakoudad <oakoudad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:52:31 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/16 17:04:23 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/17 12:37:49 by oakoudad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,10 @@ typedef struct my_mlx
 
 typedef struct my_hook
 {
-	char	hor;
-	char	vrt;
-	char	cam;
+	int	hor;
+	int	vrt;
+	int	cam;
+	int	mok;
 }	t_hook;
 
 typedef struct textureimg
@@ -184,7 +185,7 @@ int		init_map(t_elm_map	*map, int fd);
 int		check_map(t_elm_map	*map);
 void	set_direction(t_elm_map *map, char c);
 void	raycasting_main(t_elm_map	*map);
-int		events(int key, t_elm_map	*map);
+int		events(t_elm_map	*map);
 void	draw_wall(t_elm_map *map, float i, t_txt data, t_raying *r);
 void	findwall(t_elm_map *map, float angle, float x);
 double	deg2rad(double deg);
@@ -203,7 +204,7 @@ void	init_draw_wall(t_elm_map *map, t_txt data, t_drwall	*drwall);
 int		draw_line(t_elm_map *map, float endX, float endY);
 void	player_point(t_elm_map *map, int i, int j);
 void	draw_map2(t_elm_map *map, int j);
-int		events(int key, t_elm_map	*map);
+void	player_point(t_elm_map *map, int i, int j);
 int		round_base(int nbr);
 void	draw_3d(t_elm_map *map);
 #endif
