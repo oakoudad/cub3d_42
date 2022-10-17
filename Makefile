@@ -34,7 +34,7 @@ COLOUR_YELLOW=\033[0;33m
 COLOUR_BLUE=\033[0;34m
 COLOUR_END=\033[0m
 
-%.o : %.c
+%.o : %.c $(INC)
 	@echo "Create $(COLOUR_BLUE)$@$(COLOUR_END) from $(COLOUR_YELLOW)$<$(COLOUR_END)"
 	@$(CC) -c $< -o $@
 

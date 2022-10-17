@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:28:02 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/16 16:52:44 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 17:41:26 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	check_and_correct(t_elm_map *map, float x1, float y1)
 	}
 }
 
-void	move_player(t_elm_map *map, char dir)
+void	move_player(t_elm_map *map, char dir, double extra)
 {
 	float		rads;
 	float		x;
@@ -75,8 +75,8 @@ void	move_player(t_elm_map *map, char dir)
 		degrees = map->dir + 90;
 	else if (dir == 'd')
 		degrees = map->dir + 270;
-	offset = (sqrt(BSIZE) * 2 * sqrt(2)) / 2;
-	rads = deg2rad(degrees);
+	offset = (sqrt(BSIZE) * 4 * sqrt(2)) / 2;
+	rads = deg2rad(degrees + extra);
 	x = sin(rads) * offset + map->p_x;
 	y = cos(rads) * offset + map->p_y;
 	check_and_correct(map, x, y);
@@ -96,17 +96,14 @@ void	change_dir(t_elm_map *map, char c, int move)
 
 int	events(int key, t_elm_map	*map)
 {
-	printf("HOR = %d, ", map->keys.hor);
-	printf("VRT = %d, ", map->keys.vrt);
-	printf("CAM = %d\n", map->keys.vrt);
 	if (key == W)
-		move_player(map, 'w');
+		move_player(map, 'w', 0);
 	if (key == S)
-		move_player(map, 's');
+		move_player(map, 's', 0);
 	if (key == D)
-		move_player(map, 'd');
+		move_player(map, 'd', 0);
 	if (key == A)
-		move_player(map, 'a');
+		move_player(map, 'a', 0);
 	if (key == CAMERA_R)
 		change_dir(map, 'r', -2);
 	if (key == CAMERA_L)

@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 14:31:05 by oakoudad          #+#    #+#             */
-/*   Updated: 2022/10/16 16:59:03 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 17:25:40 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,15 @@ void	init_struct(t_elm_map	*map)
 
 int	release(int key, t_elm_map	*map)
 {
-	puts("here");
+	puts("ana hna");
 	if (key == W || key == S)
 		map->keys.vrt = 0;
 	if (key == A || key == D)
 		map->keys.hor = 0;
 	if (key == CAMERA_L || key == CAMERA_L)
 		map->keys.cam = 0;
+	if (key == ESC)
+		exit(0);
 	return (0);
 }
 
@@ -55,9 +57,9 @@ int	key_press(int key, t_elm_map *map)
 	else if (key == D)
 		map->keys.hor = -1;
 	if (key == CAMERA_R)
-		map->keys.cam = 'R';
+		map->keys.cam = 1;
 	if (key == CAMERA_L)
-		map->keys.cam = 'L';
+		map->keys.cam = -1;
 	events(key, map);
 	return (0);
 }
@@ -79,7 +81,7 @@ int	main(int ac, char **av)
 	check_map(&map);
 	map.map = map.check_map + 1;
 	raycasting_main(&map);
-	mlx_hook(map.m_mlx.win3d, 2, (1L << 0), release, &map);
+	mlx_hook(map.m_mlx.win3d, 3, (1L << 0), release, &map);
 	mlx_hook(map.m_mlx.win3d, 2, (1L << 0), key_press, &map);
 	//mlx_key_hook(map.m_mlx.win3d, events, &map);
 	mlx_loop(map.m_mlx.mlx);

@@ -6,7 +6,7 @@
 /*   By: eelmoham <eelmoham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 13:23:20 by eelmoham          #+#    #+#             */
-/*   Updated: 2022/10/16 16:13:14 by eelmoham         ###   ########.fr       */
+/*   Updated: 2022/10/16 17:27:11 by eelmoham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,11 @@ void	player_point(t_elm_map *map, int i, int j)
 {
 	draw_line(map, sin(deg2rad(map->dir))
 		* 15 + 95, cos(deg2rad(map->dir)) * 15 + 95);
-	my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20 + 1, j / 2 + 20, 0x001100);
-	my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20 - 1, j / 2 + 20, 0x001100);
+	// my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20 + 1, j / 2 + 20, 0x001100);
+	// my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20 - 1, j / 2 + 20, 0x001100);
 	my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20, j / 2 + 20, 0x001100);
-	my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20, j / 2 + 20 + 1, 0x001100);
-	my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20, j / 2 + 20 - 1, 0x001100);
+	// my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20, j / 2 + 20 + 1, 0x001100);
+	// my_mlx_pixel_put(&map->m_mlx.img3d, i / 2 + 20, j / 2 + 20 - 1, 0x001100);
 }
 
 void	draw_map2(t_elm_map *map, int j)
